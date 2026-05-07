@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PAS-X Validation Export Tool — MBRfactory</title>
+<style>
+:root{
+  --mulberry:#830051;--mulberry-dark:#5C0039;--mulberry-tint:#A33373;
+  --magenta:#C4007A;--gold:#F0AB00;--gold-dark:#C28A00;--gold-bright:#FFD24A;
+  --navy:#003865;--ink:#1A1A2E;--bg:#F7F5F2;--surface:#FFFFFF;
+  --n900:#1A1A1A;--n700:#3C3C3C;--n500:#6B6B6B;--n300:#C9C7C2;
+  --n200:#E4E2DD;--n100:#EFEDE8;
+  --font:"Helvetica Neue","Helvetica","Inter","Arial",system-ui,sans-serif;
+  --r-sm:4px;--r-md:8px;--r-lg:16px;--r-pill:9999px;
+  --sh-sm:0 1px 2px rgba(26,26,46,.06);--sh-md:0 8px 24px rgba(26,26,46,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-family:var(--font);font-size:100%;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--n700);line-height:1.65}
+img,svg{display:block;max-width:100%}
+button{font:inherit;cursor:pointer}
+
+.nav-shell{
+  position:sticky;top:0;z-index:50;
+  background:rgba(247,245,242,.92);backdrop-filter:saturate(140%) blur(8px);
+  -webkit-backdrop-filter:saturate(140%) blur(8px);
+  border-bottom:1px solid var(--n200);
+}
+.nav-bar{
+  display:flex;align-items:center;gap:1.5rem;height:4rem;
+  max-width:76rem;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem);
+}
+.nav-brand{
+  display:flex;align-items:center;gap:.5rem;color:var(--mulberry);
+  font-weight:700;font-size:1rem;text-decoration:none;letter-spacing:-.01em;
+}
+.brand-icon{
+  width:28px;height:28px;border-radius:6px;background:var(--mulberry);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gold);font-weight:700;font-size:13px;flex-shrink:0;
+}
+.nav-tool{
+  margin-left:auto;font-size:.8125rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--mulberry);
+}
+.main{max-width:76rem;margin:0 auto;padding:2.5rem clamp(1rem,4vw,2.5rem) 5rem}
+
+.hero-strip{
+  background:var(--mulberry);color:#fff;border-radius:var(--r-lg);
+  padding:2.5rem;margin-bottom:2rem;position:relative;overflow:hidden;
+}
+.hero-strip::before{
+  content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;
+  border-radius:50%;background:radial-gradient(circle,rgba(196,0,122,.35) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;font-size:.8125rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--gold-bright);margin-bottom:.75rem;
+}
+.hero-keyline{display:block;width:3rem;height:2px;background:var(--gold);border:0;margin-bottom:1rem}
+.hero-strip h1{
+  font-size:clamp(1.75rem,3vw,2.5rem);font-weight:700;color:#fff;
+  line-height:1.15;letter-spacing:-.02em;margin-bottom:.5rem;
+}
+.hero-strip p{color:rgba(255,255,255,.8);max-width:54ch;font-size:1rem}
+
+.card{
+  background:var(--surface);border:1px solid var(--n200);
+  border-radius:var(--r-lg);padding:1.5rem;box-shadow:var(--sh-sm);
+}
+.eyebrow{
+  display:inline-flex;align-items:center;font-size:.8125rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--mulberry);margin-bottom:.75rem;
+}
+.keyline{display:block;width:3rem;height:2px;background:var(--mulberry);border:0;margin-bottom:1rem}
+
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.5rem;
+  border-radius:var(--r-pill);font-weight:600;font-size:1rem;border:1.5px solid transparent;
+  text-decoration:none;transition:background .15s,color .15s,border-color .15s,transform .15s;
+}
+.btn-primary{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.btn-primary:hover{background:var(--gold-dark);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--mulberry);border-color:var(--mulberry)}
+.btn-ghost:hover{background:var(--mulberry);color:#fff}
+.btn-navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn-navy:hover{background:#002d52;transform:translateY(-1px)}
+.btn-sm{padding:.5rem 1rem;font-size:.875rem}
+
+.upload-zone{
+  border:2px dashed var(--n300);border-radius:var(--r-lg);background:var(--surface);
+  padding:3rem 2rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;
+}
+.upload-zone:hover,.upload-zone.over{border-color:var(--mulberry);background:rgba(131,0,81,.03)}
+.upload-icon{font-size:3rem;margin-bottom:1rem;user-select:none}
+.upload-zone h3{font-size:1.125rem;color:var(--ink);margin-bottom:.5rem}
+.upload-zone p{font-size:.875rem;color:var(--n500);margin-bottom:1.5rem}
+.upload-actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+#file-input{display:none}
+
+.paste-area{
+  display:none;margin-top:1rem;border:1px solid var(--n200);
+  border-radius:var(--r-md);background:var(--surface);padding:1.25rem;
+}
+.paste-area textarea{
+  width:100%;height:180px;font-family:monospace;font-size:.8125rem;
+  padding:.75rem;border:1px solid var(--n300);border-radius:var(--r-md);
+  resize:vertical;color:var(--ink);
+}
+.paste-actions{display:flex;gap:.75rem;margin-top:.75rem}
+
+.error-banner{
+  display:none;background:#fff5f5;border:1px solid #fca5a5;border-radius:var(--r-md);
+  padding:1rem 1.25rem;color:#b91c1c;font-size:.875rem;margin-bottom:1rem;
+}
+.error-banner.show{display:block}
+
+.results{display:none}
+.results.show{display:block}
+
+.meta-row{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1rem}
+.meta-chip{background:var(--n100);border:1px solid var(--n200);border-radius:var(--r-md);padding:.5rem .875rem}
+.meta-chip dt{font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mulberry)}
+.meta-chip dd{font-size:.875rem;color:var(--ink);font-weight:600}
+
+.result-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.export-bar{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2rem}
+
+.tabs{display:flex;gap:.25rem;border-bottom:2px solid var(--n200);margin-bottom:1.5rem}
+.tab-btn{
+  padding:.625rem 1.25rem;border:none;background:none;font:inherit;font-size:.9375rem;
+  font-weight:600;color:var(--n500);border-bottom:2px solid transparent;margin-bottom:-2px;
+  transition:color .15s,border-color .15s;
+}
+.tab-btn:hover{color:var(--mulberry)}
+.tab-btn.active{color:var(--mulberry);border-bottom-color:var(--mulberry)}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+.tbl-wrap{overflow-x:auto;border-radius:var(--r-md);border:1px solid var(--n200)}
+.ptbl{width:100%;border-collapse:collapse;font-size:.8125rem;white-space:nowrap}
+.ptbl th{background:var(--mulberry);color:#fff;font-weight:600;padding:.625rem .875rem;text-align:left;font-size:.75rem}
+.ptbl td{padding:.5rem .875rem;border-bottom:1px solid var(--n200);vertical-align:top;white-space:normal;max-width:280px}
+.ptbl tr:last-child td{border-bottom:none}
+.ptbl tbody tr:nth-child(even) td{background:var(--n100)}
+
+.tbadge{display:inline-block;border-radius:3px;padding:1px 6px;font-size:.6875rem;font-weight:600}
+.t-attr{background:#e3f1e3;color:#2a6b2a}
+.t-mv{background:#fff3cd;color:#856404}
+.t-form{background:#f3e3ff;color:#6a1fa3}
+.t-eqm{background:#dce8f5;color:#1a4a7a}
+.t-mat{background:#fef0e0;color:#7d4800}
+.sig-badge{background:#fde8e8;color:#c0392b;border-radius:3px;padding:1px 5px;font-size:.6875rem;font-weight:600}
+
+.pm-outer{
+  background:var(--surface);border:1px solid var(--n200);
+  border-radius:var(--r-lg);padding:2rem;overflow:visible;
+}
+/* scroll wrapper sits INSIDE the map, not on the page container */
+.pm-scroll{overflow-x:auto;overflow-y:visible;}
+.pm-legend{
+  display:flex;gap:16px;flex-wrap:wrap;font-size:.6875rem;color:var(--n500);
+  margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--n200);
+}
+.pm-legend span{display:flex;align-items:center;gap:5px}
+.pm-legend i{width:12px;height:12px;border-radius:2px;display:inline-block}
+</style>
+</head>
+<body>
+
+<header class="nav-shell">
+  <div class="nav-bar">
+    <a href="#" class="nav-brand">
+      <div class="brand-icon">V</div>
+      MBRfactory
+    </a>
+    <span class="nav-tool">Validation Export Tool</span>
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="hero-strip">
+    <span class="hero-eyebrow">PAS-X XML → Validation Artefacts</span>
+    <hr class="hero-keyline">
+    <h1>Validation Export Tool</h1>
+    <p>Upload a PAS-X GMBR XML export to instantly generate a pathway Excel sheet and a process flow map ready for your validation documentation.</p>
+  </div>
+
+  <div class="error-banner" id="err"></div>
+
+  <div id="upload-section">
+    <div class="upload-zone" id="drop-zone">
+      <div class="upload-icon">📄</div>
+      <h3>Drop your PAS-X XML file here</h3>
+      <p>Export your GMBR from PAS-X and drop the .xml file, or use the options below.</p>
+      <div class="upload-actions">
+        <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Browse file
+        </button>
+        <button class="btn btn-ghost" id="paste-toggle-btn">Paste XML</button>
+      </div>
+    </div>
+    <input type="file" id="file-input" accept=".xml,text/xml">
+
+    <div class="paste-area" id="paste-area">
+      <textarea id="paste-input" placeholder="Paste PAS-X XML here…"></textarea>
+      <div class="paste-actions">
+        <button class="btn btn-primary btn-sm" id="parse-paste-btn">Parse XML</button>
+        <button class="btn btn-ghost btn-sm" id="cancel-paste-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="results" id="results">
+    <div class="card" style="margin-bottom:1.5rem">
+      <span class="eyebrow">GMBR Parsed Successfully</span>
+      <hr class="keyline">
+      <div class="result-header">
+        <div>
+          <h2 id="res-title" style="font-size:1.5rem;color:var(--ink)"></h2>
+          <p id="res-sub" style="color:var(--n500);font-size:.875rem;margin-top:.25rem"></p>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="reset-btn">← Upload another</button>
+      </div>
+      <div class="meta-row" id="meta-row"></div>
+    </div>
+
+    <div class="export-bar">
+      <button class="btn btn-primary" id="btn-excel">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Download Pathway Excel
+      </button>
+      <button class="btn btn-navy" id="btn-map">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Download Process Map
+      </button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="map">Process Flow Map</button>
+      <button class="tab-btn" data-tab="tbl">Pathway Table</button>
+    </div>
+
+    <div class="tab-pane active" id="tab-map">
+      <!-- Level navigation bar (injected by JS) -->
+      <div id="level-nav"></div>
+      <div class="pm-outer" id="pm-render"></div>
+    </div>
+
+    <div class="tab-pane" id="tab-tbl">
+      <div class="tbl-wrap">
+        <table class="ptbl">
+          <thead>
+            <tr>
+              <th>Relevant Basic Function</th><th>Entry Full Path</th>
+              <th>Entry Full Path Description</th><th>Activity Description</th>
+              <th>Formula</th><th>Formula Type</th><th>Refs</th>
+              <th>Tolerance</th><th>Generic Type</th><th>Activity Type</th>
+              <th>Ver. Sig.</th><th>Risk</th><th>Ver. Type</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+/* ================================================================
+   UTILITY
+   ================================================================ */
+const esc = s => s == null ? '' :
+  String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+// Get direct child element by simple tag name
+function gc(el, tag) {
+  for (const c of el.children) if (c.tagName === tag) return c;
+  return null;
+}
+// Get text of direct child
+function gt(el, tag) { const c = gc(el, tag); return c ? c.textContent.trim() : ''; }
+
+// ── KEY FIX ──────────────────────────────────────────────────────
+// PAS-X uses full Java class names as tag names, e.g.
+//   com.werum.pasx.spec.components.pmbr.global.GenericMasterBatchRecordVO
+// CSS querySelector treats dots as class selectors and fails.
+// Use getElementsByTagName('*') and match by suffix instead.
+
+function findEl(root, suffix) {
+  const els = root.getElementsByTagName('*');
+  for (const el of els) {
+    if (el.tagName === suffix || el.tagName.endsWith('.' + suffix)) return el;
+  }
+  return null;
+}
+function findAllEl(root, suffix) {
+  const out = [];
+  const els = root.getElementsByTagName('*');
+  for (const el of els) {
+    if (el.tagName === suffix || el.tagName.endsWith('.' + suffix)) out.push(el);
+  }
+  return out;
+}
+// Check if a tag name matches a suffix
+function tagIs(el, suffix) {
+  return el.tagName === suffix || el.tagName.endsWith('.' + suffix);
+}
+
+/* ================================================================
+   XML PARSER
+   ================================================================ */
+function parseGMBR(xml) {
+  const doc = new DOMParser().parseFromString(xml, 'text/xml');
+  const perr = doc.querySelector('parsererror');
+  if (perr) throw new Error('Invalid XML: ' + perr.textContent.slice(0, 200));
+
+  // Use findEl — handles full Java class name
+  const gEl = findEl(doc, 'GenericMasterBatchRecordVO');
+  if (!gEl) {
+    const allEls = Array.from(doc.getElementsByTagName('*'));
+    const sample = allEls.slice(0, 6).map(e => e.tagName).join(' | ');
+    throw new Error(`No GenericMasterBatchRecordVO found. Found ${allEls.length} elements. First tags: ${sample || '(none)'}`);
+  }
+
+  // id-attr → element map (for link resolution)
+  const idMap = {};
+  for (const el of doc.getElementsByTagName('*')) {
+    const id = el.getAttribute('id');
+    if (id) idMap[id] = el;
+  }
+
+  // PAS-X internal key → customId (for formula path resolution)
+  const keyMap = {};
+  for (const el of doc.getElementsByTagName('*')) {
+    const k = gc(el, 'key'), c = gc(el, 'customId');
+    if (k && c) keyMap[k.textContent.trim()] = c.textContent.trim();
+  }
+
+  return {
+    id:            gt(gEl, 'customId'),
+    description:   gt(gEl, 'description'),
+    version:       gt(gEl, 'versionId'),
+    materialName:  gt(gEl, 'materialName'),
+    productionArea: gEl.getAttribute('productionArea') || gt(gEl, 'productionArea'),
+    basicOps: parseTopSteps(gEl, idMap, keyMap),
+  };
+}
+
+function parseTopSteps(gEl, idMap, keyMap) {
+  const topSet   = gEl.querySelector(':scope > prodStepCollection > c');
+  const topLinks = gEl.querySelector(':scope > prodStepLinkCollection');
+  if (!topSet) return [];
+  return orderSteps(Array.from(topSet.children), topLinks, idMap)
+    .filter(s => tagIs(s, 'BasicOperationVO'))
+    .map(s => parseBO(s, idMap, keyMap));
+}
+
+function orderSteps(steps, linksColl, idMap) {
+  if (!steps.length) return steps;
+  const linkSet = linksColl && linksColl.querySelector(':scope > c');
+  if (!linkSet || !linkSet.children.length) {
+    return [...steps].sort((a, b) =>
+      parseFloat(gt(a,'y')||0) - parseFloat(gt(b,'y')||0));
+  }
+  const next = {};
+  for (const lk of linkSet.children) {
+    const src = lk.querySelector('sourceProdStep');
+    const tgt = lk.querySelector('targetProdStep');
+    if (src && tgt) {
+      const sr = src.getAttribute('reference'), tr = tgt.getAttribute('reference');
+      if (sr && tr) next[sr] = tr;
+    }
+  }
+  const allIds  = steps.map(s => s.getAttribute('id'));
+  const targets = new Set(Object.values(next));
+  let cur = allIds.find(id => !targets.has(id))
+         || steps.find(s => tagIs(s,'StartStepVO'))?.getAttribute('id');
+
+  const out = [], seen = new Set();
+  while (cur && !seen.has(cur)) {
+    seen.add(cur);
+    const el = idMap[cur] || steps.find(s => s.getAttribute('id') === cur);
+    if (el) out.push(el);
+    cur = next[cur];
+  }
+  steps.forEach(s => { if (!seen.has(s.getAttribute('id'))) out.push(s); });
+  return out;
+}
+
+function parseBO(boEl, idMap, keyMap) {
+  const id   = gt(boEl, 'customId');
+  const desc = gt(boEl, 'description');
+
+  const puSet = boEl.querySelector('productionUnitCollection > c');
+  const productionUnits = puSet
+    ? Array.from(puSet.children).map(p => gt(p,'id')).filter(Boolean)
+    : [];
+
+  const moSet = boEl.querySelector(':scope > materialOutputCollection > c');
+  const materialOutputs = moSet ? Array.from(moSet.children).map(parseMO) : [];
+
+  const innerSet   = boEl.querySelector(':scope > prodStepCollection > c');
+  const innerLinks = boEl.querySelector(':scope > prodStepLinkCollection');
+  const innerOrder = innerSet
+    ? orderSteps(Array.from(innerSet.children), innerLinks, idMap)
+    : [];
+
+  const basicFunctions = innerOrder
+    .filter(s => !tagIs(s,'StartStepVO') && !tagIs(s,'EndStepVO'))
+    .map(s => parseBF(s, idMap, keyMap, id, desc));
+
+  return { id, desc, productionUnits, materialOutputs, basicFunctions };
+}
+
+function parseBF(bfEl, idMap, keyMap, boId, boDesc) {
+  const id    = gt(bfEl, 'customId');
+  const desc  = gt(bfEl, 'description');
+  const type  = tagIs(bfEl,'EqmAllocationBFVO') ? 'EqmAllocation' : 'CommonBF';
+  const verSig = gt(bfEl, 'verificationSignature') === 'true';
+
+  let eqType = '';
+  if (type === 'EqmAllocation') {
+    const eqRef = bfEl.querySelector(':scope > equipmentListPos');
+    if (eqRef) {
+      const ref = eqRef.getAttribute('reference');
+      const eqEl = ref ? idMap[ref] : null;
+      if (eqEl) eqType = gt(eqEl, 'equipmentTypeId');
+    }
+    if (!eqType) {
+      const et = bfEl.querySelector('equipmentTypeId');
+      if (et) eqType = et.textContent.trim();
+    }
+  }
+
+  const spSet = bfEl.querySelector(':scope > specPropCollection > c');
+  const activities = spSet
+    ? Array.from(spSet.children)
+        .map(sp => parseAct(sp, keyMap, boId, boDesc, id, desc))
+        .sort((a, b) => a.pos - b.pos)
+    : [];
+
+  return { id, desc, type, verSig, eqType, activities };
+}
+
+function parseAct(spEl, keyMap, boId, boDesc, bfId, bfDesc) {
+  const id   = gt(spEl, 'customId');
+  const desc = gt(spEl, 'description');
+  const pos  = parseInt(gt(spEl,'position')||'0', 10);
+
+  let type='Unknown', cls='';
+  let formula='', fType='', refs=0;
+  let tol='', setVal='', unit='';
+  let trueT='', falseT='';
+
+  if (tagIs(spEl,'AttributiveSpecPropVO')) {
+    type='Attributive'; cls='attr';
+    trueT  = gt(spEl,'trueText');
+    falseT = gt(spEl,'falseText');
+  } else if (tagIs(spEl,'MeasuredValueSpecPropVO')) {
+    type='MeasuredValue'; cls='mv';
+    const mx=gt(spEl,'maxTolerance'), mn=gt(spEl,'minTolerance');
+    if (mx||mn) tol=`maxTolerance-${mx};minTolerance-${mn}`;
+    setVal = gt(spEl,'setValue');
+    const uEl = spEl.querySelector('unit');
+    unit = uEl ? (gt(uEl,'customId') || uEl.textContent.trim()) : '';
+  } else if (tagIs(spEl,'FormulaSpecPropVO')) {
+    type='Formula'; cls='form';
+    const raw = gt(spEl,'formulaText');
+    formula = resolveFormula(raw, keyMap);
+    const fd = gt(spEl,'formulaDataType');
+    fType = fd==='2'?'text':fd==='1'?'numeric':fd;
+    refs  = (raw.match(/valueSpecProp/g)||[]).length;
+    const uEl = spEl.querySelector('unit');
+    unit = uEl ? (gt(gc(uEl,'customId')||uEl,'customId') || '') : '';
+  }
+
+  // Instruction text — use findEl since InstructionVO also has a dotted class name
+  const instrColl = spEl.querySelector('instructionCollection > c');
+  const instrEl   = instrColl ? findEl(instrColl, 'InstructionVO') : null;
+  const instruction = instrEl ? gt(instrEl,'instructionText') : '';
+
+  return {
+    id, desc, type, cls, pos,
+    formula, fType, refs, tol, setVal, unit,
+    trueT, falseT, instruction,
+    boId, boDesc, bfId, bfDesc,
+  };
+}
+
+function parseMO(el) {
+  const useEl = findEl(el, 'MaterialUseTypeVO') || el.querySelector('materialUseType');
+  return {
+    name:   gt(el,'materialName'),
+    target: gt(el,'targetAmount'),
+    pos:    gt(el,'position'),
+    use:    useEl ? useEl.textContent.trim() : '',
+    unit:   el.getAttribute('unit') || '',
+    print:  gt(el,'printLabel') === 'true',
+    yield:  gt(el,'yieldRelevant') === 'true',
+  };
+}
+
+function resolveFormula(raw, keyMap) {
+  if (!raw) return '';
+  return raw
+    .replace(/^Internal formula:\s*/i, '')
+    .replace(/\{\s*valueSpecProp\s+([^}]+?)\s*\}/g, (_, path) => {
+      const parts = path.trim().split('-')
+        .filter(s => s.includes('@'))
+        .map(s => { const key=s.split('@')[1]; return keyMap[key]||key; });
+      const refType = path.includes('MeasuredValueSpecProp') ? 'Measured value activity' : 'Value activity';
+      return `{Value activity ${refType} ${parts.join('/')}}`;
+    });
+}
+
+/* ================================================================
+   ROW BUILDER
+   ================================================================ */
+function buildRows(g) {
+  const rows = [];
+  for (const bo of g.basicOps) {
+    for (const bf of bo.basicFunctions) {
+      if (bf.activities.length === 0) {
+        rows.push([
+          `${bo.id} > ${bf.id}`,
+          `${bo.id} > ${bf.id}`,
+          `${bo.id}: ${bo.desc} > ${bf.id}: ${bf.desc}`,
+          '','','','0','','',
+          'Basic Function', bf.type,
+          '','','',
+          `${bo.id}: NA > ${bf.id}: NA`,
+          'Low','Static','','',''
+        ]);
+      } else {
+        for (const a of bf.activities) {
+          rows.push([
+            `${bo.id} > ${bf.id}`,
+            `${bo.id} > ${bf.id} > ${a.id}`,
+            `${bo.id}: ${bo.desc} > ${bf.id}: ${bf.desc} > ${a.id}: ${a.desc}`,
+            a.desc,
+            a.formula, a.fType, String(a.refs), '',
+            a.tol,
+            'Activity', a.type,
+            '',
+            bf.verSig ? 'Yes' : '',
+            '',
+            `${bo.id}: NA > ${bf.id}: NA > ${a.id}: NA`,
+            'Low','Static','','',''
+          ]);
+        }
+      }
+    }
+    for (const mo of bo.materialOutputs) {
+      rows.push([
+        `${bo.id} > ${mo.pos||'1'}`,
+        `${bo.id} > ${mo.pos||'1'}`,
+        `${bo.id}: ${bo.desc} > ${mo.pos||'1'}`,
+        '','','','0','','',
+        'Material','MaterialOutput',
+        '','','','',
+        'Low','Static','','',''
+      ]);
+    }
+  }
+  return rows;
+}
+
+/* ================================================================
+   EXCEL EXPORT
+   ================================================================ */
+function exportExcel(g) {
+  const wb = XLSX.utils.book_new();
+  const hdrs = [
+    'Relevant Basic Function','Entry Full Path','Entry Full Path Description',
+    'Activity Description','Formula','Formula Type','No of References',
+    'CXDefinition','MeasuredValue Tolerance','Entry Generic Type','Activity Type',
+    'User Identification','Verification Signature','PCS Element','ActiveFlag',
+    'Risk Assessment','Verification Type (Static or Dynamic)',
+    'Input Value','Expect Value','Pass/Fail'
+  ];
+  const ws = XLSX.utils.aoa_to_sheet([
+    ['MBR / GMBR ID:',g.id,'','MBR / GMBR Description:',g.description,'','MBR / GMBR Version:',g.version],
+    [],
+    ['Manufacturing Order ID: ______________________________________________________'],
+    ['Test Executors: ____________________________________________________________________________________________________'],
+    ['Start Date: _________________________________________________________________________________________________________'],
+    hdrs,
+    ...buildRows(g)
+  ]);
+  ws['!cols'] = [
+    {wch:22},{wch:32},{wch:58},{wch:32},{wch:55},{wch:12},{wch:12},{wch:12},
+    {wch:28},{wch:16},{wch:16},{wch:18},{wch:18},{wch:14},{wch:38},{wch:14},
+    {wch:22},{wch:14},{wch:14},{wch:12}
+  ];
+  XLSX.utils.book_append_sheet(wb, ws, 'Consolidated');
+  const ts = new Date().toISOString().slice(0,16).replace(/[-:T]/g,'').slice(0,12);
+  XLSX.writeFile(wb, `${ts}_${g.id}_TestOptionsFull.xlsx`);
+}
+
+/* ================================================================
+   PROCESS MAP  —  CSS + HTML BUILDERS
+   ================================================================ */
+
+const MAP_CSS = `
+*{box-sizing:border-box}
+.pm-wrap{
+  font-family:"Helvetica Neue","Helvetica","Inter",Arial,sans-serif;
+  display:flex;flex-direction:column;align-items:center;padding:8px 4px 4px;
+}
+/* GMBR outer box (Level 1 shell) */
+.gmbr-box{
+  border:2px solid #1a3557;border-radius:10px;background:#fff;
+  padding:20px 24px 28px;display:inline-block;
+}
+.gmbr-label{
+  font-size:11px;font-weight:700;color:#1a3557;
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;
+}
+/* GMBR flow */
+.flow{display:flex;flex-direction:column;align-items:center}
+.arrow{width:2px;background:#1a3557;height:22px;position:relative}
+.arrow::after{
+  content:'';position:absolute;bottom:-7px;left:-5px;
+  border-left:6px solid transparent;border-right:6px solid transparent;
+  border-top:8px solid #1a3557;
+}
+.node-start,.node-end{
+  width:120px;height:36px;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:13px;color:#fff;background:#1a3557;
+}
+/* Level 1 — clickable BO card */
+.l1-bo-card{
+  width:480px;border:2px solid #2e6da4;border-radius:8px;
+  background:#eaf2fb;cursor:pointer;
+  transition:border-color .15s,box-shadow .15s;overflow:hidden;
+}
+.l1-bo-card:hover{border-color:#1a3557;box-shadow:0 4px 14px rgba(26,51,87,.15)}
+.l1-bo-header{
+  background:#2e6da4;color:#fff;font-weight:700;font-size:13px;
+  padding:10px 16px;display:flex;align-items:center;gap:8px;
+}
+.l1-bo-header:hover{background:#245a8a}
+.l1-bo-body{padding:10px 16px;font-size:12px;color:#1a3557}
+.l1-drill{
+  margin-left:auto;font-size:11px;font-weight:400;opacity:.85;
+  background:rgba(255,255,255,.2);border-radius:3px;padding:1px 7px;
+}
+/* Level 2 — BO container */
+.node-bo{
+  border:2px solid #2e6da4;border-radius:8px;background:#eaf2fb;overflow:hidden;
+}
+.node-bo-title{
+  background:#2e6da4;color:#fff;font-weight:700;font-size:13px;
+  padding:8px 16px;display:flex;align-items:center;gap:8px;
+}
+.id-badge{background:rgba(255,255,255,.25);border-radius:4px;padding:1px 7px;font-size:11px}
+.bo-inner{padding:16px}
+.inner-flow{display:flex;flex-direction:column;align-items:center}
+.inner-arrow{width:2px;background:#2e6da4;height:18px;position:relative}
+.inner-arrow::after{
+  content:'';position:absolute;bottom:-6px;left:-4px;
+  border-left:5px solid transparent;border-right:5px solid transparent;
+  border-top:7px solid #2e6da4;
+}
+.node-inner-start,.node-inner-end{
+  width:90px;height:28px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:11px;color:#fff;background:#2e6da4;
+}
+/* BF cards */
+.bf-node{width:580px;border-radius:6px;overflow:hidden;border:1.5px solid #2e6da4}
+.bf-header{
+  background:#2e6da4;color:#fff;padding:7px 14px;
+  display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
+}
+.bf-header.eqm{background:#5b7fa6}
+.type-tag{
+  margin-left:auto;background:rgba(0,0,0,.18);border-radius:3px;
+  padding:1px 6px;font-size:10px;white-space:nowrap;
+}
+.bf-body{background:#fff;padding:8px 12px}
+/* Activities (shown/hidden by details toggle) */
+.act-details{display:none}
+.act-details.open{display:block}
+/* Activity rows */
+.act-row{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:5px 0;border-bottom:1px dashed #ddd;font-size:11.5px;
+}
+.act-row:last-child{border-bottom:none}
+.act-id{font-weight:700;color:#1a3557;min-width:50px}
+.act-desc{flex:1;color:#333}
+.act-extra{font-size:10px;color:#888;margin-top:2px}
+.act-type{display:inline-block;border-radius:3px;padding:1px 6px;font-size:10.5px;font-weight:600}
+.t-attr{background:#e3f1e3;color:#2a6b2a}
+.t-mv{background:#fff3cd;color:#856404}
+.t-form{background:#f3e3ff;color:#6a1fa3}
+.t-eqm{background:#dce8f5;color:#1a4a7a}
+.sig-pill{
+  background:#fde8e8;color:#c0392b;border-radius:3px;
+  padding:1px 5px;font-size:10px;font-weight:600;margin-left:6px;
+}
+/* Material output */
+.mat-out{
+  width:580px;border:1.5px dashed #e67e22;border-radius:6px;
+  background:#fef9f0;padding:8px 14px;font-size:11.5px;color:#7d4800;
+  display:flex;align-items:center;gap:10px;
+}
+.mat-label{font-weight:700;font-size:10px;text-transform:uppercase;color:#e67e22;min-width:90px}
+/* Legend */
+.pm-legend{
+  display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:#555;
+  margin-top:20px;padding-top:14px;border-top:1px solid #ddd;
+  justify-content:center;
+}
+.pm-legend span{display:flex;align-items:center;gap:5px}
+.pm-legend i{width:12px;height:12px;border-radius:2px;display:inline-block;flex-shrink:0}
+`;
+
+/* ── Level state ── */
+let pmLevel = 1;
+let pmBOIndex = 0;
+let pmShowDetails = false;
+
+function navBtn(label, level, active) {
+  return `<button onclick="setLevel(${level})" style="padding:.35rem .875rem;border-radius:var(--r-pill);border:1.5px solid ${active?'var(--mulberry)':'var(--n300)'};background:${active?'var(--mulberry)':'transparent'};color:${active?'#fff':'var(--n700)'};font:inherit;font-size:.8125rem;font-weight:600;cursor:pointer">${label}</button>`;
+}
+
+function renderMap(g) {
+  const nav    = document.getElementById('level-nav');
+  const render = document.getElementById('pm-render');
+  const bo     = g.basicOps[pmBOIndex];
+
+  const boOptions = g.basicOps.map((b, i) =>
+    `<option value="${i}"${i===pmBOIndex?' selected':''}>${esc(b.id)}: ${esc(b.desc)}</option>`
+  ).join('');
+
+  const detailsLabel = pmShowDetails ? '▲ Hide Activities' : '▼ Show Activities';
+
+  nav.innerHTML = `
+  <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem;padding:.75rem 1rem;background:var(--n100);border:1px solid var(--n200);border-radius:var(--r-md)">
+    <span style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mulberry)">Level</span>
+    ${navBtn('1 — Operations', 1, pmLevel===1)}
+    ${navBtn('2 — Basic Functions', 2, pmLevel===2)}
+    ${pmLevel===2 && g.basicOps.length>1 ? `
+    <select onchange="setBOIndex(this.value)" style="padding:.35rem .75rem;border-radius:var(--r-md);border:1.5px solid var(--n300);font:inherit;font-size:.8125rem;background:#fff;color:var(--ink);cursor:pointer">
+      ${boOptions}
+    </select>` : ''}
+    ${pmLevel===2 ? `
+    <button onclick="toggleDetails()" style="padding:.4rem 1.1rem;border-radius:var(--r-pill);border:2px solid ${pmShowDetails?'var(--mulberry-dark)':'var(--gold-dark)'};background:${pmShowDetails?'var(--mulberry)':'var(--gold)'};color:${pmShowDetails?'#fff':'var(--ink)'};font:inherit;font-size:.875rem;font-weight:700;cursor:pointer;margin-left:auto;box-shadow:0 2px 8px rgba(0,0,0,.12)">
+      ${detailsLabel}
+    </button>` : '<span style="margin-left:auto"></span>'}
+    <button onclick="exportLevel()" style="padding:.35rem .875rem;border-radius:var(--r-pill);border:1.5px solid var(--n300);background:transparent;color:var(--n700);font:inherit;font-size:.8125rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.35rem">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export
+    </button>
+  </div>`;
+
+  render.innerHTML = pmLevel === 1 ? buildL1HTML(g) : buildL2HTML(g, bo, false);
+}
+
+function setLevel(l)   { pmLevel = l; renderMap(GMBR); }
+function setBOIndex(i) { pmBOIndex = parseInt(i); renderMap(GMBR); }
+function drillDown(i)  { pmBOIndex = i; pmLevel = 2; renderMap(GMBR); }
+
+function toggleDetails() {
+  pmShowDetails = !pmShowDetails;
+  document.querySelectorAll('.act-details').forEach(el => el.classList.toggle('open', pmShowDetails));
+  renderMap(GMBR);
+}
+
+function exportLevel() {
+  if (!GMBR) return;
+  const bo = GMBR.basicOps[pmBOIndex];
+  const html  = pmLevel === 1 ? buildL1Standalone(GMBR) : buildL2Standalone(GMBR, bo);
+  const label = pmLevel === 1 ? 'L1_Operations' : `L2_${bo.id}_BasicFunctions`;
+  const ts = new Date().toISOString().slice(0,16).replace(/[-:T]/g,'').slice(0,12);
+  const blob = new Blob([html], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${ts}_${GMBR.id}_ProcessMap_${label}.html`;
+  a.click();
+}
+
+/* ── LEVEL 1 ── */
+function buildL1HTML(g) {
+  let bos = '';
+  g.basicOps.forEach((bo, i) => {
+    const pu = bo.productionUnits.join(', ');
+    bos += `
+    <div class="arrow"></div>
+    <div class="l1-bo-card" onclick="drillDown(${i})" title="Click to view Basic Functions">
+      <div class="l1-bo-header">
+        <span class="id-badge">${esc(bo.id)}</span>
+        ${esc(bo.desc)}
+        <span class="l1-drill">→ ${bo.basicFunctions.length} Basic Function${bo.basicFunctions.length!==1?'s':''}</span>
+      </div>
+      ${pu ? `<div class="l1-bo-body">Production Unit: ${esc(pu)}</div>` : ''}
+    </div>`;
+  });
+
+  return `<style>${MAP_CSS}</style>
+  <div class="pm-scroll"><div class="pm-wrap">
+    <div class="gmbr-box">
+      <div class="gmbr-label">Generic Master Batch Record (GMBR) &mdash; Level 1: Basic Operations</div>
+      <div class="flow">
+        <div class="node-start">START</div>
+        ${bos}
+        <div class="arrow"></div>
+        <div class="node-end">END</div>
+      </div>
+    </div>
+    ${LEGEND_HTML}
+  </div></div>`;
+}
+
+function buildL1Standalone(g) {
+  return wrapStandalone(g, 'Level 1 — Basic Operations', buildL1HTML(g).replace(/onclick="drillDown\(\d+\)"/g,'style="cursor:default"'));
+}
+
+/* ── LEVEL 2 ── */
+function buildL2HTML(g, bo, forExport=false) {
+  const pu = bo.productionUnits.join(', ');
+  let bfs = '';
+  for (const bf of bo.basicFunctions) bfs += buildBFHTML(bf, forExport ? true : pmShowDetails);
+
+  let mos = '';
+  for (const mo of bo.materialOutputs) {
+    mos += `
+    <div class="inner-arrow"></div>
+    <div class="mat-out">
+      <span class="mat-label">Material Output</span>
+      <span style="font-size:18px;color:#e67e22">⇒</span>
+      <div>
+        <div><strong>${esc(mo.name)}</strong></div>
+        <div style="font-size:10px;color:#888;margin-top:2px">
+          Type: ${esc(mo.use)} &nbsp;|&nbsp; Target: ${esc(mo.target)} ${esc(mo.unit)}
+          &nbsp;|&nbsp; Print label: ${mo.print?'Yes':'No'} &nbsp;|&nbsp; Yield relevant: ${mo.yield?'Yes':'No'}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  return `<style>${MAP_CSS}</style>
+  <div class="pm-scroll"><div class="pm-wrap">
+    <div class="node-bo" style="margin:0">
+      <div class="node-bo-title">
+        <span class="id-badge">${esc(bo.id)}</span>
+        ${esc(bo.desc)}
+        ${pu ? `<span style="margin-left:auto;font-size:11px;font-weight:400;opacity:.85">Production Unit: ${esc(pu)}</span>` : ''}
+      </div>
+      <div class="bo-inner">
+        <div class="inner-flow">
+          <div class="node-inner-start">START</div>
+          ${bfs}${mos}
+          <div class="inner-arrow"></div>
+          <div class="node-inner-end">END</div>
+        </div>
+      </div>
+    </div>
+    ${LEGEND_HTML}
+  </div></div>`;
+}
+
+function buildL2Standalone(g, bo) {
+  return wrapStandalone(g, `Level 2 — ${bo.id}: ${bo.desc}`, buildL2HTML(g, bo, false));
+}
+
+
+function wrapStandalone(g, levelLabel, bodyHTML) {
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>Process Map — ${esc(g.id)} — ${esc(levelLabel)}</title>
+<style>
+body{background:#F7F5F2;padding:30px;margin:0;font-family:"Helvetica Neue",Arial,sans-serif}
+h1{font-size:18px;color:#1a3557;margin:0 0 4px}
+.meta-bar{font-size:12px;color:#555;margin-bottom:24px}
+.meta-bar strong{color:#1a3557}
+</style></head>
+<body>
+<h1>Process Map — ${esc(g.id)} &mdash; ${esc(levelLabel)}</h1>
+<div class="meta-bar">
+  <strong>ID:</strong> ${esc(g.id)} &nbsp;&nbsp;
+  <strong>Description:</strong> ${esc(g.description)} &nbsp;&nbsp;
+  <strong>Version:</strong> ${esc(g.version)} &nbsp;&nbsp;
+  <strong>Material:</strong> ${esc(g.materialName)}
+</div>
+${bodyHTML}
+</body></html>`;
+}
+
+const LEGEND_HTML = `
+<div class="pm-legend">
+  <span><i style="background:#e3f1e3;border:1px solid #2a6b2a"></i>Attributive</span>
+  <span><i style="background:#fff3cd;border:1px solid #856404"></i>Measured Value</span>
+  <span><i style="background:#f3e3ff;border:1px solid #6a1fa3"></i>Formula</span>
+  <span><i style="background:#dce8f5;border:1px solid #1a4a7a"></i>Equipment Allocation</span>
+  <span><i style="background:#fef9f0;border:1px dashed #e67e22"></i>Material Output</span>
+  <span><i style="background:#fde8e8;border:1px solid #c0392b"></i>Verification Signature required</span>
+</div>`;
+
+/* ── BF card builder ── */
+function buildBFHTML(bf, showDetails=false) {
+  const isEqm = bf.type === 'EqmAllocation';
+  let acts = '';
+
+  if (isEqm && bf.activities.length === 0) {
+    acts = `<div class="act-row">
+      <span class="act-id">—</span>
+      <div><div class="act-desc">Allocate equipment${bf.eqType?': <strong>'+esc(bf.eqType)+'</strong>':''}</div></div>
+      <span class="act-type t-eqm">EqmAllocation</span>
+    </div>`;
+  }
+  for (const a of bf.activities) {
+    const tcls = {Attributive:'t-attr',MeasuredValue:'t-mv',Formula:'t-form'}[a.type]||'';
+    const sig  = bf.verSig ? `<span class="sig-pill">⚠ Verification Sig</span>` : '';
+    let ex = '';
+    if (a.instruction) ex += esc(a.instruction);
+    if (a.tol)    ex += (ex?' &nbsp;|&nbsp; ':'') + esc(a.tol.replace('maxTolerance-','max ').replace(';minTolerance-',', min '));
+    if (a.setVal) ex += (ex?' &nbsp;|&nbsp; ':'') + `Set value: ${esc(a.setVal)}`;
+    if (a.unit)   ex += (ex?' &nbsp;|&nbsp; ':'') + `Unit: ${esc(a.unit)}`;
+    if (a.formula) ex += (ex?'<br>':'') + `<em>Formula: ${esc(a.formula)}</em>`;
+    if (a.trueT||a.falseT) ex += (ex?' &nbsp;|&nbsp; ':'') + `${esc(a.trueT)} / ${esc(a.falseT)}`;
+    acts += `<div class="act-row">
+      <span class="act-id">${esc(a.id)}</span>
+      <div>
+        <div class="act-desc"><strong>${esc(a.desc)}</strong>${sig}</div>
+        ${ex?`<div class="act-extra">${ex}</div>`:''}
+      </div>
+      <span class="act-type ${tcls}">${esc(a.type)}</span>
+    </div>`;
+  }
+
+  return `
+  <div class="inner-arrow"></div>
+  <div class="bf-node">
+    <div class="bf-header${isEqm?' eqm':''}">
+      <span class="id-badge">${esc(bf.id)}</span>
+      ${esc(bf.desc)}
+      <span class="type-tag">${isEqm?'Equipment Allocation':'Common BF'}</span>
+      ${bf.verSig?`<span style="background:#fde8e8;color:#c0392b;border-radius:3px;padding:1px 5px;font-size:10px;font-weight:600;margin-left:4px">⚠ Sig</span>`:''}
+    </div>
+    <div class="act-details${showDetails?' open':''}">
+      <div class="bf-body">
+        ${acts||'<div style="font-size:11px;color:#aaa;padding:4px 0">No activities</div>'}
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ================================================================
+   TABLE RENDER
+   ================================================================ */
+const TYPE_CLS = {Attributive:'attr',MeasuredValue:'mv',Formula:'form',EqmAllocation:'eqm',MaterialOutput:'mat'};
+
+function renderTable(g) {
+  const COLS = [0,1,2,3,4,5,6,8,9,10,12,15,16];
+  const tbody = document.getElementById('tbl-body');
+  tbody.innerHTML = '';
+  for (const row of buildRows(g)) {
+    const tr = document.createElement('tr');
+    COLS.forEach(ci => {
+      const td = document.createElement('td');
+      const v  = row[ci] || '';
+      if (ci === 10) {
+        td.innerHTML = v ? `<span class="tbadge t-${TYPE_CLS[v]||''}">${esc(v)}</span>` : '';
+      } else if (ci === 12) {
+        td.innerHTML = v === 'Yes' ? `<span class="sig-badge">Yes</span>` : '';
+      } else {
+        td.textContent = v;
+      }
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  }
+}
+
+/* ================================================================
+   UI CONTROLLER
+   ================================================================ */
+let GMBR = null;
+
+const showErr = msg => { const e=document.getElementById('err'); e.textContent=msg; e.classList.add('show'); };
+const clearErr = () => document.getElementById('err').classList.remove('show');
+
+function process(xml) {
+  clearErr();
+  try {
+    GMBR = parseGMBR(xml);
+    showResults(GMBR);
+  } catch(e) { showErr('Parse error: ' + e.message); }
+}
+
+function showResults(g) {
+  document.getElementById('upload-section').style.display = 'none';
+  document.getElementById('results').classList.add('show');
+
+  document.getElementById('res-title').textContent = `${g.id} — ${g.description}`;
+  const bfTotal = g.basicOps.reduce((s,b) => s + b.basicFunctions.length, 0);
+  document.getElementById('res-sub').textContent =
+    `Version ${g.version} · ${g.basicOps.length} Basic Operation(s) · ${bfTotal} Basic Function(s)`;
+
+  document.getElementById('meta-row').innerHTML = [
+    ['GMBR ID', g.id], ['Description', g.description], ['Version', g.version],
+    ['Material', g.materialName], ['Production Area', g.productionArea],
+  ].filter(([,v]) => v).map(([k,v]) =>
+    `<dl class="meta-chip"><dt>${k}</dt><dd>${esc(String(v))}</dd></dl>`
+  ).join('');
+
+  pmLevel = 1; pmBOIndex = 0; pmShowDetails = false;
+  renderMap(g);
+  renderTable(g);
+}
+
+document.getElementById('reset-btn').addEventListener('click', () => {
+  GMBR = null;
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('upload-section').style.display = '';
+  clearErr();
+});
+
+document.getElementById('file-input').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader(); r.onload = ev => process(ev.target.result); r.readAsText(f);
+  e.target.value = '';
+});
+
+const dz = document.getElementById('drop-zone');
+dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('over'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('over'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('over');
+  const f = e.dataTransfer.files[0]; if (!f) return;
+  const r = new FileReader(); r.onload = ev => process(ev.target.result); r.readAsText(f);
+});
+
+document.getElementById('paste-toggle-btn').addEventListener('click', () => {
+  document.getElementById('paste-area').style.display = 'block';
+});
+document.getElementById('cancel-paste-btn').addEventListener('click', () => {
+  document.getElementById('paste-area').style.display = 'none';
+});
+document.getElementById('parse-paste-btn').addEventListener('click', () => {
+  const x = document.getElementById('paste-input').value.trim();
+  if (x) { process(x); document.getElementById('paste-area').style.display = 'none'; }
+});
+
+document.getElementById('btn-excel').addEventListener('click', () => { if (GMBR) exportExcel(GMBR); });
+document.getElementById('btn-map').addEventListener('click', () => { if (GMBR) exportLevel(); });
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
