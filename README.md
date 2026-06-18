@@ -9,7 +9,7 @@ A single-file browser app that parses PAS-X GMBR XML exports and instantly gener
 Upload a PAS-X Generic Master Batch Record (GMBR) XML export and the tool automatically:
 
 1. **Parses the XML** — reads the full GMBR hierarchy (Basic Operations → Basic Functions → Activities) using ProdStepLinkCollection to determine correct step ordering
-2. **Renders an interactive process flow map** — two-layer drill-down with per-node activity expand and cross-referencing to the RbE table
+2. **Renders an interactive process flow map** — two-layer drill-down with directed graph traversal, parallel branch detection, and proper rendering of split/sync nodes
 3. **Generates a Review by Exception sheet** — auto-populated risk and confirmation defaults per CBF, with dropdown overrides
 4. **Generates an MBR URS preview** — document preview with auto/manual field highlighting and inline flow maps per Basic Operation
 5. **Exports all outputs** — HTML process map, Excel RbE sheet, Word-compatible URS document
@@ -27,24 +27,33 @@ Two layers:
 | **Layer 1** | Basic Operations (BO cards) | Click any BO → drills to Layer 2 |
 | **Layer 2** | Basic Functions (CBF cards) within selected BO | Per-node expand/collapse + cross-ref to RbE |
 
+**Flow rendering:**
+- Nodes are ordered via directed graph traversal using `ProdStepLinkCollection` edges, not XML document order
+- Parallel branches are detected automatically when a node has multiple outgoing edges
+- Branch nodes are rendered side-by-side in columns with equal width
+- Split nodes render as a thick horizontal bar (`#622A8F`)
+- Sync nodes render as a V-shape converging to a point (`#622A8F`)
+- Post-convergence nodes continue vertically and appear only once, centered below all branches
+
 **Interactions on Layer 2:**
 - **Click a node title** — expands/collapses activity rows for that node inline
 - **Click a CBF ID** (dotted purple underline) — jumps to the Review by Exception tab and highlights that CBF's row(s)
 - **Download (.png)** button top right — exports current layer as a standalone HTML file
 
-**Step type colour coding (Accenture brand palette):**
+**Node styling (per design spec):**
+- All nodes: white fill (`#FFFFFF`), colored border (`1.5px`)
+- Text: node ID in bold purple (`#3D006B`), description in dark (`#2A1A3E`), type label in muted gray (`#7A7280`)
+- Minimum font size: `12pt`
+
+**Border colours by category:**
 
 | Category | Step types | Colour |
 |---|---|---|
-| Flow control | StartStepVO / EndStepVO | Dark gray `#818180` |
-| Flow control | BasicOperationVO | Darkest purple `#460073` |
-| Flow control | CommonBFVO | Dark purple `#7500C0` |
-| Flow control | SpecDecisionVO | Core purple `#A100FF` |
-| Flow control | MergeVO / SplittingVO | Light purple `#C2A3FF` |
-| Flow control | SynchronisationVO | Lightest purple `#E6DCFF` |
-| Material flow | TakeOutBFVO / IdentityCheckBFVO / YieldDeterminationBFVO / BundleCreationBFVO / StockCreationBFVO | Pink `#FF50A0` |
-| Equipment | EqmAllocationBFVO / EqmDeallocationBFVO / EqmIdentificationBFVO | Medium gray `#CFCFCF` |
-| Label/context | GenericLabelPrintBfVO / SetCxBfVO | Blue `#2248FF` |
+| Flow control | CommonBFVO / SpecDecisionVO | Darkest purple `#3D006B` |
+| Material flow | TakeOutBFVO / IdentityCheckBFVO / YieldDeterminationBFVO / BundleCreationBFVO / StockCreationBFVO | Blue `#185FA5` |
+| Equipment | EqmAllocationBFVO / EqmDeallocationBFVO / EqmIdentificationBFVO / StartStepVO / EndStepVO | Dark gray `#818180` |
+| Label/context | GenericLabelPrintBfVO / SetCxBfVO | Mid gray `#888780` |
+| Control flow | MergeVO / SplittingVO / SynchronisationVO | Muted purple `#622A8F` |
 
 > **Note on future nested CBFs:** Some PAS-X XMLs contain CBFs nested within other CBFs. The current Layer 2 view is designed to accommodate this — do not add a hardcoded Layer 3, instead extend the recursive parser when needed.
 
@@ -91,7 +100,9 @@ Section 3.1 renders inline Layer 2 flow maps — one per Basic Operation — aut
 ## XML Parsing
 
 - Handles PAS-X full Java class names as XML tag names (e.g. `com.werum.pasx.spec.components.pmbr.global.GenericMasterBatchRecordVO`) — uses `findEl(root, suffix)` with `getElementsByTagName('*')` and suffix-matching to bypass the CSS selector dot-as-class limitation
-- Orders steps using `ProdStepLinkCollection` source/target references; falls back to Y-coordinate sort if no links present
+- **Graph-based traversal:** Extracts `ProdStepLinkCollection` source/target references and builds a directed graph (node_id → [target_ids]); renders nodes following graph edges, not XML document order
+- **Parallel branch detection:** Identifies nodes with multiple outgoing edges (split points) and multiple incoming edges from different branches (sync/convergence points); renders branches side-by-side
+- **Reference ID mapping:** Converts XML element reference IDs to custom step IDs for consistent graph building and rendering
 - Resolves internal formula references to human-readable paths (e.g. `RMCTEST/BO1/CBF17/ACT10`)
 - Recognises all PAS-X step types: flow control, material flow, equipment, label/context
 - Recognises all specPropCollection activity types: `AttributiveSpecPropVO`, `MeasuredValueSpecPropVO`, `FormulaSpecPropVO`, `TextSpecPropVO`, `DateSpecPropVO`, `ListSpecPropVO`
@@ -172,6 +183,15 @@ Located in `C:\Users\rebecca.mc.cormack\OneDrive - Accenture\Documents\AZ\Claude
 
 ## Roadmap / Known Considerations
 
+### Completed (June 2026)
+- [x] Graph-based flow map rendering with parallel branch detection
+- [x] Directed graph traversal using ProdStepLinkCollection edges
+- [x] Split/Sync node shapes and styling
+- [x] Responsive node layout for narrow parallel columns
+- [x] Reference ID to custom ID mapping
+
+### Remaining
+- [ ] Arrow styling refinement (colors, sizes, positioning)
 - [ ] Support for nested CBFs (CBFs within CBFs) — parser foundation is in place, Layer 2 UI will need extending
 - [ ] True `.drawio` / Visio export — currently exports standalone HTML
 - [ ] Outputs 4 (Pathways Excel) and 5 (Test Scripts) — business rules TBD per spec
@@ -181,4 +201,4 @@ Located in `C:\Users\rebecca.mc.cormack\OneDrive - Accenture\Documents\AZ\Claude
 
 ---
 
-*Last updated: June 2026*
+*Last updated: 2026-06-18* — Graph-based flow map rendering, parallel branches, split/sync shapes

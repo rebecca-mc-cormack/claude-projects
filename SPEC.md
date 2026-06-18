@@ -3,7 +3,8 @@
 > **Project:** Accenture EBR Validation Tool  
 > **Author:** Rebecca McCormack  
 > **Source system:** PAS-X MES V3.3.2  
-> **Last updated:** May 2026  
+> **Last updated:** 2026-06-18  
+> **Status:** Flow map implementation complete with graph-based rendering, parallel branches, and split/sync shapes
 > **Purpose:** Developer brief for Claude Code. Defines all business rules, output formats, and logic required to build the tool. UX/visual design is handled separately in Figma.
 
 ---
@@ -183,13 +184,22 @@ The PAS-X export label is not shown anywhere in the interface.
 
 ## Output 1 — Process flow map
 
-**Format:** PNG image file  
-**Library:** Python `graphviz`  
+**Current implementation:** Interactive HTML browser tool (single-file PASX_ValidationTool.html)  
+**Future:** PNG image file via Python `graphviz`  
 **Orientation:** Top to bottom
 
-### Visual design reference
+### Rendering approach
 
-Inspired by the reference design: clean white node cards with subtle drop shadows, rounded pill-shaped start/end nodes, purple arrows connecting steps, parallel branches grouped vertically side by side. Light gray canvas background. All oriented top to bottom (not left to right).
+The tool now uses **graph-based traversal** instead of XML document order:
+
+1. **Build directed graph** from `ProdStepLinkCollection` — creates edges from source → target references
+2. **Detect parallel branches** — identifies nodes with multiple outgoing edges (splits)
+3. **Detect convergence points** — identifies nodes where all branches reconverge (syncs/merges)
+4. **Traverse and render** — DFS walk from start node, rendering branches side-by-side when detected
+5. **Stop at convergence** — each branch halts at the sync point without continuing past it
+6. **Resume main flow** — after all branches render, continues from sync point downward
+
+This ensures correct visual representation of process flow logic, not accidental XML ordering.
 
 ### Two-layer structure
 
@@ -206,21 +216,24 @@ Connections sourced from `prodStepLinkCollection` nested inside each `BasicOpera
 
 Note: "Layer" terminology replaced with **"Level"** throughout the tool.
 
-### Node appearance
+### Node appearance (implemented)
 
 | Element | Design |
 |---------|--------|
 | Canvas background | Light gray `#F5F5F5` |
 | Step node shape | Rounded rectangle — white fill `#FFFFFF`, coloured border 1.5px per category |
 | Node text — ID | Bold 12pt — `customId` (e.g. `CBF17`), purple `#3D006B`, dotted underline, clickable |
-| Node text — description | Regular 12pt, dark `#2A1A3E` — left-aligned consistently regardless of ID length |
-| Start node | Filled circle — dark gray `#818180`, white text |
-| End node | Filled circle — dark gray `#818180`, white text |
+| Node text — description | Regular 12pt, dark `#2A1A3E` |
+| Node text — type label | Regular 11pt, muted gray `#7A7280`, right-aligned |
+| Node layout | Flexbox row: ID (fixed) \| description (flex) \| type (fixed) |
+| Node responsiveness | `width: 100%; max-width: 480px` — shrinks in narrow columns, expands in full width |
+| Start node | Filled pill/circle — dark gray `#818180`, white text |
+| End node | Filled pill/circle — dark gray `#818180`, white text |
 | Merge node (`MergeVO`) | Diamond shape — white fill, `#622A8F` border 2px, label below |
-| Sync node (`SynchronisationVO`) | V-shape (two lines meeting at bottom point) — `#622A8F` stroke 2.5px, label below |
-| Split node (`SplittingVO`) | Horizontal bar — `#622A8F` stroke 2px, label below |
-| Parallel branches | Grouped side by side at same vertical level |
-| Arrows | Core purple `#A100FF`, filled arrowhead, solid 1.5px, no label |
+| Sync node (`SynchronisationVO`) | V-shape (SVG polyline) — `#622A8F` stroke 2.5px, converges to center point, label below |
+| Split node (`SplittingVO`) | Horizontal bar (SVG line) — `#622A8F` stroke 3px, full width of branch group, label above |
+| Parallel branches | Flexbox columns: `display: flex; gap: 24px; justify-content: center` — each column flex:1 |
+| Arrows | Purple `#A100FF`, 2px stroke with triangular arrowhead, 18px height in flow, 1.5px in branches |
 | Minimum font size | 12pt throughout — designed for accessibility |
 
 ### Colour coding by step category (white fill, coloured border)
