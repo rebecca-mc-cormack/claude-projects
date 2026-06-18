@@ -877,18 +877,18 @@ const MAP_CSS = `
 .flow-map-node{
   background:#FFFFFF;border-radius:8px;border:1.5px solid;
   padding:9px 14px;display:flex;align-items:center;gap:12px;
-  font-size:12px;min-width:480px;
+  font-size:12px;width:100%;max-width:480px;
 }
 .flow-map-node-id{
-  font-weight:700;color:#3D006B;min-width:60px;flex-shrink:0;
+  font-weight:700;color:#3D006B;flex-shrink:0;
   text-decoration:underline dotted;cursor:pointer;
 }
 .flow-map-node-id:hover{color:#A100FF}
 .flow-map-node-desc{
-  flex:1;color:#2A1A3E;font-weight:400;
+  flex:1;color:#2A1A3E;font-weight:400;word-break:break-word;
 }
 .flow-map-node-type{
-  color:#7A7280;font-size:11px;white-space:nowrap;flex-shrink:0;
+  color:#7A7280;font-size:11px;white-space:normal;flex-shrink:0;
 }
 `;
 
