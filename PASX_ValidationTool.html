@@ -611,10 +611,28 @@ function parseBO(boEl, idMap, keyMap) {
     .filter(s => !tagIs(s,'StartStepVO') && !tagIs(s,'EndStepVO'))
     .map(s => parseBF(s, idMap, keyMap, id, desc));
 
-  return { id, desc, productionUnits, materialOutputs, basicFunctions, prodStepLinks };
+  // Create mapping from refId to customId for graph traversal
+  const refId2CustomId = {};
+  for (const bf of basicFunctions) {
+    if (bf.refId && bf.id) {
+      refId2CustomId[bf.refId] = bf.id;
+    }
+  }
+
+  // Convert prodStepLinks from refIds to customIds
+  const convertedLinks = prodStepLinks.map(link => ({
+    source: refId2CustomId[link.source] || link.source,
+    target: refId2CustomId[link.target] || link.target
+  }));
+
+  console.log('RefId2CustomId map:', refId2CustomId);
+  console.log('Converted links:', convertedLinks);
+
+  return { id, desc, productionUnits, materialOutputs, basicFunctions, prodStepLinks: convertedLinks };
 }
 
 function parseBF(bfEl, idMap, keyMap, boId, boDesc) {
+  const refId = bfEl.getAttribute('id');  // Reference ID from XML
   const id   = gt(bfEl, 'customId');
   const desc = gt(bfEl, 'description');
   const verSig = gt(bfEl, 'verificationSignature') === 'true';
@@ -648,7 +666,7 @@ function parseBF(bfEl, idMap, keyMap, boId, boDesc) {
         .sort((a, b) => a.pos - b.pos)
     : [];
 
-  return { id, desc, stepType, verSig, eqType, activities, boId, boDesc };
+  return { id, desc, stepType, verSig, eqType, activities, boId, boDesc, refId };
 }
 
 function parseAct(spEl, keyMap, boId, boDesc, bfId, bfDesc) {
