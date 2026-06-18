@@ -579,14 +579,23 @@ function parseBO(boEl, idMap, keyMap) {
   // Extract prodStepLinks for directed graph
   const prodStepLinks = [];
   if (innerLinks) {
-    const linkElements = innerLinks.querySelectorAll('c');
-    for (const linkEl of linkElements) {
-      const srcEl = linkEl.querySelector('sourceProdStep');
-      const tgtEl = linkEl.querySelector('targetProdStep');
-      if (srcEl && tgtEl) {
-        const src = srcEl.getAttribute('reference');
-        const tgt = tgtEl.getAttribute('reference');
-        if (src && tgt) prodStepLinks.push({ source: src, target: tgt });
+    // Handle PAS-X namespace-qualified tags
+    const linkCollection = gc(innerLinks, 'c');
+    if (linkCollection) {
+      for (const linkEl of linkCollection.children) {
+        // Find source and target using tagname suffix matching (PAS-X uses full class names)
+        let src = null, tgt = null;
+        for (const child of linkEl.children) {
+          const tagName = child.tagName.split('.').pop();
+          if (tagName === 'sourceProdStep') {
+            src = child.getAttribute('reference');
+          } else if (tagName === 'targetProdStep') {
+            tgt = child.getAttribute('reference');
+          }
+        }
+        if (src && tgt) {
+          prodStepLinks.push({ source: src, target: tgt });
+        }
       }
     }
   }
@@ -1085,6 +1094,14 @@ function renderGraphicalFlow(basicFunctions, graph, reverse, nodeMap, materialNa
   const visited = new Set();
   let html = '';
 
+  // DEBUG: Log graph structure
+  console.log('Graph structure:', {
+    graph,
+    reverse,
+    basicFunctionsCount: basicFunctions.length,
+    nodeMapKeys: Object.keys(nodeMap)
+  });
+
   // Find start node (no incoming edges, or first if ambiguous)
   let startId = null;
   for (const bf of basicFunctions) {
@@ -1094,6 +1111,7 @@ function renderGraphicalFlow(basicFunctions, graph, reverse, nodeMap, materialNa
     }
   }
   if (!startId) startId = basicFunctions[0].id;
+  console.log('StartId:', startId, 'Targets:', graph[startId]);
 
   // Render using DFS, handling parallel branches
   function renderNode(nodeId, depth = 0) {
