@@ -1194,15 +1194,19 @@ function renderGraphicalFlow(basicFunctions, graph, reverse, nodeMap, materialNa
 function renderSplitBar() {
   return `
   <div class="inner-arrow"></div>
-  <div class="split-bar">━━━━━━━━━━━━━━━━━━━━</div>
+  <svg width="400" height="12" style="display:block;margin:8px 0" viewBox="0 0 400 12">
+    <line x1="50" y1="6" x2="350" y2="6" stroke="#A100FF" stroke-width="3"/>
+  </svg>
   <div style="display:flex;gap:24px;justify-content:center">`;
 }
 
 function renderSyncBar() {
   return `
   </div>
-  <div class="inner-arrow"></div>
-  <div class="sync-shape">◁━━━━━━━━━━━━━━▷</div>`;
+  <svg width="400" height="20" style="display:block;margin:8px 0" viewBox="0 0 400 20">
+    <polyline points="50,0 200,16 350,0" stroke="#A100FF" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="inner-arrow"></div>`;
 }
 
 function renderParallelBranches(branchIds, depth, nodeMap, graph, reverse, visited, showDetails, materialName) {
