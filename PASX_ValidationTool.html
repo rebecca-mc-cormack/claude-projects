@@ -871,6 +871,22 @@ const MAP_CSS = `
 .pm-legend i{width:12px;height:12px;border-radius:2px;display:inline-block;flex-shrink:0}
 .split-bar{color:#622A8F;font-weight:700;font-size:11px;letter-spacing:2px;margin:4px 0}
 .sync-shape{color:#622A8F;font-weight:700;font-size:12px;margin:4px 0}
+.flow-map-node{
+  background:#FFFFFF;border-radius:8px;border:1.5px solid;
+  padding:9px 14px;display:flex;align-items:center;gap:12px;
+  font-size:12px;min-width:480px;
+}
+.flow-map-node-id{
+  font-weight:700;color:#3D006B;min-width:60px;flex-shrink:0;
+  text-decoration:underline dotted;cursor:pointer;
+}
+.flow-map-node-id:hover{color:#A100FF}
+.flow-map-node-desc{
+  flex:1;color:#2A1A3E;font-weight:400;
+}
+.flow-map-node-type{
+  color:#7A7280;font-size:11px;white-space:nowrap;flex-shrink:0;
+}
 `;
 
 /* ── Layer state ── */
@@ -1162,8 +1178,8 @@ function renderGraphicalFlow(basicFunctions, graph, reverse, nodeMap, materialNa
     let output = '';
     const targets = graph[nodeId] || [];
 
-    // Render this node
-    output += buildBFHTML(bf, showDetails, materialName);
+    // Render this node (flow map version, not detailed)
+    output += renderFlowMapNode(bf, materialName);
 
     // Handle different target scenarios
     if (targets.length === 0) {
@@ -1174,13 +1190,14 @@ function renderGraphicalFlow(basicFunctions, graph, reverse, nodeMap, materialNa
       output += renderNode(targets[0], depth);
     } else if (targets.length > 1) {
       // Parallel: render split bar and parallel branches
-      output += renderSplitBar();
+      output += renderSplitBar(bf);
       output += renderParallelBranches(targets, depth, nodeMap, graph, reverse, visited, showDetails, materialName);
 
       // Find and render sync point
       const syncId = findSyncPoint(targets, graph, reverse);
       if (syncId && !visited.has(syncId)) {
-        output += renderSyncBar();
+        const syncBf = nodeMap[syncId];
+        output += renderSyncBar(syncBf);
         output += renderNode(syncId, depth);
       }
     }
@@ -1191,21 +1208,35 @@ function renderGraphicalFlow(basicFunctions, graph, reverse, nodeMap, materialNa
   return renderNode(startId);
 }
 
-function renderSplitBar() {
+function renderFlowMapNode(bf, materialName='') {
+  const typeLabel = STEP_LABEL[bf.stepType] || bf.stepType;
+  const color = STEP_COLOUR[bf.stepType] || '#7500C0';
   return `
   <div class="inner-arrow"></div>
+  <div class="flow-map-node" style="border-color:${color}">
+    <div class="flow-map-node-id">${esc(bf.id)}</div>
+    <div class="flow-map-node-desc">${esc(bf.desc)}</div>
+    <div class="flow-map-node-type">${esc(typeLabel)}</div>
+  </div>`;
+}
+
+function renderSplitBar(bf) {
+  return `
+  <div class="inner-arrow"></div>
+  <div style="text-align:center;font-size:11px;color:#622A8F;font-weight:600;margin-bottom:4px">${esc(bf.id)} — Split</div>
   <svg width="400" height="12" style="display:block;margin:8px 0" viewBox="0 0 400 12">
-    <line x1="50" y1="6" x2="350" y2="6" stroke="#A100FF" stroke-width="3"/>
+    <line x1="50" y1="6" x2="350" y2="6" stroke="#622A8F" stroke-width="3"/>
   </svg>
   <div style="display:flex;gap:24px;justify-content:center">`;
 }
 
-function renderSyncBar() {
+function renderSyncBar(bf) {
   return `
   </div>
   <svg width="400" height="20" style="display:block;margin:8px 0" viewBox="0 0 400 20">
-    <polyline points="50,0 200,16 350,0" stroke="#A100FF" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="50,0 200,16 350,0" stroke="#622A8F" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
+  <div style="text-align:center;font-size:11px;color:#622A8F;font-weight:600;margin-top:4px">${esc(bf.id)} — Synchronisation</div>
   <div class="inner-arrow"></div>`;
 }
 
@@ -1230,7 +1261,7 @@ function renderBranchChain(nodeId, nodeMap, graph, visited, showDetails, materia
   if (!bf) return '';
 
   let output = '';
-  output += buildBFHTML(bf, showDetails, materialName);
+  output += renderFlowMapNode(bf, materialName);
 
   const targets = graph[nodeId] || [];
   if (targets.length === 1) {
