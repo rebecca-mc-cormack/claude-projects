@@ -576,11 +576,26 @@ function parseBO(boEl, idMap, keyMap) {
     ? orderSteps(Array.from(innerSet.children), innerLinks, idMap)
     : [];
 
+  // Extract prodStepLinks for directed graph
+  const prodStepLinks = [];
+  if (innerLinks) {
+    const linkElements = innerLinks.querySelectorAll('c');
+    for (const linkEl of linkElements) {
+      const srcEl = linkEl.querySelector('sourceProdStep');
+      const tgtEl = linkEl.querySelector('targetProdStep');
+      if (srcEl && tgtEl) {
+        const src = srcEl.getAttribute('reference');
+        const tgt = tgtEl.getAttribute('reference');
+        if (src && tgt) prodStepLinks.push({ source: src, target: tgt });
+      }
+    }
+  }
+
   const basicFunctions = innerOrder
     .filter(s => !tagIs(s,'StartStepVO') && !tagIs(s,'EndStepVO'))
     .map(s => parseBF(s, idMap, keyMap, id, desc));
 
-  return { id, desc, productionUnits, materialOutputs, basicFunctions };
+  return { id, desc, productionUnits, materialOutputs, basicFunctions, prodStepLinks };
 }
 
 function parseBF(bfEl, idMap, keyMap, boId, boDesc) {
@@ -905,28 +920,143 @@ function buildLevel1Standalone(g) {
     buildLevel1HTML(g).replace(/onclick="drillDown\(\d+\)"/g,'style="cursor:default"'));
 }
 
+/* ── Graph traversal for proper flow map rendering ── */
+function buildGraphFromLinks(basicFunctions, prodStepLinks) {
+  const graph = {};      // node_id -> [target_ids]
+  const reverse = {};    // node_id -> [source_ids]
+  const nodeMap = {};    // node_id -> BF object
+
+  // Create node map
+  for (const bf of basicFunctions) {
+    nodeMap[bf.id] = bf;
+    graph[bf.id] = [];
+    reverse[bf.id] = [];
+  }
+
+  // Build graph from links
+  for (const link of prodStepLinks) {
+    if (nodeMap[link.source] && nodeMap[link.target]) {
+      if (!graph[link.source].includes(link.target)) {
+        graph[link.source].push(link.target);
+      }
+      if (!reverse[link.target].includes(link.source)) {
+        reverse[link.target].push(link.source);
+      }
+    }
+  }
+
+  return { graph, reverse, nodeMap };
+}
+
+function walkGraph(graph, reverse, startId) {
+  // DFS to get ordered sequence of nodes respecting graph structure
+  const visited = new Set();
+  const sequence = [];
+
+  function dfs(nodeId, inBranch = false) {
+    if (visited.has(nodeId)) return;
+    visited.add(nodeId);
+    sequence.push({ id: nodeId, inBranch });
+
+    const targets = graph[nodeId] || [];
+    if (targets.length === 1) {
+      dfs(targets[0], inBranch);
+    } else if (targets.length > 1) {
+      // Split: mark all targets as in-branch
+      for (const target of targets) {
+        dfs(target, true);
+      }
+    }
+  }
+
+  dfs(startId);
+  return sequence;
+}
+
+function detectParallelBranches(graph, reverse, nodeId) {
+  const targets = graph[nodeId] || [];
+  if (targets.length <= 1) return null;
+
+  // Find the sync point where all branches converge
+  const syncNode = findSyncPoint(targets, graph, reverse);
+
+  return {
+    splitNode: nodeId,
+    branches: targets,
+    syncNode: syncNode
+  };
+}
+
+function findSyncPoint(branchTargets, graph, reverse) {
+  // Find the common node that all branches eventually lead to
+  if (branchTargets.length === 0) return null;
+
+  // Get all descendants of first branch
+  const descendants = new Set();
+  function collectDescendants(nodeId) {
+    const targets = graph[nodeId] || [];
+    for (const target of targets) {
+      descendants.add(target);
+      collectDescendants(target);
+    }
+  }
+  collectDescendants(branchTargets[0]);
+
+  // Find intersection of all branch paths
+  for (const candidate of descendants) {
+    let allBranchesLead = true;
+    for (const branch of branchTargets) {
+      if (!pathExists(branch, candidate, graph)) {
+        allBranchesLead = false;
+        break;
+      }
+    }
+    if (allBranchesLead && (reverse[candidate] || []).length > 1) {
+      return candidate;
+    }
+  }
+
+  return null;
+}
+
+function pathExists(from, to, graph) {
+  if (from === to) return true;
+  const visited = new Set();
+  function dfs(nodeId) {
+    if (visited.has(nodeId)) return false;
+    visited.add(nodeId);
+    if (nodeId === to) return true;
+    const targets = graph[nodeId] || [];
+    for (const target of targets) {
+      if (dfs(target)) return true;
+    }
+    return false;
+  }
+  return dfs(from);
+}
+
 /* ── Level 2 ── */
 function buildLevel2HTML(g, bo, forExport=false) {
   const pu = bo.productionUnits.join(', ');
-  let bfs = '';
-  for (const bf of bo.basicFunctions) bfs += buildBFHTML(bf, forExport ? true : pmShowDetails, g.materialName);
 
-  let mos = '';
-  for (const mo of bo.materialOutputs) {
-    mos += `
-    <div class="inner-arrow"></div>
-    <div class="mat-out">
-      <span class="mat-label">Material Output</span>
-      <span style="font-size:18px;color:#FF50A0">⇒</span>
-      <div>
-        <div><strong>${esc(mo.name)}</strong></div>
-        <div style="font-size:10px;color:#888;margin-top:2px">
-          Type: ${esc(mo.use)} &nbsp;|&nbsp; Target: ${esc(mo.target)} ${esc(mo.unit)}
-          &nbsp;|&nbsp; Print label: ${mo.print?'Yes':'No'} &nbsp;|&nbsp; Yield relevant: ${mo.yield?'Yes':'No'}
-        </div>
-      </div>
-    </div>`;
+  // Build directed graph from prodStepLinks
+  const { graph, reverse, nodeMap } = buildGraphFromLinks(bo.basicFunctions, bo.prodStepLinks || []);
+
+  // Render nodes respecting graph structure (with parallel branches)
+  let bfs = '';
+
+  if (Object.keys(graph).length === 0 || bo.prodStepLinks.length === 0) {
+    // Fallback: render in document order if no graph links
+    for (const bf of bo.basicFunctions) {
+      bfs += buildBFHTML(bf, forExport ? true : pmShowDetails, g.materialName);
+    }
+  } else {
+    // Render using graph traversal
+    bfs = renderGraphicalFlow(bo.basicFunctions, graph, reverse, nodeMap, g.materialName, forExport ? true : pmShowDetails);
   }
+
+  // Material outputs hidden per spec
+  const mos = '';
 
   return `<style>${MAP_CSS}</style>
   <div class="pm-scroll"><div class="pm-wrap">
@@ -947,6 +1077,16 @@ function buildLevel2HTML(g, bo, forExport=false) {
     </div>
     ${LEGEND_HTML}
   </div></div>`;
+}
+
+function renderGraphicalFlow(basicFunctions, graph, reverse, nodeMap, materialName, showDetails) {
+  // TODO: Implement full graphical rendering with parallel branches
+  // For now, fall back to linear rendering while we refactor
+  let html = '';
+  for (const bf of basicFunctions) {
+    html += buildBFHTML(bf, showDetails, materialName);
+  }
+  return html;
 }
 
 function buildLevel2Standalone(g, bo) {
