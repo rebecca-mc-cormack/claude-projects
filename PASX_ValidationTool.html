@@ -436,22 +436,22 @@ const STEP_CATEGORY = {
 const STEP_COLOUR = {
   StartStepVO:          '#818180',
   EndStepVO:            '#818180',
-  BasicOperationVO:     '#460073',
-  CommonBFVO:           '#7500C0',
-  SpecDecisionVO:       '#A100FF',
-  MergeVO:              '#C2A3FF',
-  SplittingVO:          '#C2A3FF',
-  SynchronisationVO:    '#E6DCFF',
-  TakeOutBFVO:          '#FF50A0',
-  IdentityCheckBFVO:    '#FF50A0',
-  YieldDeterminationBFVO:'#FF50A0',
-  BundleCreationBFVO:   '#FF50A0',
-  StockCreationBFVO:    '#FF50A0',
-  EqmAllocationBFVO:    '#CFCFCF',
-  EqmDeallocationBFVO:  '#CFCFCF',
-  EqmIdentificationBFVO:'#CFCFCF',
-  GenericLabelPrintBfVO:'#2248FF',
-  SetCxBfVO:            '#2248FF',
+  BasicOperationVO:     '#3D006B',
+  CommonBFVO:           '#3D006B',
+  SpecDecisionVO:       '#3D006B',
+  MergeVO:              '#622A8F',
+  SplittingVO:          '#622A8F',
+  SynchronisationVO:    '#622A8F',
+  TakeOutBFVO:          '#185FA5',
+  IdentityCheckBFVO:    '#185FA5',
+  YieldDeterminationBFVO:'#185FA5',
+  BundleCreationBFVO:   '#185FA5',
+  StockCreationBFVO:    '#185FA5',
+  EqmAllocationBFVO:    '#818180',
+  EqmDeallocationBFVO:  '#818180',
+  EqmIdentificationBFVO:'#818180',
+  GenericLabelPrintBfVO:'#888780',
+  SetCxBfVO:            '#888780',
 };
 
 const STEP_LABEL = {
@@ -731,7 +731,7 @@ const MAP_CSS = `
 }
 .level1-bo-card:hover{border-color:#7500C0;box-shadow:0 4px 14px rgba(70,0,115,.15)}
 .level1-bo-header{
-  background:transparent;color:#460073;font-weight:700;font-size:12px;
+  background:transparent;color:#2A1A3E;font-weight:700;font-size:12px;
   padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #e0e0e0;
 }
 .level1-bo-body{padding:10px 16px;font-size:12px;color:#333}
@@ -743,7 +743,7 @@ const MAP_CSS = `
   border:2px solid #460073;border-radius:8px;background:#fff;overflow:hidden;
 }
 .node-bo-title{
-  background:transparent;color:#460073;font-weight:700;font-size:12px;
+  background:transparent;color:#2A1A3E;font-weight:700;font-size:12px;
   padding:8px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #e0e0e0;
 }
 .id-badge{background:rgba(255,255,255,.25);border-radius:4px;padding:1px 7px;font-size:11px}
@@ -762,7 +762,7 @@ const MAP_CSS = `
 }
 .bf-node{width:580px;border-radius:6px;overflow:hidden;border:1.5px solid #7500C0;background:#fff}
 .bf-header{
-  background:transparent;color:#1a1a1a;padding:7px 14px;
+  background:transparent;color:#2A1A3E;padding:7px 14px;
   display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
   border-bottom:1px solid #e0e0e0;
 }
@@ -976,10 +976,11 @@ ${bodyHTML}
 
 const LEGEND_HTML = `
 <div class="pm-legend">
-  <span><i style="background:#fff;border:1.5px solid #460073"></i>Flow control</span>
-  <span><i style="background:#fff;border:1.5px solid #FF50A0"></i>Material flow</span>
-  <span><i style="background:#fff;border:1.5px solid #CFCFCF"></i>Equipment</span>
-  <span><i style="background:#fff;border:1.5px solid #2248FF"></i>Label / Context</span>
+  <span><i style="background:#fff;border:1.5px solid #3D006B"></i>Flow control</span>
+  <span><i style="background:#fff;border:1.5px solid #185FA5"></i>Material flow</span>
+  <span><i style="background:#fff;border:1.5px solid #818180"></i>Equipment</span>
+  <span><i style="background:#fff;border:1.5px solid #888780"></i>Label / Context</span>
+  <span><i style="background:#fff;border:1.5px solid #622A8F"></i>Merge / Sync / Split</span>
   <span><i style="background:#fde8e8;border:1px solid #c0392b"></i>Verification Sig.</span>
 </div>`;
 
@@ -1147,6 +1148,9 @@ function renderRBE(g) {
 
   for (const bo of g.basicOps) {
     for (const bf of bo.basicFunctions) {
+      // Exclude Merge, Sync, and Split nodes from Review by Exception
+      if (['MergeVO','SynchronisationVO','SplittingVO'].includes(bf.stepType)) continue;
+
       const risk = assignRisk(bf);
       const path = `${bo.id} > ${bf.id}`;
       const d4 = col4Default(bf);
