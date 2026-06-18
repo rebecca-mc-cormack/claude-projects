@@ -611,6 +611,8 @@ function parseBO(boEl, idMap, keyMap) {
     .filter(s => !tagIs(s,'StartStepVO') && !tagIs(s,'EndStepVO'))
     .map(s => parseBF(s, idMap, keyMap, id, desc));
 
+  console.log('BasicFunctions in BO:', bo.id, '—', basicFunctions.map(b => b.id));
+
   // Create mapping from refId to customId for graph traversal
   const refId2CustomId = {};
   for (const bf of basicFunctions) {
@@ -618,6 +620,7 @@ function parseBO(boEl, idMap, keyMap) {
       refId2CustomId[bf.refId] = bf.id;
     }
   }
+  console.log('RefId2CustomId map:', refId2CustomId);
 
   // Convert prodStepLinks from refIds to customIds
   const convertedLinks = prodStepLinks.map(link => ({
