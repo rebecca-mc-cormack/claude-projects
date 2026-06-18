@@ -611,7 +611,7 @@ function parseBO(boEl, idMap, keyMap) {
     .filter(s => !tagIs(s,'StartStepVO') && !tagIs(s,'EndStepVO'))
     .map(s => parseBF(s, idMap, keyMap, id, desc));
 
-  console.log('BasicFunctions in BO:', bo.id, '—', basicFunctions.map(b => b.id));
+  console.log('BasicFunctions in BO:', id, '—', basicFunctions.map(b => b.id));
 
   // Create mapping from refId to customId for graph traversal
   const refId2CustomId = {};
