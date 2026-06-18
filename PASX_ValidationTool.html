@@ -3,17 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PAS-X Validation Export Tool — MBRfactory</title>
+<title>EBR Validation Tool — Accenture</title>
 <style>
 :root{
-  --mulberry:#830051;--mulberry-dark:#5C0039;--mulberry-tint:#A33373;
-  --magenta:#C4007A;--gold:#F0AB00;--gold-dark:#C28A00;--gold-bright:#FFD24A;
-  --navy:#003865;--ink:#1A1A2E;--bg:#F7F5F2;--surface:#FFFFFF;
-  --n900:#1A1A1A;--n700:#3C3C3C;--n500:#6B6B6B;--n300:#C9C7C2;
-  --n200:#E4E2DD;--n100:#EFEDE8;
-  --font:"Helvetica Neue","Helvetica","Inter","Arial",system-ui,sans-serif;
+  --purple:#A100FF;--purple-dark:#7500C0;--purple-darkest:#460073;
+  --purple-light:#C2A3FF;--purple-lightest:#E6DCFF;
+  --pink:#FF50A0;--blue:#2248FF;
+  --gray-dark:#818180;--gray-mid:#CFCFCF;--gray-light:#F1F1EF;
+  --black:#000000;--white:#FFFFFF;
+  --gold:#F0AB00;--amber:#FFF3CD;--amber-border:#F59E0B;
+  --bg:#F7F5F2;--surface:#FFFFFF;
+  --n900:#1A1A1A;--n700:#3C3C3C;--n500:#6B6B6B;
+  --n300:#C9C7C2;--n200:#E4E2DD;--n100:#F1F1EF;
+  --font:"Graphik","DM Sans","Helvetica Neue","Helvetica","Inter","Arial",system-ui,sans-serif;
   --r-sm:4px;--r-md:8px;--r-lg:16px;--r-pill:9999px;
-  --sh-sm:0 1px 2px rgba(26,26,46,.06);--sh-md:0 8px 24px rgba(26,26,46,.08);
+  --sh-sm:0 1px 2px rgba(0,0,0,.06);--sh-md:0 8px 24px rgba(0,0,0,.08);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-family:var(--font);font-size:100%;-webkit-font-smoothing:antialiased}
@@ -21,151 +25,219 @@ body{background:var(--bg);color:var(--n700);line-height:1.65}
 img,svg{display:block;max-width:100%}
 button{font:inherit;cursor:pointer}
 
+/* ── NAV ── */
 .nav-shell{
   position:sticky;top:0;z-index:50;
-  background:rgba(247,245,242,.92);backdrop-filter:saturate(140%) blur(8px);
+  background:rgba(247,245,242,.95);backdrop-filter:saturate(140%) blur(8px);
   -webkit-backdrop-filter:saturate(140%) blur(8px);
-  border-bottom:1px solid var(--n200);
+  border-bottom:2px solid var(--purple);
 }
 .nav-bar{
-  display:flex;align-items:center;gap:1.5rem;height:4rem;
-  max-width:76rem;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem);
+  display:flex;align-items:center;gap:1rem;height:3.5rem;
+  max-width:80rem;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem);
 }
 .nav-brand{
-  display:flex;align-items:center;gap:.5rem;color:var(--mulberry);
+  display:flex;align-items:center;gap:.5rem;color:var(--purple-darkest);
   font-weight:700;font-size:1rem;text-decoration:none;letter-spacing:-.01em;
 }
+.nav-brand img{
+  height:32px;width:auto;display:block;
+}
 .brand-icon{
-  width:28px;height:28px;border-radius:6px;background:var(--mulberry);
+  width:26px;height:26px;border-radius:4px;background:var(--purple-darkest);
   display:flex;align-items:center;justify-content:center;
-  color:var(--gold);font-weight:700;font-size:13px;flex-shrink:0;
+  color:#fff;font-weight:700;font-size:11px;flex-shrink:0;letter-spacing:0;
 }
 .nav-tool{
-  margin-left:auto;font-size:.8125rem;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--mulberry);
+  font-size:.8125rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--n500);
+  display:flex;align-items:center;height:32px;
 }
-.main{max-width:76rem;margin:0 auto;padding:2.5rem clamp(1rem,4vw,2.5rem) 5rem}
+.nav-filename{
+  display:none;margin-left:auto;background:var(--purple-lightest);color:var(--purple-darkest);
+  border-radius:var(--r-pill);padding:.25rem .875rem;font-size:.8125rem;font-weight:600;
+  max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.nav-filename.show{display:block}
 
+/* ── MAIN ── */
+.main{max-width:80rem;margin:0 auto;padding:2.5rem clamp(1rem,4vw,2.5rem) 5rem}
+
+/* ── HERO ── */
 .hero-strip{
-  background:var(--mulberry);color:#fff;border-radius:var(--r-lg);
+  background:var(--purple-darkest);color:#fff;border-radius:var(--r-lg);
   padding:2.5rem;margin-bottom:2rem;position:relative;overflow:hidden;
 }
 .hero-strip::before{
-  content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;
-  border-radius:50%;background:radial-gradient(circle,rgba(196,0,122,.35) 0%,transparent 70%);
+  content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;
+  border-radius:50%;background:radial-gradient(circle,rgba(161,0,255,.25) 0%,transparent 70%);
   pointer-events:none;
 }
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:.5rem;font-size:.8125rem;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--gold-bright);margin-bottom:.75rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--purple-light);margin-bottom:.75rem;
 }
-.hero-keyline{display:block;width:3rem;height:2px;background:var(--gold);border:0;margin-bottom:1rem}
+.hero-keyline{display:block;width:3rem;height:2px;background:var(--purple-light);border:0;margin-bottom:1rem}
 .hero-strip h1{
-  font-size:clamp(1.75rem,3vw,2.5rem);font-weight:700;color:#fff;
+  font-size:clamp(1.75rem,3vw,2.25rem);font-weight:700;color:#fff;
   line-height:1.15;letter-spacing:-.02em;margin-bottom:.5rem;
 }
-.hero-strip p{color:rgba(255,255,255,.8);max-width:54ch;font-size:1rem}
+.hero-strip p{color:rgba(255,255,255,.75);max-width:54ch;font-size:.9375rem}
 
-.card{
-  background:var(--surface);border:1px solid var(--n200);
-  border-radius:var(--r-lg);padding:1.5rem;box-shadow:var(--sh-sm);
-}
-.eyebrow{
-  display:inline-flex;align-items:center;font-size:.8125rem;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--mulberry);margin-bottom:.75rem;
-}
-.keyline{display:block;width:3rem;height:2px;background:var(--mulberry);border:0;margin-bottom:1rem}
-
+/* ── BUTTONS ── */
 .btn{
-  display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.5rem;
-  border-radius:var(--r-pill);font-weight:600;font-size:1rem;border:1.5px solid transparent;
-  text-decoration:none;transition:background .15s,color .15s,border-color .15s,transform .15s;
+  display:inline-flex;align-items:center;gap:.5rem;padding:.625rem 1.25rem;
+  border-radius:var(--r-pill);font-weight:600;font-size:.9375rem;border:1.5px solid transparent;
+  text-decoration:none;transition:background .15s,color .15s,border-color .15s,transform .1s;
 }
-.btn-primary{background:var(--gold);color:var(--ink);border-color:var(--gold)}
-.btn-primary:hover{background:var(--gold-dark);transform:translateY(-1px)}
-.btn-ghost{background:transparent;color:var(--mulberry);border-color:var(--mulberry)}
-.btn-ghost:hover{background:var(--mulberry);color:#fff}
-.btn-navy{background:var(--navy);color:#fff;border-color:var(--navy)}
-.btn-navy:hover{background:#002d52;transform:translateY(-1px)}
-.btn-sm{padding:.5rem 1rem;font-size:.875rem}
+.btn-primary{background:var(--purple);color:#fff;border-color:var(--purple)}
+.btn-primary:hover{background:var(--purple-dark);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--purple);border-color:var(--purple)}
+.btn-ghost:hover{background:var(--purple);color:#fff}
+.btn-muted{background:var(--purple-lightest);color:var(--purple-darkest);border-color:var(--purple-lightest)}
+.btn-muted:hover{background:var(--purple-light);border-color:var(--purple-light)}
+.btn-sm{padding:.4rem .875rem;font-size:.875rem}
 
+/* ── UPLOAD ── */
+.card{background:var(--surface);border:1px solid var(--n200);border-radius:var(--r-lg);padding:1.5rem;box-shadow:var(--sh-sm)}
 .upload-zone{
   border:2px dashed var(--n300);border-radius:var(--r-lg);background:var(--surface);
   padding:3rem 2rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;
 }
-.upload-zone:hover,.upload-zone.over{border-color:var(--mulberry);background:rgba(131,0,81,.03)}
+.upload-zone:hover,.upload-zone.over{border-color:var(--purple);background:rgba(161,0,255,.03)}
 .upload-icon{font-size:3rem;margin-bottom:1rem;user-select:none}
-.upload-zone h3{font-size:1.125rem;color:var(--ink);margin-bottom:.5rem}
+.upload-zone h3{font-size:1.125rem;color:var(--n900);margin-bottom:.5rem}
 .upload-zone p{font-size:.875rem;color:var(--n500);margin-bottom:1.5rem}
 .upload-actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
 #file-input{display:none}
-
-.paste-area{
-  display:none;margin-top:1rem;border:1px solid var(--n200);
-  border-radius:var(--r-md);background:var(--surface);padding:1.25rem;
-}
-.paste-area textarea{
-  width:100%;height:180px;font-family:monospace;font-size:.8125rem;
-  padding:.75rem;border:1px solid var(--n300);border-radius:var(--r-md);
-  resize:vertical;color:var(--ink);
-}
+.paste-area{display:none;margin-top:1rem;border:1px solid var(--n200);border-radius:var(--r-md);background:var(--surface);padding:1.25rem}
+.paste-area textarea{width:100%;height:180px;font-family:monospace;font-size:.8125rem;padding:.75rem;border:1px solid var(--n300);border-radius:var(--r-md);resize:vertical;color:var(--n900)}
 .paste-actions{display:flex;gap:.75rem;margin-top:.75rem}
-
-.error-banner{
-  display:none;background:#fff5f5;border:1px solid #fca5a5;border-radius:var(--r-md);
-  padding:1rem 1.25rem;color:#b91c1c;font-size:.875rem;margin-bottom:1rem;
-}
+.error-banner{display:none;background:#fff5f5;border:1px solid #fca5a5;border-radius:var(--r-md);padding:1rem 1.25rem;color:#b91c1c;font-size:.875rem;margin-bottom:1rem}
 .error-banner.show{display:block}
 
+/* ── RESULTS ── */
 .results{display:none}
 .results.show{display:block}
-
 .meta-row{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1rem}
 .meta-chip{background:var(--n100);border:1px solid var(--n200);border-radius:var(--r-md);padding:.5rem .875rem}
-.meta-chip dt{font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mulberry)}
-.meta-chip dd{font-size:.875rem;color:var(--ink);font-weight:600}
-
+.meta-chip dt{font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--purple)}
+.meta-chip dd{font-size:.875rem;color:var(--n900);font-weight:600}
 .result-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
-.export-bar{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2rem}
+.eyebrow{display:inline-flex;font-size:.8125rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);margin-bottom:.75rem}
+.keyline{display:block;width:3rem;height:2px;background:var(--purple);border:0;margin-bottom:1rem}
 
-.tabs{display:flex;gap:.25rem;border-bottom:2px solid var(--n200);margin-bottom:1.5rem}
+/* ── TABS ── */
+.tabs-bar{display:flex;gap:.25rem;border-bottom:2px solid var(--n200);margin-bottom:0}
 .tab-btn{
   padding:.625rem 1.25rem;border:none;background:none;font:inherit;font-size:.9375rem;
-  font-weight:600;color:var(--n500);border-bottom:2px solid transparent;margin-bottom:-2px;
+  font-weight:600;color:var(--n500);border-bottom:3px solid transparent;margin-bottom:-2px;
   transition:color .15s,border-color .15s;
 }
-.tab-btn:hover{color:var(--mulberry)}
-.tab-btn.active{color:var(--mulberry);border-bottom-color:var(--mulberry)}
-.tab-pane{display:none}
+.tab-btn:hover{color:var(--purple)}
+.tab-btn.active{color:var(--purple);border-bottom-color:var(--purple)}
+.tab-pane{display:none;padding-top:1.25rem}
 .tab-pane.active{display:block}
 
-.tbl-wrap{overflow-x:auto;border-radius:var(--r-md);border:1px solid var(--n200)}
-.ptbl{width:100%;border-collapse:collapse;font-size:.8125rem;white-space:nowrap}
-.ptbl th{background:var(--mulberry);color:#fff;font-weight:600;padding:.625rem .875rem;text-align:left;font-size:.75rem}
-.ptbl td{padding:.5rem .875rem;border-bottom:1px solid var(--n200);vertical-align:top;white-space:normal;max-width:280px}
-.ptbl tr:last-child td{border-bottom:none}
-.ptbl tbody tr:nth-child(even) td{background:var(--n100)}
-
-.tbadge{display:inline-block;border-radius:3px;padding:1px 6px;font-size:.6875rem;font-weight:600}
-.t-attr{background:#e3f1e3;color:#2a6b2a}
-.t-mv{background:#fff3cd;color:#856404}
-.t-form{background:#f3e3ff;color:#6a1fa3}
-.t-eqm{background:#dce8f5;color:#1a4a7a}
-.t-mat{background:#fef0e0;color:#7d4800}
-.sig-badge{background:#fde8e8;color:#c0392b;border-radius:3px;padding:1px 5px;font-size:.6875rem;font-weight:600}
-
-.pm-outer{
-  background:var(--surface);border:1px solid var(--n200);
-  border-radius:var(--r-lg);padding:2rem;overflow:visible;
+/* ── TAB TOOLBAR ── */
+.tab-toolbar{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;
+  margin-bottom:1rem;
 }
-/* scroll wrapper sits INSIDE the map, not on the page container */
-.pm-scroll{overflow-x:auto;overflow-y:visible;}
-.pm-legend{
-  display:flex;gap:16px;flex-wrap:wrap;font-size:.6875rem;color:var(--n500);
-  margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--n200);
+.tab-toolbar-left{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.btn-download{
+  display:inline-flex;align-items:center;gap:.45rem;padding:.45rem 1rem;
+  border-radius:var(--r-pill);border:1.5px solid var(--purple);
+  background:transparent;color:var(--purple);font:inherit;font-size:.875rem;font-weight:600;
+  cursor:pointer;transition:background .15s,color .15s;
 }
+.btn-download:hover{background:var(--purple);color:#fff}
+.btn-download.muted{background:var(--purple-lightest);color:var(--purple-darkest);border-color:var(--purple-lightest)}
+.btn-download.muted:hover{background:var(--purple-light);border-color:var(--purple-light)}
+.toolbar-label{font-size:.8125rem;font-weight:700;color:var(--n500)}
+
+/* ── PROCESS MAP ── */
+.pm-outer{background:var(--surface);border:1px solid var(--n200);border-radius:var(--r-lg);padding:2rem;overflow:visible}
+.pm-scroll{overflow-x:auto;overflow-y:visible}
+.pm-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.6875rem;color:var(--n500);margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--n200)}
 .pm-legend span{display:flex;align-items:center;gap:5px}
 .pm-legend i{width:12px;height:12px;border-radius:2px;display:inline-block}
+
+/* ── LAYER NAV ── */
+.level-nav{
+  display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;
+  margin-bottom:1rem;padding:.75rem 1rem;
+  background:var(--n100);border:1px solid var(--n200);border-radius:var(--r-md);
+}
+.level-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--purple-darkest)}
+.level-btn{
+  padding:.3rem .75rem;border-radius:var(--r-pill);border:1.5px solid;
+  font:inherit;font-size:.8125rem;font-weight:600;cursor:pointer;transition:background .1s,color .1s;
+}
+.level-btn.inactive{background:transparent;color:var(--n700);border-color:var(--n300)}
+.level-btn.active{background:var(--purple-darkest);color:#fff;border-color:var(--purple-darkest)}
+.show-act-btn{
+  padding:.4rem 1.1rem;border-radius:var(--r-pill);border:2px solid;
+  font:inherit;font-size:.875rem;font-weight:700;cursor:pointer;
+  margin-left:auto;transition:background .1s,color .1s;
+}
+.show-act-btn.off{background:var(--gold);color:#1a1a1a;border-color:#C28A00}
+.show-act-btn.on{background:var(--purple-darkest);color:#fff;border-color:var(--purple-darkest)}
+
+/* ── RBE TABLE ── */
+.rbe-wrap{overflow-x:auto;border-radius:var(--r-md);border:1px solid var(--n200)}
+.rbe-tbl{width:100%;border-collapse:collapse;font-size:.8125rem}
+.rbe-tbl th{background:var(--purple-darkest);color:#fff;font-weight:600;padding:.625rem .875rem;text-align:left;font-size:.75rem;white-space:nowrap}
+.rbe-tbl td{padding:.5rem .875rem;border-bottom:1px solid var(--n200);vertical-align:top;white-space:normal}
+.rbe-tbl tr:last-child td{border-bottom:none}
+.rbe-tbl tbody tr:nth-child(even) td{background:var(--n100)}
+.rbe-tbl tr.rbe-highlight td{background:#F3EEF8 !important;border-left:3px solid #3D006B}
+.rbe-tbl select{
+  padding:.25rem .5rem;border:1px solid var(--n300);border-radius:4px;
+  font:inherit;font-size:.8125rem;background:#fff;color:var(--n900);cursor:pointer;min-width:80px;
+}
+.rbe-tbl select.rbe-auto{border:1.5px solid var(--purple) !important;background:#fdf0ff}
+.rbe-pmref{color:#3D006B;text-decoration:underline dotted;cursor:pointer;font-weight:600}
+.rbe-pmref:hover{color:var(--purple)}
+.risk-low{background:#C6EFCE;color:#276221;border-radius:3px;padding:1px 7px;font-size:.75rem;font-weight:600;display:inline-block}
+.risk-med{background:#FFEB9C;color:#7D5800;border-radius:3px;padding:1px 7px;font-size:.75rem;font-weight:600;display:inline-block}
+.risk-high{background:#FFC7CE;color:#9C0006;border-radius:3px;padding:1px 7px;font-size:.75rem;font-weight:600;display:inline-block}
+.rbr-yes{background:#FFC7CE;color:#9C0006;border-radius:3px;padding:1px 7px;font-size:.75rem;font-weight:600;display:inline-block}
+.rbr-no{background:#C6EFCE;color:#276221;border-radius:3px;padding:1px 7px;font-size:.75rem;font-weight:600;display:inline-block}
+
+/* ── MBR SPEC PREVIEW ── */
+.urs-legend{
+  display:flex;gap:1.5rem;margin-bottom:1rem;font-size:.8125rem;flex-wrap:wrap;align-items:center;
+}
+.urs-legend-item{display:flex;align-items:center;gap:.5rem;font-size:.8125rem}
+.urs-legend-swatch{width:20px;height:14px;border-radius:3px;flex-shrink:0}
+.urs-preview{
+  background:#fff;border:1px solid var(--n200);border-radius:var(--r-lg);
+  padding:3rem 3.5rem;box-shadow:var(--sh-md);max-width:860px;margin:0 auto;
+  font-family:"Times New Roman",Times,Georgia,serif;font-size:11pt;color:#1a1a1a;line-height:1.6;
+}
+.urs-cover{text-align:center;padding-bottom:2rem;border-bottom:2px solid #1a1a1a;margin-bottom:2rem}
+.urs-cover-title{font-size:18pt;font-weight:700;letter-spacing:.01em;margin-bottom:.5rem}
+.urs-cover-sub{font-size:13pt;font-weight:400;margin-bottom:2rem}
+.urs-cover-meta{display:grid;grid-template-columns:auto 1fr;gap:.4rem 1.5rem;font-size:10pt;max-width:380px;margin:0 auto}
+.urs-cover-meta dt{font-weight:700;text-align:right}
+.urs-cover-meta dd{border-bottom:1px solid #aaa}
+.urs-section{margin-bottom:2rem}
+.urs-h1{font-size:13pt;font-weight:700;text-transform:uppercase;border-bottom:2px solid #1a1a1a;padding-bottom:4px;margin-bottom:1rem}
+.urs-h2{font-size:11pt;font-weight:700;margin-bottom:.5rem;margin-top:1rem}
+.urs-p{margin-bottom:.75rem;text-align:justify}
+.urs-field-auto{background:#fff;display:inline}
+.urs-field-manual{
+  background:#FFF3CD;border-bottom:1.5px solid #F59E0B;
+  display:inline;padding:0 2px;position:relative;
+}
+.urs-field-manual::after{content:'✎';font-size:8pt;color:#F59E0B;margin-left:2px}
+.urs-table{width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:1rem}
+.urs-table th{background:#460073;color:#fff;font-weight:700;padding:5px 8px;text-align:left;border:1px solid #460073}
+.urs-table td{padding:5px 8px;border:1px solid #ccc;vertical-align:top}
+.urs-table tr:nth-child(even) td{background:#f9f9f9}
+.urs-toc li{margin-bottom:.25rem;font-size:10pt}
+.urs-toc ol{padding-left:1.5rem}
+.urs-map-caption{text-align:center;font-size:9pt;color:#555;margin-top:.5rem;font-style:italic}
 </style>
 </head>
 <body>
@@ -173,25 +245,24 @@ button{font:inherit;cursor:pointer}
 <header class="nav-shell">
   <div class="nav-bar">
     <a href="#" class="nav-brand">
-      <div class="brand-icon">V</div>
-      MBRfactory
+      <img src="assets/accenture_logo.png" alt="Accenture" style="height:32px;width:auto">
     </a>
-    <span class="nav-tool">Validation Export Tool</span>
+    <span class="nav-filename" id="nav-filename"></span>
   </div>
 </header>
 
 <main class="main">
 
-  <div class="hero-strip">
-    <span class="hero-eyebrow">PAS-X XML → Validation Artefacts</span>
-    <hr class="hero-keyline">
-    <h1>Validation Export Tool</h1>
-    <p>Upload a PAS-X GMBR XML export to instantly generate a pathway Excel sheet and a process flow map ready for your validation documentation.</p>
-  </div>
-
-  <div class="error-banner" id="err"></div>
-
   <div id="upload-section">
+    <div class="hero-strip">
+      <span class="hero-eyebrow">PAS-X GMBR XML → Validation Artefacts</span>
+      <hr class="hero-keyline">
+      <h1>EBR Validation Tool</h1>
+      <p>Upload a PAS-X Generic Master Batch Record XML export to instantly generate a process flow map, Review by Exception sheet, and MBR Requirement Specification.</p>
+    </div>
+
+    <div class="error-banner" id="err"></div>
+
     <div class="upload-zone" id="drop-zone">
       <div class="upload-icon">📄</div>
       <h3>Drop your PAS-X XML file here</h3>
@@ -215,13 +286,15 @@ button{font:inherit;cursor:pointer}
     </div>
   </div>
 
+  <div class="error-banner" id="err2"></div>
+
   <div class="results" id="results">
     <div class="card" style="margin-bottom:1.5rem">
       <span class="eyebrow">GMBR Parsed Successfully</span>
       <hr class="keyline">
       <div class="result-header">
         <div>
-          <h2 id="res-title" style="font-size:1.5rem;color:var(--ink)"></h2>
+          <h2 id="res-title" style="font-size:1.375rem;color:var(--n900)"></h2>
           <p id="res-sub" style="color:var(--n500);font-size:.875rem;margin-top:.25rem"></p>
         </div>
         <button class="btn btn-ghost btn-sm" id="reset-btn">← Upload another</button>
@@ -229,44 +302,74 @@ button{font:inherit;cursor:pointer}
       <div class="meta-row" id="meta-row"></div>
     </div>
 
-    <div class="export-bar">
-      <button class="btn btn-primary" id="btn-excel">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-        Download Pathway Excel
-      </button>
-      <button class="btn btn-navy" id="btn-map">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        Download Process Map
-      </button>
-    </div>
-
-    <div class="tabs">
+    <div class="tabs-bar">
       <button class="tab-btn active" data-tab="map">Process Flow Map</button>
-      <button class="tab-btn" data-tab="tbl">Pathway Table</button>
+      <button class="tab-btn" data-tab="rbe">Review by Exception</button>
+      <button class="tab-btn" data-tab="urs">MBR Requirement Spec</button>
     </div>
 
+    <!-- TAB 1: PROCESS FLOW MAP -->
     <div class="tab-pane active" id="tab-map">
-      <!-- Level navigation bar (injected by JS) -->
-      <div id="level-nav"></div>
+      <div class="tab-toolbar">
+        <div class="tab-toolbar-left" id="level-nav"></div>
+        <button class="btn-download" id="btn-png-download">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download (.png)
+        </button>
+      </div>
       <div class="pm-outer" id="pm-render"></div>
     </div>
 
-    <div class="tab-pane" id="tab-tbl">
-      <div class="tbl-wrap">
-        <table class="ptbl">
+    <!-- TAB 2: REVIEW BY EXCEPTION -->
+    <div class="tab-pane" id="tab-rbe">
+      <div class="tab-toolbar">
+        <span class="toolbar-label" id="rbe-count"></span>
+        <button class="btn-download" id="btn-rbe-download">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Excel (.xlsx)
+        </button>
+      </div>
+      <div class="rbe-wrap">
+        <table class="rbe-tbl">
           <thead>
             <tr>
-              <th>Relevant Basic Function</th><th>Entry Full Path</th>
-              <th>Entry Full Path Description</th><th>Activity Description</th>
-              <th>Formula</th><th>Formula Type</th><th>Refs</th>
-              <th>Tolerance</th><th>Generic Type</th><th>Activity Type</th>
-              <th>Ver. Sig.</th><th>Risk</th><th>Ver. Type</th>
+              <th>Process Map Ref.</th>
+              <th>GMBR Path Reference</th>
+              <th>Description</th>
+              <th>Process Step Type</th>
+              <th>Confirmation Level Required</th>
+              <th>Can data be QA'd at time of order?</th>
+              <th>Required at Batch Record Review?</th>
+              <th>Comment</th>
             </tr>
           </thead>
-          <tbody id="tbl-body"></tbody>
+          <tbody id="rbe-body"></tbody>
         </table>
       </div>
     </div>
+
+    <!-- TAB 3: MBR REQUIREMENT SPEC -->
+    <div class="tab-pane" id="tab-urs">
+      <div class="tab-toolbar">
+        <span class="toolbar-label" id="urs-draft-label"></span>
+        <button class="btn-download muted" id="btn-urs-download">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Word (.docx)
+        </button>
+      </div>
+      <div class="urs-legend">
+        <div class="urs-legend-item">
+          <div class="urs-legend-swatch" style="background:#FFF3CD;border:1.5px solid #F59E0B"></div>
+          <span>Amber — needs manual input after export</span>
+        </div>
+        <div class="urs-legend-item">
+          <div class="urs-legend-swatch" style="background:#fff;border:1px solid #ccc"></div>
+          <span>White — auto-populated from XML</span>
+        </div>
+      </div>
+      <div id="urs-preview"></div>
+    </div>
+
   </div>
 
 </main>
@@ -279,20 +382,14 @@ button{font:inherit;cursor:pointer}
 const esc = s => s == null ? '' :
   String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
-// Get direct child element by simple tag name
 function gc(el, tag) {
   for (const c of el.children) if (c.tagName === tag) return c;
   return null;
 }
-// Get text of direct child
 function gt(el, tag) { const c = gc(el, tag); return c ? c.textContent.trim() : ''; }
 
-// ── KEY FIX ──────────────────────────────────────────────────────
-// PAS-X uses full Java class names as tag names, e.g.
-//   com.werum.pasx.spec.components.pmbr.global.GenericMasterBatchRecordVO
-// CSS querySelector treats dots as class selectors and fails.
-// Use getElementsByTagName('*') and match by suffix instead.
-
+// PAS-X uses full Java class names as tag names — dots treated as class selectors in CSS.
+// Use getElementsByTagName('*') and suffix-match instead.
 function findEl(root, suffix) {
   const els = root.getElementsByTagName('*');
   for (const el of els) {
@@ -308,9 +405,79 @@ function findAllEl(root, suffix) {
   }
   return out;
 }
-// Check if a tag name matches a suffix
 function tagIs(el, suffix) {
   return el.tagName === suffix || el.tagName.endsWith('.' + suffix);
+}
+
+/* ================================================================
+   STEP TYPE HELPERS
+   ================================================================ */
+const STEP_CATEGORY = {
+  StartStepVO:          'flow',
+  EndStepVO:            'flow',
+  BasicOperationVO:     'flow',
+  CommonBFVO:           'flow',
+  SpecDecisionVO:       'flow',
+  MergeVO:              'flow',
+  SplittingVO:          'flow',
+  SynchronisationVO:    'flow',
+  TakeOutBFVO:          'material',
+  IdentityCheckBFVO:    'material',
+  YieldDeterminationBFVO:'material',
+  BundleCreationBFVO:   'material',
+  StockCreationBFVO:    'material',
+  EqmAllocationBFVO:    'equipment',
+  EqmDeallocationBFVO:  'equipment',
+  EqmIdentificationBFVO:'equipment',
+  GenericLabelPrintBfVO:'label',
+  SetCxBfVO:            'label',
+};
+
+const STEP_COLOUR = {
+  StartStepVO:          '#818180',
+  EndStepVO:            '#818180',
+  BasicOperationVO:     '#460073',
+  CommonBFVO:           '#7500C0',
+  SpecDecisionVO:       '#A100FF',
+  MergeVO:              '#C2A3FF',
+  SplittingVO:          '#C2A3FF',
+  SynchronisationVO:    '#E6DCFF',
+  TakeOutBFVO:          '#FF50A0',
+  IdentityCheckBFVO:    '#FF50A0',
+  YieldDeterminationBFVO:'#FF50A0',
+  BundleCreationBFVO:   '#FF50A0',
+  StockCreationBFVO:    '#FF50A0',
+  EqmAllocationBFVO:    '#CFCFCF',
+  EqmDeallocationBFVO:  '#CFCFCF',
+  EqmIdentificationBFVO:'#CFCFCF',
+  GenericLabelPrintBfVO:'#2248FF',
+  SetCxBfVO:            '#2248FF',
+};
+
+const STEP_LABEL = {
+  CommonBFVO:           'Common BF',
+  SpecDecisionVO:       'Decision',
+  MergeVO:              'Merge',
+  SplittingVO:          'Split',
+  SynchronisationVO:    'Sync',
+  TakeOutBFVO:          'Take Out',
+  IdentityCheckBFVO:    'Identity Check',
+  YieldDeterminationBFVO:'Yield Determination',
+  BundleCreationBFVO:   'Bundle Creation',
+  StockCreationBFVO:    'Stock Creation',
+  EqmAllocationBFVO:    'Equipment Allocation',
+  EqmDeallocationBFVO:  'Equipment Deallocation',
+  EqmIdentificationBFVO:'Equipment Identification',
+  GenericLabelPrintBfVO:'Label Print',
+  SetCxBfVO:            'Set Context',
+};
+
+function getStepTypeName(el) {
+  for (const suffix of Object.keys(STEP_LABEL)) {
+    if (tagIs(el, suffix)) return suffix;
+  }
+  if (tagIs(el, 'BasicOperationVO')) return 'BasicOperationVO';
+  return el.tagName.split('.').pop();
 }
 
 /* ================================================================
@@ -321,7 +488,6 @@ function parseGMBR(xml) {
   const perr = doc.querySelector('parsererror');
   if (perr) throw new Error('Invalid XML: ' + perr.textContent.slice(0, 200));
 
-  // Use findEl — handles full Java class name
   const gEl = findEl(doc, 'GenericMasterBatchRecordVO');
   if (!gEl) {
     const allEls = Array.from(doc.getElementsByTagName('*'));
@@ -329,14 +495,12 @@ function parseGMBR(xml) {
     throw new Error(`No GenericMasterBatchRecordVO found. Found ${allEls.length} elements. First tags: ${sample || '(none)'}`);
   }
 
-  // id-attr → element map (for link resolution)
   const idMap = {};
   for (const el of doc.getElementsByTagName('*')) {
     const id = el.getAttribute('id');
     if (id) idMap[id] = el;
   }
 
-  // PAS-X internal key → customId (for formula path resolution)
   const keyMap = {};
   for (const el of doc.getElementsByTagName('*')) {
     const k = gc(el, 'key'), c = gc(el, 'customId');
@@ -420,13 +584,20 @@ function parseBO(boEl, idMap, keyMap) {
 }
 
 function parseBF(bfEl, idMap, keyMap, boId, boDesc) {
-  const id    = gt(bfEl, 'customId');
-  const desc  = gt(bfEl, 'description');
-  const type  = tagIs(bfEl,'EqmAllocationBFVO') ? 'EqmAllocation' : 'CommonBF';
+  const id   = gt(bfEl, 'customId');
+  const desc = gt(bfEl, 'description');
   const verSig = gt(bfEl, 'verificationSignature') === 'true';
 
+  // Determine step type
+  let stepType = 'CommonBFVO';
+  const suffixes = ['EqmAllocationBFVO','EqmDeallocationBFVO','EqmIdentificationBFVO',
+    'TakeOutBFVO','IdentityCheckBFVO','YieldDeterminationBFVO','BundleCreationBFVO','StockCreationBFVO',
+    'SpecDecisionVO','MergeVO','SplittingVO','SynchronisationVO',
+    'GenericLabelPrintBfVO','SetCxBfVO'];
+  for (const s of suffixes) { if (tagIs(bfEl, s)) { stepType = s; break; } }
+
   let eqType = '';
-  if (type === 'EqmAllocation') {
+  if (stepType === 'EqmAllocationBFVO') {
     const eqRef = bfEl.querySelector(':scope > equipmentListPos');
     if (eqRef) {
       const ref = eqRef.getAttribute('reference');
@@ -446,7 +617,7 @@ function parseBF(bfEl, idMap, keyMap, boId, boDesc) {
         .sort((a, b) => a.pos - b.pos)
     : [];
 
-  return { id, desc, type, verSig, eqType, activities };
+  return { id, desc, stepType, verSig, eqType, activities, boId, boDesc };
 }
 
 function parseAct(spEl, keyMap, boId, boDesc, bfId, bfDesc) {
@@ -479,9 +650,14 @@ function parseAct(spEl, keyMap, boId, boDesc, bfId, bfDesc) {
     refs  = (raw.match(/valueSpecProp/g)||[]).length;
     const uEl = spEl.querySelector('unit');
     unit = uEl ? (gt(gc(uEl,'customId')||uEl,'customId') || '') : '';
+  } else if (tagIs(spEl,'TextSpecPropVO')) {
+    type='Text'; cls='text';
+  } else if (tagIs(spEl,'DateSpecPropVO')) {
+    type='Date'; cls='date';
+  } else if (tagIs(spEl,'ListSpecPropVO')) {
+    type='List'; cls='list';
   }
 
-  // Instruction text — use findEl since InstructionVO also has a dotted class name
   const instrColl = spEl.querySelector('instructionCollection > c');
   const instrEl   = instrColl ? findEl(instrColl, 'InstructionVO') : null;
   const instruction = instrEl ? gt(instrEl,'instructionText') : '';
@@ -515,207 +691,128 @@ function resolveFormula(raw, keyMap) {
       const parts = path.trim().split('-')
         .filter(s => s.includes('@'))
         .map(s => { const key=s.split('@')[1]; return keyMap[key]||key; });
-      const refType = path.includes('MeasuredValueSpecProp') ? 'Measured value activity' : 'Value activity';
-      return `{Value activity ${refType} ${parts.join('/')}}`;
+      return `{Value activity ${parts.join('/')}}`;
     });
 }
 
 /* ================================================================
-   ROW BUILDER
+   PROCESS MAP — CSS + HTML BUILDERS
    ================================================================ */
-function buildRows(g) {
-  const rows = [];
-  for (const bo of g.basicOps) {
-    for (const bf of bo.basicFunctions) {
-      if (bf.activities.length === 0) {
-        rows.push([
-          `${bo.id} > ${bf.id}`,
-          `${bo.id} > ${bf.id}`,
-          `${bo.id}: ${bo.desc} > ${bf.id}: ${bf.desc}`,
-          '','','','0','','',
-          'Basic Function', bf.type,
-          '','','',
-          `${bo.id}: NA > ${bf.id}: NA`,
-          'Low','Static','','',''
-        ]);
-      } else {
-        for (const a of bf.activities) {
-          rows.push([
-            `${bo.id} > ${bf.id}`,
-            `${bo.id} > ${bf.id} > ${a.id}`,
-            `${bo.id}: ${bo.desc} > ${bf.id}: ${bf.desc} > ${a.id}: ${a.desc}`,
-            a.desc,
-            a.formula, a.fType, String(a.refs), '',
-            a.tol,
-            'Activity', a.type,
-            '',
-            bf.verSig ? 'Yes' : '',
-            '',
-            `${bo.id}: NA > ${bf.id}: NA > ${a.id}: NA`,
-            'Low','Static','','',''
-          ]);
-        }
-      }
-    }
-    for (const mo of bo.materialOutputs) {
-      rows.push([
-        `${bo.id} > ${mo.pos||'1'}`,
-        `${bo.id} > ${mo.pos||'1'}`,
-        `${bo.id}: ${bo.desc} > ${mo.pos||'1'}`,
-        '','','','0','','',
-        'Material','MaterialOutput',
-        '','','','',
-        'Low','Static','','',''
-      ]);
-    }
-  }
-  return rows;
-}
-
-/* ================================================================
-   EXCEL EXPORT
-   ================================================================ */
-function exportExcel(g) {
-  const wb = XLSX.utils.book_new();
-  const hdrs = [
-    'Relevant Basic Function','Entry Full Path','Entry Full Path Description',
-    'Activity Description','Formula','Formula Type','No of References',
-    'CXDefinition','MeasuredValue Tolerance','Entry Generic Type','Activity Type',
-    'User Identification','Verification Signature','PCS Element','ActiveFlag',
-    'Risk Assessment','Verification Type (Static or Dynamic)',
-    'Input Value','Expect Value','Pass/Fail'
-  ];
-  const ws = XLSX.utils.aoa_to_sheet([
-    ['MBR / GMBR ID:',g.id,'','MBR / GMBR Description:',g.description,'','MBR / GMBR Version:',g.version],
-    [],
-    ['Manufacturing Order ID: ______________________________________________________'],
-    ['Test Executors: ____________________________________________________________________________________________________'],
-    ['Start Date: _________________________________________________________________________________________________________'],
-    hdrs,
-    ...buildRows(g)
-  ]);
-  ws['!cols'] = [
-    {wch:22},{wch:32},{wch:58},{wch:32},{wch:55},{wch:12},{wch:12},{wch:12},
-    {wch:28},{wch:16},{wch:16},{wch:18},{wch:18},{wch:14},{wch:38},{wch:14},
-    {wch:22},{wch:14},{wch:14},{wch:12}
-  ];
-  XLSX.utils.book_append_sheet(wb, ws, 'Consolidated');
-  const ts = new Date().toISOString().slice(0,16).replace(/[-:T]/g,'').slice(0,12);
-  XLSX.writeFile(wb, `${ts}_${g.id}_TestOptionsFull.xlsx`);
-}
-
-/* ================================================================
-   PROCESS MAP  —  CSS + HTML BUILDERS
-   ================================================================ */
-
 const MAP_CSS = `
 *{box-sizing:border-box}
 .pm-wrap{
-  font-family:"Helvetica Neue","Helvetica","Inter",Arial,sans-serif;
+  font-family:"Graphik","DM Sans","Helvetica Neue","Helvetica","Inter",Arial,sans-serif;
   display:flex;flex-direction:column;align-items:center;padding:8px 4px 4px;
 }
-/* GMBR outer box (Level 1 shell) */
 .gmbr-box{
-  border:2px solid #1a3557;border-radius:10px;background:#fff;
+  border:2px solid #460073;border-radius:10px;background:#fff;
   padding:20px 24px 28px;display:inline-block;
 }
 .gmbr-label{
-  font-size:11px;font-weight:700;color:#1a3557;
+  font-size:12px;font-weight:700;color:#460073;
   text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;
 }
-/* GMBR flow */
 .flow{display:flex;flex-direction:column;align-items:center}
-.arrow{width:2px;background:#1a3557;height:22px;position:relative}
+.arrow{width:2px;background:#A100FF;height:22px;position:relative}
 .arrow::after{
   content:'';position:absolute;bottom:-7px;left:-5px;
   border-left:6px solid transparent;border-right:6px solid transparent;
-  border-top:8px solid #1a3557;
+  border-top:8px solid #A100FF;
 }
 .node-start,.node-end{
   width:120px;height:36px;border-radius:18px;
   display:flex;align-items:center;justify-content:center;
-  font-weight:700;font-size:13px;color:#fff;background:#1a3557;
+  font-weight:700;font-size:12px;color:#fff;background:#818180;
 }
-/* Level 1 — clickable BO card */
-.l1-bo-card{
-  width:480px;border:2px solid #2e6da4;border-radius:8px;
-  background:#eaf2fb;cursor:pointer;
+.level1-bo-card{
+  width:480px;border:2px solid #460073;border-radius:8px;
+  background:#fff;cursor:pointer;
   transition:border-color .15s,box-shadow .15s;overflow:hidden;
 }
-.l1-bo-card:hover{border-color:#1a3557;box-shadow:0 4px 14px rgba(26,51,87,.15)}
-.l1-bo-header{
-  background:#2e6da4;color:#fff;font-weight:700;font-size:13px;
-  padding:10px 16px;display:flex;align-items:center;gap:8px;
+.level1-bo-card:hover{border-color:#7500C0;box-shadow:0 4px 14px rgba(70,0,115,.15)}
+.level1-bo-header{
+  background:transparent;color:#460073;font-weight:700;font-size:12px;
+  padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #e0e0e0;
 }
-.l1-bo-header:hover{background:#245a8a}
-.l1-bo-body{padding:10px 16px;font-size:12px;color:#1a3557}
-.l1-drill{
-  margin-left:auto;font-size:11px;font-weight:400;opacity:.85;
-  background:rgba(255,255,255,.2);border-radius:3px;padding:1px 7px;
+.level1-bo-body{padding:10px 16px;font-size:12px;color:#333}
+.level1-drill{
+  margin-left:auto;font-size:12px;font-weight:400;opacity:.85;
+  background:transparent;border-radius:3px;padding:1px 7px;color:#666;
 }
-/* Level 2 — BO container */
 .node-bo{
-  border:2px solid #2e6da4;border-radius:8px;background:#eaf2fb;overflow:hidden;
+  border:2px solid #460073;border-radius:8px;background:#fff;overflow:hidden;
 }
 .node-bo-title{
-  background:#2e6da4;color:#fff;font-weight:700;font-size:13px;
-  padding:8px 16px;display:flex;align-items:center;gap:8px;
+  background:transparent;color:#460073;font-weight:700;font-size:12px;
+  padding:8px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #e0e0e0;
 }
 .id-badge{background:rgba(255,255,255,.25);border-radius:4px;padding:1px 7px;font-size:11px}
 .bo-inner{padding:16px}
 .inner-flow{display:flex;flex-direction:column;align-items:center}
-.inner-arrow{width:2px;background:#2e6da4;height:18px;position:relative}
+.inner-arrow{width:2px;background:#A100FF;height:18px;position:relative}
 .inner-arrow::after{
   content:'';position:absolute;bottom:-6px;left:-4px;
   border-left:5px solid transparent;border-right:5px solid transparent;
-  border-top:7px solid #2e6da4;
+  border-top:7px solid #A100FF;
 }
 .node-inner-start,.node-inner-end{
   width:90px;height:28px;border-radius:14px;
   display:flex;align-items:center;justify-content:center;
-  font-weight:700;font-size:11px;color:#fff;background:#2e6da4;
+  font-weight:700;font-size:12px;color:#fff;background:#818180;
 }
-/* BF cards */
-.bf-node{width:580px;border-radius:6px;overflow:hidden;border:1.5px solid #2e6da4}
+.bf-node{width:580px;border-radius:6px;overflow:hidden;border:1.5px solid #7500C0;background:#fff}
 .bf-header{
-  background:#2e6da4;color:#fff;padding:7px 14px;
+  background:transparent;color:#1a1a1a;padding:7px 14px;
   display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
+  border-bottom:1px solid #e0e0e0;
 }
-.bf-header.eqm{background:#5b7fa6}
+.bf-header.eqm{border-color:#CFCFCF}
+.bf-header.material{border-color:#FF50A0}
+.bf-header.label{border-color:#2248FF}
+.bf-header.decision{border-color:#A100FF}
+.bf-header.merge,.bf-header.split{border-color:#C2A3FF}
+.bf-header.sync{border-color:#E6DCFF}
 .type-tag{
-  margin-left:auto;background:rgba(0,0,0,.18);border-radius:3px;
-  padding:1px 6px;font-size:10px;white-space:nowrap;
+  margin-left:auto;background:transparent;border-radius:3px;
+  padding:1px 6px;font-size:12px;white-space:nowrap;font-weight:600;color:#666;
 }
 .bf-body{background:#fff;padding:8px 12px}
-/* Activities (shown/hidden by details toggle) */
 .act-details{display:none}
 .act-details.open{display:block}
-/* Activity rows */
 .act-row{
   display:flex;align-items:flex-start;gap:10px;
-  padding:5px 0;border-bottom:1px dashed #ddd;font-size:11.5px;
+  padding:5px 0;border-bottom:1px dashed #ddd;font-size:12px;
 }
 .act-row:last-child{border-bottom:none}
-.act-id{font-weight:700;color:#1a3557;min-width:50px}
+.act-id{font-weight:700;color:#460073;min-width:50px}
 .act-desc{flex:1;color:#333}
-.act-extra{font-size:10px;color:#888;margin-top:2px}
-.act-type{display:inline-block;border-radius:3px;padding:1px 6px;font-size:10.5px;font-weight:600}
+.act-extra{font-size:12px;color:#888;margin-top:2px}
+.act-type{display:inline-block;border-radius:3px;padding:1px 6px;font-size:12px;font-weight:600;margin-left:auto;text-align:right}
+/* Cross-reference links */
+.cbf-id-link{color:#3D006B;text-decoration:underline dotted;cursor:pointer;font-weight:700;font-size:12px}
+.cbf-id-link:hover{color:#A100FF}
+.bf-title-expand{cursor:pointer}
+.bf-title-expand:hover{text-decoration:underline dotted}
+/* Highlighted node (from RbE cross-ref) */
+.bf-node.bf-highlight{border-color:#3D006B !important;border-width:2.5px !important;background:#F3EEF8 !important}
 .t-attr{background:#e3f1e3;color:#2a6b2a}
 .t-mv{background:#fff3cd;color:#856404}
 .t-form{background:#f3e3ff;color:#6a1fa3}
 .t-eqm{background:#dce8f5;color:#1a4a7a}
+.t-mat{background:#fef0e0;color:#7d4800}
+.t-text{background:#e8f4fd;color:#1a5276}
+.t-date{background:#fdfde8;color:#7d7800}
+.t-list{background:#f0fdf0;color:#276221}
 .sig-pill{
   background:#fde8e8;color:#c0392b;border-radius:3px;
   padding:1px 5px;font-size:10px;font-weight:600;margin-left:6px;
 }
-/* Material output */
 .mat-out{
-  width:580px;border:1.5px dashed #e67e22;border-radius:6px;
-  background:#fef9f0;padding:8px 14px;font-size:11.5px;color:#7d4800;
-  display:flex;align-items:center;gap:10px;
+  width:580px;border:1.5px dashed #FF50A0;border-radius:6px;
+  background:#FFF0F8;padding:8px 14px;font-size:12px;color:#7d0040;
+  display:none;align-items:center;gap:10px;
 }
-.mat-label{font-weight:700;font-size:10px;text-transform:uppercase;color:#e67e22;min-width:90px}
-/* Legend */
+.mat-label{font-weight:700;font-size:12px;text-transform:uppercase;color:#FF50A0;min-width:90px}
 .pm-legend{
   display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:#555;
   margin-top:20px;padding-top:14px;border-top:1px solid #ddd;
@@ -725,14 +822,10 @@ const MAP_CSS = `
 .pm-legend i{width:12px;height:12px;border-radius:2px;display:inline-block;flex-shrink:0}
 `;
 
-/* ── Level state ── */
+/* ── Layer state ── */
 let pmLevel = 1;
 let pmBOIndex = 0;
 let pmShowDetails = false;
-
-function navBtn(label, level, active) {
-  return `<button onclick="setLevel(${level})" style="padding:.35rem .875rem;border-radius:var(--r-pill);border:1.5px solid ${active?'var(--mulberry)':'var(--n300)'};background:${active?'var(--mulberry)':'transparent'};color:${active?'#fff':'var(--n700)'};font:inherit;font-size:.8125rem;font-weight:600;cursor:pointer">${label}</button>`;
-}
 
 function renderMap(g) {
   const nav    = document.getElementById('level-nav');
@@ -746,42 +839,27 @@ function renderMap(g) {
   const detailsLabel = pmShowDetails ? '▲ Hide Activities' : '▼ Show Activities';
 
   nav.innerHTML = `
-  <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem;padding:.75rem 1rem;background:var(--n100);border:1px solid var(--n200);border-radius:var(--r-md)">
-    <span style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mulberry)">Level</span>
-    ${navBtn('1 — Operations', 1, pmLevel===1)}
-    ${navBtn('2 — Basic Functions', 2, pmLevel===2)}
+    <span class="level-label">Level</span>
+    <button class="level-btn ${pmLevel===1?'active':'inactive'}" onclick="setLevel(1)">1 — Operations</button>
+    <button class="level-btn ${pmLevel===2?'active':'inactive'}" onclick="setLevel(2)">2 — Basic Functions</button>
     ${pmLevel===2 && g.basicOps.length>1 ? `
-    <select onchange="setBOIndex(this.value)" style="padding:.35rem .75rem;border-radius:var(--r-md);border:1.5px solid var(--n300);font:inherit;font-size:.8125rem;background:#fff;color:var(--ink);cursor:pointer">
+    <select onchange="setBOIndex(this.value)" style="padding:.3rem .6rem;border-radius:var(--r-md);border:1.5px solid var(--n300);font:inherit;font-size:.8125rem;background:#fff;color:var(--n900);cursor:pointer">
       ${boOptions}
     </select>` : ''}
-    ${pmLevel===2 ? `
-    <button onclick="toggleDetails()" style="padding:.4rem 1.1rem;border-radius:var(--r-pill);border:2px solid ${pmShowDetails?'var(--mulberry-dark)':'var(--gold-dark)'};background:${pmShowDetails?'var(--mulberry)':'var(--gold)'};color:${pmShowDetails?'#fff':'var(--ink)'};font:inherit;font-size:.875rem;font-weight:700;cursor:pointer;margin-left:auto;box-shadow:0 2px 8px rgba(0,0,0,.12)">
-      ${detailsLabel}
-    </button>` : '<span style="margin-left:auto"></span>'}
-    <button onclick="exportLevel()" style="padding:.35rem .875rem;border-radius:var(--r-pill);border:1.5px solid var(--n300);background:transparent;color:var(--n700);font:inherit;font-size:.8125rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.35rem">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Export
-    </button>
-  </div>`;
+    ${pmLevel===2 ? `<span style="font-size:.75rem;color:var(--n500);margin-left:.5rem">Click a node title to expand activities · Click its ID to jump to Review by Exception</span>` : ''}`;
 
-  render.innerHTML = pmLevel === 1 ? buildL1HTML(g) : buildL2HTML(g, bo, false);
+  render.innerHTML = pmLevel === 1 ? buildLevel1HTML(g) : buildLevel2HTML(g, bo, false);
 }
 
 function setLevel(l)   { pmLevel = l; renderMap(GMBR); }
 function setBOIndex(i) { pmBOIndex = parseInt(i); renderMap(GMBR); }
 function drillDown(i)  { pmBOIndex = i; pmLevel = 2; renderMap(GMBR); }
 
-function toggleDetails() {
-  pmShowDetails = !pmShowDetails;
-  document.querySelectorAll('.act-details').forEach(el => el.classList.toggle('open', pmShowDetails));
-  renderMap(GMBR);
-}
-
-function exportLevel() {
+function exportMapHTML() {
   if (!GMBR) return;
   const bo = GMBR.basicOps[pmBOIndex];
-  const html  = pmLevel === 1 ? buildL1Standalone(GMBR) : buildL2Standalone(GMBR, bo);
-  const label = pmLevel === 1 ? 'L1_Operations' : `L2_${bo.id}_BasicFunctions`;
+  const html  = pmLevel === 1 ? buildLevel1Standalone(GMBR) : buildLevel2Standalone(GMBR, bo);
+  const label = pmLevel === 1 ? 'Layer1_Operations' : `Layer2_${bo.id}`;
   const ts = new Date().toISOString().slice(0,16).replace(/[-:T]/g,'').slice(0,12);
   const blob = new Blob([html], {type:'text/html'});
   const a = document.createElement('a');
@@ -790,27 +868,27 @@ function exportLevel() {
   a.click();
 }
 
-/* ── LEVEL 1 ── */
-function buildL1HTML(g) {
+/* ── Level 1 ── */
+function buildLevel1HTML(g) {
   let bos = '';
   g.basicOps.forEach((bo, i) => {
     const pu = bo.productionUnits.join(', ');
     bos += `
     <div class="arrow"></div>
-    <div class="l1-bo-card" onclick="drillDown(${i})" title="Click to view Basic Functions">
-      <div class="l1-bo-header">
+    <div class="level1-bo-card" onclick="drillDown(${i})" title="Click to view Basic Functions">
+      <div class="level1-bo-header">
         <span class="id-badge">${esc(bo.id)}</span>
         ${esc(bo.desc)}
-        <span class="l1-drill">→ ${bo.basicFunctions.length} Basic Function${bo.basicFunctions.length!==1?'s':''}</span>
+        <span class="level1-drill">→ ${bo.basicFunctions.length} BF${bo.basicFunctions.length!==1?'s':''}</span>
       </div>
-      ${pu ? `<div class="l1-bo-body">Production Unit: ${esc(pu)}</div>` : ''}
+      ${pu ? `<div class="level1-bo-body">Production Unit: ${esc(pu)}</div>` : ''}
     </div>`;
   });
 
   return `<style>${MAP_CSS}</style>
   <div class="pm-scroll"><div class="pm-wrap">
     <div class="gmbr-box">
-      <div class="gmbr-label">Generic Master Batch Record (GMBR) &mdash; Level 1: Basic Operations</div>
+      <div class="gmbr-label">GMBR — Level 1: Basic Operations</div>
       <div class="flow">
         <div class="node-start">START</div>
         ${bos}
@@ -822,12 +900,13 @@ function buildL1HTML(g) {
   </div></div>`;
 }
 
-function buildL1Standalone(g) {
-  return wrapStandalone(g, 'Level 1 — Basic Operations', buildL1HTML(g).replace(/onclick="drillDown\(\d+\)"/g,'style="cursor:default"'));
+function buildLevel1Standalone(g) {
+  return wrapStandalone(g, 'Level 1 — Basic Operations',
+    buildLevel1HTML(g).replace(/onclick="drillDown\(\d+\)"/g,'style="cursor:default"'));
 }
 
-/* ── LEVEL 2 ── */
-function buildL2HTML(g, bo, forExport=false) {
+/* ── Level 2 ── */
+function buildLevel2HTML(g, bo, forExport=false) {
   const pu = bo.productionUnits.join(', ');
   let bfs = '';
   for (const bf of bo.basicFunctions) bfs += buildBFHTML(bf, forExport ? true : pmShowDetails);
@@ -838,7 +917,7 @@ function buildL2HTML(g, bo, forExport=false) {
     <div class="inner-arrow"></div>
     <div class="mat-out">
       <span class="mat-label">Material Output</span>
-      <span style="font-size:18px;color:#e67e22">⇒</span>
+      <span style="font-size:18px;color:#FF50A0">⇒</span>
       <div>
         <div><strong>${esc(mo.name)}</strong></div>
         <div style="font-size:10px;color:#888;margin-top:2px">
@@ -870,22 +949,21 @@ function buildL2HTML(g, bo, forExport=false) {
   </div></div>`;
 }
 
-function buildL2Standalone(g, bo) {
-  return wrapStandalone(g, `Level 2 — ${bo.id}: ${bo.desc}`, buildL2HTML(g, bo, false));
+function buildLevel2Standalone(g, bo) {
+  return wrapStandalone(g, `Level 2 — ${bo.id}: ${bo.desc}`, buildLevel2HTML(g, bo, false));
 }
 
-
-function wrapStandalone(g, levelLabel, bodyHTML) {
+function wrapStandalone(g, layerLabel, bodyHTML) {
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<title>Process Map — ${esc(g.id)} — ${esc(levelLabel)}</title>
+<title>Process Map — ${esc(g.id)} — ${esc(layerLabel)}</title>
 <style>
-body{background:#F7F5F2;padding:30px;margin:0;font-family:"Helvetica Neue",Arial,sans-serif}
-h1{font-size:18px;color:#1a3557;margin:0 0 4px}
+body{background:#F7F5F2;padding:30px;margin:0;font-family:"Graphik","DM Sans","Helvetica Neue",Arial,sans-serif}
+h1{font-size:18px;color:#460073;margin:0 0 4px}
 .meta-bar{font-size:12px;color:#555;margin-bottom:24px}
-.meta-bar strong{color:#1a3557}
+.meta-bar strong{color:#460073}
 </style></head>
 <body>
-<h1>Process Map — ${esc(g.id)} &mdash; ${esc(levelLabel)}</h1>
+<h1>Process Map — ${esc(g.id)} &mdash; ${esc(layerLabel)}</h1>
 <div class="meta-bar">
   <strong>ID:</strong> ${esc(g.id)} &nbsp;&nbsp;
   <strong>Description:</strong> ${esc(g.description)} &nbsp;&nbsp;
@@ -898,29 +976,42 @@ ${bodyHTML}
 
 const LEGEND_HTML = `
 <div class="pm-legend">
-  <span><i style="background:#e3f1e3;border:1px solid #2a6b2a"></i>Attributive</span>
-  <span><i style="background:#fff3cd;border:1px solid #856404"></i>Measured Value</span>
-  <span><i style="background:#f3e3ff;border:1px solid #6a1fa3"></i>Formula</span>
-  <span><i style="background:#dce8f5;border:1px solid #1a4a7a"></i>Equipment Allocation</span>
-  <span><i style="background:#fef9f0;border:1px dashed #e67e22"></i>Material Output</span>
-  <span><i style="background:#fde8e8;border:1px solid #c0392b"></i>Verification Signature required</span>
+  <span><i style="background:#fff;border:1.5px solid #460073"></i>Flow control</span>
+  <span><i style="background:#fff;border:1.5px solid #FF50A0"></i>Material flow</span>
+  <span><i style="background:#fff;border:1.5px solid #CFCFCF"></i>Equipment</span>
+  <span><i style="background:#fff;border:1.5px solid #2248FF"></i>Label / Context</span>
+  <span><i style="background:#fde8e8;border:1px solid #c0392b"></i>Verification Sig.</span>
 </div>`;
 
 /* ── BF card builder ── */
+function getBFHeaderClass(bf) {
+  const t = bf.stepType;
+  if (['EqmAllocationBFVO','EqmDeallocationBFVO','EqmIdentificationBFVO'].includes(t)) return 'eqm';
+  if (['TakeOutBFVO','IdentityCheckBFVO','YieldDeterminationBFVO','BundleCreationBFVO','StockCreationBFVO'].includes(t)) return 'material';
+  if (['GenericLabelPrintBfVO','SetCxBfVO'].includes(t)) return 'label';
+  if (t === 'SpecDecisionVO') return 'decision';
+  if (t === 'MergeVO') return 'merge';
+  if (t === 'SplittingVO') return 'split';
+  if (t === 'SynchronisationVO') return 'sync';
+  return '';
+}
+
 function buildBFHTML(bf, showDetails=false) {
-  const isEqm = bf.type === 'EqmAllocation';
+  const hdrCls = getBFHeaderClass(bf);
+  const typeLabel = STEP_LABEL[bf.stepType] || bf.stepType;
   let acts = '';
 
-  if (isEqm && bf.activities.length === 0) {
+  if (['EqmAllocationBFVO','EqmDeallocationBFVO','EqmIdentificationBFVO'].includes(bf.stepType) && bf.activities.length === 0) {
     acts = `<div class="act-row">
       <span class="act-id">—</span>
-      <div><div class="act-desc">Allocate equipment${bf.eqType?': <strong>'+esc(bf.eqType)+'</strong>':''}</div></div>
-      <span class="act-type t-eqm">EqmAllocation</span>
+      <div><div class="act-desc">${esc(typeLabel)}${bf.eqType?' — <strong>'+esc(bf.eqType)+'</strong>':''}</div></div>
+      <span class="act-type t-eqm">${esc(typeLabel)}</span>
     </div>`;
   }
   for (const a of bf.activities) {
-    const tcls = {Attributive:'t-attr',MeasuredValue:'t-mv',Formula:'t-form'}[a.type]||'';
-    const sig  = bf.verSig ? `<span class="sig-pill">⚠ Verification Sig</span>` : '';
+    const TCLS = {Attributive:'t-attr',MeasuredValue:'t-mv',Formula:'t-form',Text:'t-text',Date:'t-date',List:'t-list'};
+    const tcls = TCLS[a.type] || '';
+    const sig  = bf.verSig ? `<span class="sig-pill">⚠ Sig</span>` : '';
     let ex = '';
     if (a.instruction) ex += esc(a.instruction);
     if (a.tol)    ex += (ex?' &nbsp;|&nbsp; ':'') + esc(a.tol.replace('maxTolerance-','max ').replace(';minTolerance-',', min '));
@@ -938,48 +1029,581 @@ function buildBFHTML(bf, showDetails=false) {
     </div>`;
   }
 
+  const materialNameLine = bf.stepType === 'TakeOutBFVO' && bf.boId
+    ? `<div style="font-size:11px;font-style:italic;color:#185FA5;margin-top:2px">${esc(bf.boId)}</div>`
+    : '';
+
   return `
   <div class="inner-arrow"></div>
-  <div class="bf-node">
-    <div class="bf-header${isEqm?' eqm':''}">
-      <span class="id-badge">${esc(bf.id)}</span>
-      ${esc(bf.desc)}
-      <span class="type-tag">${isEqm?'Equipment Allocation':'Common BF'}</span>
-      ${bf.verSig?`<span style="background:#fde8e8;color:#c0392b;border-radius:3px;padding:1px 5px;font-size:10px;font-weight:600;margin-left:4px">⚠ Sig</span>`:''}
+  <div class="bf-node" data-bfid="${esc(bf.id)}" style="border-color:${STEP_COLOUR[bf.stepType]||'#7500C0'}">
+    <div class="bf-header${hdrCls?' '+hdrCls:''}">
+      <div style="flex:1">
+        <span class="cbf-id-link" onclick="navToRBE('${esc(bf.id)}')" title="View in Review by Exception">${esc(bf.id)}</span>
+        <span class="bf-title-expand" onclick="toggleBFNode(this)" title="Click to expand/collapse activities">${esc(bf.desc)}</span>
+        ${materialNameLine}
+      </div>
+      <span class="type-tag">${esc(typeLabel)}</span>
+      ${bf.verSig?`<span style="background:#fde8e8;color:#c0392b;border-radius:3px;padding:1px 5px;font-size:12px;font-weight:600;margin-left:4px">⚠ Sig</span>`:''}
     </div>
     <div class="act-details${showDetails?' open':''}">
       <div class="bf-body">
-        ${acts||'<div style="font-size:11px;color:#aaa;padding:4px 0">No activities</div>'}
+        ${acts||'<div style="font-size:12px;color:#aaa;padding:4px 0">No activities</div>'}
       </div>
     </div>
   </div>`;
 }
 
 /* ================================================================
-   TABLE RENDER
+   REVIEW BY EXCEPTION
    ================================================================ */
-const TYPE_CLS = {Attributive:'attr',MeasuredValue:'mv',Formula:'form',EqmAllocation:'eqm',MaterialOutput:'mat'};
+const COL6_OPTIONS = [
+  'Yes — entry into EBR or equipment verified by second operator',
+  'Yes — validated calculation/interface transfer',
+  'Yes — tolerance set/set value check/attributive step',
+  'Yes — presence of physical sample will be checked during the order',
+  'No — system cannot verify different individuals performing the task',
+  'No — presence of physical sample will not be checked during the order',
+  'No — data not available until after production',
+  'N/A — not disposition relevant (procedural step or functionality only)',
+];
 
-function renderTable(g) {
-  const COLS = [0,1,2,3,4,5,6,8,9,10,12,15,16];
-  const tbody = document.getElementById('tbl-body');
-  tbody.innerHTML = '';
-  for (const row of buildRows(g)) {
-    const tr = document.createElement('tr');
-    COLS.forEach(ci => {
-      const td = document.createElement('td');
-      const v  = row[ci] || '';
-      if (ci === 10) {
-        td.innerHTML = v ? `<span class="tbadge t-${TYPE_CLS[v]||''}">${esc(v)}</span>` : '';
-      } else if (ci === 12) {
-        td.innerHTML = v === 'Yes' ? `<span class="sig-badge">Yes</span>` : '';
-      } else {
-        td.textContent = v;
-      }
-      tr.appendChild(td);
-    });
-    tbody.appendChild(tr);
+const COL4_OPTIONS = [
+  'CPP/CQA or Critical Step',
+  'Functionality or Procedural Step',
+];
+
+const COL5_OPTIONS = [
+  'OK',
+  'OK with 2nd person verification',
+  'OK with block signature',
+  'N/A',
+];
+
+function assignRisk(bf) {
+  // Equipment allocation/identification → HIGH
+  if (['EqmAllocationBFVO','EqmIdentificationBFVO'].includes(bf.stepType)) return 'HIGH';
+  // SpecDecision → MEDIUM
+  if (bf.stepType === 'SpecDecisionVO') return 'MEDIUM';
+  // Formula with references → MEDIUM
+  if (bf.activities.some(a => a.type === 'Formula' && a.refs > 0)) return 'MEDIUM';
+  return 'LOW';
+}
+
+function rbeDropdown(options, cls) {
+  return `<select class="${cls}" onchange="updateRBERow(this)">
+    <option value="">— select —</option>
+    ${options.map(o => `<option value="${esc(o)}">${esc(o)}</option>`).join('')}
+  </select>`;
+}
+
+function col7Badge(col6Val) {
+  if (!col6Val) return '';
+  const isNo = col6Val.startsWith('No');
+  return isNo
+    ? `<span class="rbr-yes">Yes</span>`
+    : `<span class="rbr-no">No</span>`;
+}
+
+function riskBadge(risk) {
+  const cls = {HIGH:'risk-high',MEDIUM:'risk-med',LOW:'risk-low'}[risk]||'risk-low';
+  return `<span class="${cls}">${risk}</span>`;
+}
+
+function col4Default(bf) {
+  if (['EqmAllocationBFVO','EqmIdentificationBFVO','EqmDeallocationBFVO'].includes(bf.stepType)) return 'Functionality or Procedural Step';
+  if (['SpecDecisionVO','MergeVO','SplittingVO','SynchronisationVO','GenericLabelPrintBfVO','SetCxBfVO'].includes(bf.stepType)) return 'Functionality or Procedural Step';
+  const types = new Set(bf.activities.map(a => a.type));
+  if (types.has('MeasuredValue') || types.has('Formula') || types.has('Attributive')) return 'CPP/CQA or Critical Step';
+  return 'Functionality or Procedural Step';
+}
+
+function col5Default(bf) {
+  if (bf.stepType === 'EqmAllocationBFVO') return 'OK with 2nd person verification';
+  const types = new Set(bf.activities.map(a => a.type));
+  if (types.has('MeasuredValue')) return 'OK with 2nd person verification';
+  if (types.has('Formula')) {
+    return bf.activities.some(a => a.type === 'Formula' && a.refs > 0)
+      ? 'OK with 2nd person verification' : 'OK';
   }
+  if (types.has('Attributive')) return 'OK';
+  return 'OK';
+}
+
+function rbeDropdownWithDefault(options, cls, defaultVal) {
+  const opts = options.map(o =>
+    `<option value="${esc(o)}"${o===defaultVal?' selected':''}>${esc(o)}</option>`
+  ).join('');
+  const hasDefault = defaultVal && options.includes(defaultVal);
+  return `<select class="${cls}${hasDefault?' rbe-auto':''}" onchange="updateRBERow(this)">
+    <option value="">— select —</option>
+    ${opts}
+  </select>`;
+}
+
+function renderRBE(g) {
+  const tbody = document.getElementById('rbe-body');
+  let count = 0;
+  tbody.innerHTML = '';
+
+  for (const bo of g.basicOps) {
+    for (const bf of bo.basicFunctions) {
+      const risk = assignRisk(bf);
+      const path = `${bo.id} > ${bf.id}`;
+      const d4 = col4Default(bf);
+      const d5 = col5Default(bf);
+      const tr = document.createElement('tr');
+      tr.dataset.risk = risk;
+      tr.dataset.bfid = bf.id;
+      tr.innerHTML = `
+        <td style="white-space:nowrap"><span class="rbe-pmref" onclick="navToFlowMap('${esc(bf.id)}')" title="Highlight on flow map">${esc(bf.id)}</span></td>
+        <td style="white-space:nowrap">${esc(path)}</td>
+        <td>${esc(bf.desc)}</td>
+        <td>${rbeDropdownWithDefault(COL4_OPTIONS,'rbe-col4',d4)}</td>
+        <td>${rbeDropdownWithDefault(COL5_OPTIONS,'rbe-col5',d5)}</td>
+        <td>${rbeDropdownWithDefault(COL6_OPTIONS,'rbe-col6','')}</td>
+        <td class="rbe-col7-cell"></td>
+        <td><input type="text" style="width:100%;border:none;background:transparent;font:inherit;font-size:.8125rem;color:var(--n900)" placeholder="—"></td>`;
+      tbody.appendChild(tr);
+      count++;
+    }
+  }
+
+  document.getElementById('rbe-count').textContent = `${count} pathways — ${g.id}`;
+}
+
+function updateRBERow(selectEl) {
+  // Remove purple auto-suggested border on manual change
+  selectEl.classList.remove('rbe-auto');
+
+  const row = selectEl.closest('tr');
+  if (!row) return;
+  const col6Sel = row.querySelector('.rbe-col6');
+  if (!col6Sel) return;
+  const col7Cell = row.querySelector('.rbe-col7-cell');
+  if (col7Cell) col7Cell.innerHTML = col7Badge(col6Sel.value);
+}
+
+function exportRBE(g) {
+  const wb = XLSX.utils.book_new();
+  const hdrs = [
+    'Process Map Ref. Step',
+    'GMBR Path Reference',
+    'Description',
+    'Process Step Type',
+    'Confirmation Level Required',
+    "Can data be QA'd at time of order?",
+    'Required at Batch Record Review?',
+    'Comment',
+  ];
+
+  const rows = [hdrs];
+  const tbody = document.getElementById('rbe-body');
+  for (const tr of tbody.rows) {
+    const cells = tr.cells;
+    const col6Val = cells[5].querySelector('select')?.value || '';
+    const col7Val = col6Val ? (col6Val.startsWith('No') ? 'Yes' : 'No') : '';
+    rows.push([
+      cells[0].textContent.trim(),
+      cells[1].textContent.trim(),
+      cells[2].textContent.trim(),
+      cells[3].querySelector('select')?.value || '',
+      cells[4].querySelector('select')?.value || '',
+      col6Val,
+      col7Val,
+      cells[7].querySelector('input')?.value || '',
+    ]);
+  }
+
+  const ws = XLSX.utils.aoa_to_sheet([
+    [`GMBR ID: ${g.id}`, '', `Description: ${g.description}`, '', `Version: ${g.version}`],
+    [],
+    ...rows,
+  ]);
+
+  // Column widths
+  ws['!cols'] = [{wch:18},{wch:22},{wch:38},{wch:32},{wch:34},{wch:58},{wch:28},{wch:30}];
+
+  // Colour code col7 (column G, index 6, starting from row 4 = xlsx index 3)
+  const range = XLSX.utils.decode_range(ws['!ref']);
+  for (let R = 3; R <= range.e.r; R++) {
+    const cell = ws[XLSX.utils.encode_cell({r: R, c: 6})];
+    if (cell && cell.v === 'Yes') {
+      cell.s = { fill: { fgColor: { rgb: 'FFC7CE' } }, font: { color: { rgb: '9C0006' } } };
+    } else if (cell && cell.v === 'No') {
+      cell.s = { fill: { fgColor: { rgb: 'C6EFCE' } }, font: { color: { rgb: '276221' } } };
+    }
+  }
+
+  XLSX.utils.book_append_sheet(wb, ws, 'Review by Exception');
+  const ts = new Date().toISOString().slice(0,16).replace(/[-:T]/g,'').slice(0,12);
+  XLSX.writeFile(wb, `${ts}_${g.id}_ReviewByException.xlsx`);
+}
+
+/* ================================================================
+   CROSS-REFERENCE NAVIGATION
+   ================================================================ */
+function navToRBE(bfId) {
+  // Switch to RbE tab
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  const rbeBtn = document.querySelector('[data-tab="rbe"]');
+  if (rbeBtn) rbeBtn.classList.add('active');
+  const rbePane = document.getElementById('tab-rbe');
+  if (rbePane) rbePane.classList.add('active');
+
+  // Clear previous highlights
+  document.querySelectorAll('#rbe-body tr').forEach(tr => tr.classList.remove('rbe-highlight'));
+
+  // Highlight matching rows and scroll to first
+  let first = null;
+  document.querySelectorAll('#rbe-body tr').forEach(tr => {
+    if (tr.dataset.bfid === bfId) {
+      tr.classList.add('rbe-highlight');
+      if (!first) first = tr;
+    }
+  });
+  if (first) first.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function navToFlowMap(bfId) {
+  // Switch to map tab
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  const mapBtn = document.querySelector('[data-tab="map"]');
+  if (mapBtn) mapBtn.classList.add('active');
+  const mapPane = document.getElementById('tab-map');
+  if (mapPane) mapPane.classList.add('active');
+
+  // Ensure we're on Level 2 if needed
+  if (GMBR && pmLevel !== 2) { pmLevel = 2; renderMap(GMBR); }
+
+  // Clear previous highlights
+  document.querySelectorAll('.bf-node').forEach(n => n.classList.remove('bf-highlight'));
+
+  // Highlight the target node and scroll
+  const node = document.querySelector(`.bf-node[data-bfid="${bfId}"]`);
+  if (node) {
+    node.classList.add('bf-highlight');
+    node.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+}
+
+function toggleBFNode(el) {
+  const node = el.closest('.bf-node');
+  const acts = node?.querySelector('.act-details');
+  if (acts) acts.classList.toggle('open');
+}
+
+/* ================================================================
+   MBR REQUIREMENT SPEC PREVIEW
+   ================================================================ */
+function auto(text) {
+  return `<span class="urs-field-auto">${esc(text)}</span>`;
+}
+function manual(placeholder) {
+  return `<span class="urs-field-manual">${esc(placeholder)}</span>`;
+}
+
+function buildURSPreview(g) {
+  const preview = document.getElementById('urs-preview');
+  document.getElementById('urs-draft-label').textContent = `Draft v1.0 — ${g.description}`;
+
+  const boFlowMaps = g.basicOps.map(bo => {
+    const mapHtml = buildLevel2HTML(g, bo, true).replace(/<style>[\s\S]*?<\/style>/, '');
+    return `
+      <div style="page-break-inside:avoid;margin-bottom:2rem">
+        <p class="urs-h2">${esc(bo.id)} — ${esc(bo.desc)}</p>
+        <style>${MAP_CSS}</style>
+        ${mapHtml}
+        <p class="urs-map-caption">Figure: ${esc(bo.id)} — ${esc(bo.desc)} (Level 2 process flow)</p>
+      </div>`;
+  }).join('');
+
+  preview.innerHTML = `
+  <div class="urs-preview">
+
+    <!-- COVER -->
+    <div class="urs-cover">
+      <div class="urs-cover-title">MBR User Requirements Specification</div>
+      <div class="urs-cover-sub">${auto(g.description)}</div>
+      <dl class="urs-cover-meta">
+        <dt>Document ID</dt><dd>${manual('[Doc ID]')}</dd>
+        <dt>Version</dt><dd>${manual('[Version]')}</dd>
+        <dt>Date</dt><dd>${manual('[Date]')}</dd>
+        <dt>Status</dt><dd>${manual('Draft')}</dd>
+        <dt>GMBR ID</dt><dd>${auto(g.id)}</dd>
+        <dt>Material</dt><dd>${auto(g.materialName || '—')}</dd>
+      </dl>
+    </div>
+
+    <!-- TOC -->
+    <div class="urs-section">
+      <p class="urs-h1">Table of Contents</p>
+      <ol class="urs-toc" style="padding-left:1.5rem">
+        <li>Introduction</li>
+        <ol style="padding-left:1.5rem">
+          <li>Scope</li>
+        </ol>
+        <li>Limitations</li>
+        <li>Process Overview and Requirements</li>
+        <ol style="padding-left:1.5rem">
+          <li>Process Overview</li>
+          <li>Additional Requirements</li>
+        </ol>
+        <li>Roles and Responsibilities</li>
+        <li>Definitions and Acronyms</li>
+        <li>Reference Documents</li>
+      </ol>
+    </div>
+
+    <!-- VERSION HISTORY -->
+    <div class="urs-section">
+      <p class="urs-h1">Version History</p>
+      <table class="urs-table">
+        <thead><tr><th>Version</th><th>Date</th><th>Author</th><th>Description of Change</th></tr></thead>
+        <tbody>
+          <tr><td>1.0</td><td>${manual('[Date]')}</td><td>${manual('[Author]')}</td><td>Initial draft</td></tr>
+          <tr><td colspan="4" style="background:#FFF3CD;color:#7D5800;font-size:9pt;font-style:italic">✎ Add further version history rows manually in Word after export</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="urs-section">
+      <p class="urs-h1">1. Introduction</p>
+      <p class="urs-p">This User Requirements Specification (URS) defines the functional and operational requirements for the Electronic Batch Record (EBR) solution implemented within ${manual('[Client Name]')} using PAS-X MES. This document forms part of the formal validation package for the ${auto(g.description || g.id)} Generic Master Batch Record (GMBR).</p>
+      <p class="urs-p">The production unit in scope is ${manual('[Production Unit]')}. This document has been authored in accordance with GAMP 5 guidelines and applicable GxP regulatory requirements.</p>
+    </div>
+
+    <!-- SECTION 1.1 -->
+    <div class="urs-section">
+      <p class="urs-h2">1.1 Scope</p>
+      <p class="urs-p">This URS covers the requirements for GMBR ${auto(g.id)} — ${auto(g.description)}. The GMBR was exported from PAS-X MES version 3.3.2 and contains ${auto(String(g.basicOps.length))} Basic Operation(s).</p>
+      <p class="urs-h2">Manufacturing Sites in Scope</p>
+      <table class="urs-table">
+        <thead><tr><th>Site Name</th><th>Location</th><th>Production Unit</th></tr></thead>
+        <tbody>
+          <tr><td>${manual('[Site Name]')}</td><td>${manual('[Location]')}</td><td>${manual('[Production Unit]')}</td></tr>
+          <tr><td colspan="3" style="background:#FFF3CD;color:#7D5800;font-size:9pt;font-style:italic">✎ Add one row per site — complete manually in Word after export</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="urs-section">
+      <p class="urs-h1">2. Limitations</p>
+      <p class="urs-p">This document reflects the requirements as captured in the PAS-X GMBR XML export at the time of generation. Any changes made to the GMBR after this export are not reflected in this document and must be manually incorporated via a document revision. This URS does not cover infrastructure, network, or hardware requirements, which are addressed in separate validation documentation.</p>
+    </div>
+
+    <!-- SECTION 3.1 -->
+    <div class="urs-section">
+      <p class="urs-h1">3. Process Overview and Requirements</p>
+      <p class="urs-h2">3.1 Process Overview</p>
+      <p class="urs-p">The following process flow diagrams represent each Basic Operation within the GMBR, showing the sequence of Basic Functions (sub-steps) as defined in PAS-X. Each diagram is auto-generated from the GMBR XML export.</p>
+      ${boFlowMaps}
+    </div>
+
+    <!-- SECTION 3.2 -->
+    <div class="urs-section">
+      <p class="urs-h2">3.2 Additional Requirements</p>
+      <p class="urs-p">The EBR system shall enforce all configured process parameters, tolerances, and decision logic as defined within the GMBR. All verification signature steps shall require an authorised user confirmation before the step can be completed. The system shall prevent progression past a failed tolerance check without documented deviation handling.</p>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="urs-section">
+      <p class="urs-h1">4. Roles and Responsibilities</p>
+      <table class="urs-table">
+        <thead><tr><th>Role</th><th>Responsibility</th><th>Name / Organisation</th></tr></thead>
+        <tbody>
+          <tr><td>${manual('[Role]')}</td><td>${manual('[Responsibility]')}</td><td>${manual('[Name / Org]')}</td></tr>
+          <tr><td colspan="3" style="background:#FFF3CD;color:#7D5800;font-size:9pt;font-style:italic">✎ Add one row per role — complete manually in Word after export</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="urs-section">
+      <p class="urs-h1">5. Definitions and Acronyms</p>
+      <table class="urs-table">
+        <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+        <tbody>
+          ${[
+            ['EBR','Electronic Batch Record'],
+            ['GMBR','Generic Master Batch Record'],
+            ['MES','Manufacturing Execution System'],
+            ['URS','User Requirements Specification'],
+            ['GxP','Good Practice (GMP, GDP, GCP etc.)'],
+            ['GAMP','Good Automated Manufacturing Practice'],
+            ['IQ','Installation Qualification'],
+            ['OQ','Operational Qualification'],
+            ['PQ','Performance Qualification'],
+            ['CBF','Common Basic Function'],
+            ['BO','Basic Operation'],
+            ['ACT','Activity (specPropCollection entry)'],
+            ['PAS-X','Werum PAS-X Manufacturing Execution System'],
+            ['XML','Extensible Markup Language'],
+            ['RBE','Review by Exception'],
+            ['GMP','Good Manufacturing Practice'],
+            ['SOD','Segregation of Duties'],
+            ['SOP','Standard Operating Procedure'],
+          ].map(([t,d]) => `<tr><td><strong>${esc(t)}</strong></td><td>${esc(d)}</td></tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="urs-section">
+      <p class="urs-h1">6. Reference Documents</p>
+      <table class="urs-table">
+        <thead><tr><th>Document Title</th><th>Document Number</th><th>Version</th></tr></thead>
+        <tbody>
+          <tr><td>${manual('[Document Title]')}</td><td>${manual('[Doc Number]')}</td><td>${manual('[Version]')}</td></tr>
+          <tr><td colspan="3" style="background:#FFF3CD;color:#7D5800;font-size:9pt;font-style:italic">✎ Add site-specific reference documents manually in Word after export</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>`;
+}
+
+function exportURSWord(g) {
+  const previewEl = document.getElementById('urs-preview');
+  if (!previewEl) return;
+  const html = `
+<html xmlns:o='urn:schemas-microsoft-com:office:office'
+      xmlns:w='urn:schemas-microsoft-com:office:word'
+      xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset='utf-8'>
+<title>MBR URS — ${g.id}</title>
+<!--[if gte mso 9]>
+<xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml>
+<![endif]-->
+<style>
+  body { font-family: Calibri, sans-serif; font-size: 11pt; margin: 2cm; color: #1a1a1a; }
+  h1 { font-size: 14pt; font-weight: bold; text-transform: uppercase; border-bottom: 2px solid #1a1a1a; padding-bottom: 3pt; margin-bottom: 8pt; }
+  h2 { font-size: 11pt; font-weight: bold; margin-bottom: 4pt; margin-top: 10pt; }
+  table { border-collapse: collapse; width: 100%; margin-bottom: 12pt; font-size: 10pt; }
+  th { background: #460073; color: #ffffff; padding: 4pt 6pt; text-align: left; border: 1pt solid #460073; }
+  td { padding: 4pt 6pt; border: 1pt solid #cccccc; }
+  .amber { background: #FFF3CD; }
+  p { margin-bottom: 6pt; }
+  @page { size: A4; margin: 2cm; }
+</style>
+</head>
+<body>
+${previewEl.innerHTML
+  .replace(/<style>[\s\S]*?<\/style>/g, '')
+  .replace(/class="urs-field-manual"[^>]*>/g, 'class="amber">')
+  .replace(/class="urs-field-auto"[^>]*>/g, '>')
+  .replace(/class="[^"]*"/g, match => {
+    const map = {'urs-h1':'','urs-h2':'','urs-p':'','urs-table':'','urs-preview':'','urs-cover':'','urs-section':''};
+    const cls = match.match(/class="([^"]*)"/)?.[1];
+    return cls && map[cls] !== undefined ? '' : match;
+  })
+}
+</body></html>`;
+  const blob = new Blob([html], {type:'application/msword'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const ts = new Date().toISOString().slice(0,16).replace(/[-:T]/g,'').slice(0,12);
+  a.download = `${ts}_MBR_URS_${g.id}.doc`;
+  a.click();
+}
+
+/* ================================================================
+   EXCEL EXPORT (Pathways — kept for download from map tab)
+   ================================================================ */
+function buildRows(g) {
+  const rows = [];
+  for (const bo of g.basicOps) {
+    for (const bf of bo.basicFunctions) {
+      if (bf.activities.length === 0) {
+        rows.push([
+          `${bo.id} > ${bf.id}`,`${bo.id} > ${bf.id}`,
+          `${bo.id}: ${bo.desc} > ${bf.id}: ${bf.desc}`,
+          '','','','0','','','Basic Function',bf.stepType,
+          '','','',`${bo.id}: NA > ${bf.id}: NA`,'Low','Static','','',''
+        ]);
+      } else {
+        for (const a of bf.activities) {
+          rows.push([
+            `${bo.id} > ${bf.id}`,`${bo.id} > ${bf.id} > ${a.id}`,
+            `${bo.id}: ${bo.desc} > ${bf.id}: ${bf.desc} > ${a.id}: ${a.desc}`,
+            a.desc,a.formula,a.fType,String(a.refs),'',a.tol,
+            'Activity',a.type,'',bf.verSig?'Yes':'','',
+            `${bo.id}: NA > ${bf.id}: NA > ${a.id}: NA`,'Low','Static','','',''
+          ]);
+        }
+      }
+    }
+    for (const mo of bo.materialOutputs) {
+      rows.push([`${bo.id} > ${mo.pos||'1'}`,`${bo.id} > ${mo.pos||'1'}`,
+        `${bo.id}: ${bo.desc} > ${mo.pos||'1'}`,'','','','0','','',
+        'Material','MaterialOutput','','','','','Low','Static','','','']);
+    }
+  }
+  return rows;
+}
+
+/* ================================================================
+   DRAW.IO EXPORT
+   ================================================================ */
+function escXml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function buildDrawioXML(g) {
+  const bo = g.basicOps[pmBOIndex];
+  const cells = [];
+  let nextId = 2, y = 20;
+  const CX = 300;
+
+  function addShape(label, style, w, h) {
+    const id = nextId++;
+    cells.push(`<mxCell id="${id}" value="${escXml(label)}" style="${style}" vertex="1" parent="1"><mxGeometry x="${CX - w/2}" y="${y}" width="${w}" height="${h}" as="geometry"/></mxCell>`);
+    y += h + 28;
+    return id;
+  }
+  function addEdge(src, tgt) {
+    cells.push(`<mxCell id="${nextId++}" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#A100FF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" source="${src}" target="${tgt}" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>`);
+  }
+
+  const termStyle = `rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#818180;fontColor=#ffffff;strokeColor=#818180;fontStyle=1;fontSize=12;`;
+  const boStyle   = `rounded=1;whiteSpace=wrap;html=1;fillColor=#460073;fontColor=#ffffff;strokeColor=#460073;fontStyle=1;fontSize=11;`;
+  const bfStyle   = c => `rounded=1;whiteSpace=wrap;html=1;fillColor=${c};fontColor=${c==='#CFCFCF'?'#1a1a1a':'#ffffff'};strokeColor=${c};fontStyle=1;fontSize=11;`;
+
+  let prev = addShape('START', termStyle, 130, 40);
+
+  if (pmLevel === 1) {
+    for (const b of g.basicOps) {
+      const id = addShape(`${b.id}: ${b.desc}`, boStyle, 380, 60);
+      addEdge(prev, id); prev = id;
+    }
+  } else {
+    for (const bf of bo.basicFunctions) {
+      const colour = STEP_COLOUR[bf.stepType] || '#7500C0';
+      const label = `${bf.id}: ${bf.desc}  [${STEP_LABEL[bf.stepType]||bf.stepType}]${bf.verSig ? '  ⚠' : ''}`;
+      const id = addShape(label, bfStyle(colour), 440, 60);
+      addEdge(prev, id); prev = id;
+      if (pmShowDetails) {
+        for (const a of bf.activities) {
+          const aLabel = `${a.id}: ${a.desc}  [${a.type}]`;
+          const aid = addShape(aLabel, 'rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f0ff;fontColor=#460073;strokeColor=#C2A3FF;fontSize=10;align=left;spacingLeft=8;', 420, 40);
+          addEdge(prev, aid); prev = aid;
+        }
+      }
+    }
+    for (const mo of bo.materialOutputs) {
+      const mid = addShape(`Material Output: ${mo.name}  (${mo.target} ${mo.unit})`, 'rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF0F8;fontColor=#7d0040;strokeColor=#FF50A0;dashed=1;fontSize=10;', 440, 50);
+      addEdge(prev, mid); prev = mid;
+    }
+  }
+
+  const endId = addShape('END', termStyle, 130, 40);
+  addEdge(prev, endId);
+
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<mxGraphModel dx="1422" dy="762" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">\n  <root><mxCell id="0"/><mxCell id="1" parent="0"/>${cells.join('')}</root>\n</mxGraphModel>`;
 }
 
 /* ================================================================
@@ -987,20 +1611,31 @@ function renderTable(g) {
    ================================================================ */
 let GMBR = null;
 
-const showErr = msg => { const e=document.getElementById('err'); e.textContent=msg; e.classList.add('show'); };
-const clearErr = () => document.getElementById('err').classList.remove('show');
+const showErr = msg => {
+  ['err','err2'].forEach(id => {
+    const e = document.getElementById(id);
+    if (e) { e.textContent = msg; e.classList.add('show'); }
+  });
+};
+const clearErr = () => document.querySelectorAll('.error-banner').forEach(e => e.classList.remove('show'));
 
-function process(xml) {
+function process(xml, filename) {
   clearErr();
   try {
     GMBR = parseGMBR(xml);
-    showResults(GMBR);
+    showResults(GMBR, filename);
   } catch(e) { showErr('Parse error: ' + e.message); }
 }
 
-function showResults(g) {
+function showResults(g, filename) {
   document.getElementById('upload-section').style.display = 'none';
   document.getElementById('results').classList.add('show');
+
+  if (filename) {
+    const fn = document.getElementById('nav-filename');
+    fn.textContent = filename;
+    fn.classList.add('show');
+  }
 
   document.getElementById('res-title').textContent = `${g.id} — ${g.description}`;
   const bfTotal = g.basicOps.reduce((s,b) => s + b.basicFunctions.length, 0);
@@ -1016,19 +1651,23 @@ function showResults(g) {
 
   pmLevel = 1; pmBOIndex = 0; pmShowDetails = false;
   renderMap(g);
-  renderTable(g);
+  renderRBE(g);
+  buildURSPreview(g);
 }
 
 document.getElementById('reset-btn').addEventListener('click', () => {
   GMBR = null;
   document.getElementById('results').classList.remove('show');
   document.getElementById('upload-section').style.display = '';
+  document.getElementById('nav-filename').classList.remove('show');
   clearErr();
 });
 
 document.getElementById('file-input').addEventListener('change', e => {
   const f = e.target.files[0]; if (!f) return;
-  const r = new FileReader(); r.onload = ev => process(ev.target.result); r.readAsText(f);
+  const r = new FileReader();
+  r.onload = ev => process(ev.target.result, f.name);
+  r.readAsText(f);
   e.target.value = '';
 });
 
@@ -1038,7 +1677,9 @@ dz.addEventListener('dragleave', () => dz.classList.remove('over'));
 dz.addEventListener('drop', e => {
   e.preventDefault(); dz.classList.remove('over');
   const f = e.dataTransfer.files[0]; if (!f) return;
-  const r = new FileReader(); r.onload = ev => process(ev.target.result); r.readAsText(f);
+  const r = new FileReader();
+  r.onload = ev => process(ev.target.result, f.name);
+  r.readAsText(f);
 });
 
 document.getElementById('paste-toggle-btn').addEventListener('click', () => {
@@ -1049,12 +1690,10 @@ document.getElementById('cancel-paste-btn').addEventListener('click', () => {
 });
 document.getElementById('parse-paste-btn').addEventListener('click', () => {
   const x = document.getElementById('paste-input').value.trim();
-  if (x) { process(x); document.getElementById('paste-area').style.display = 'none'; }
+  if (x) { process(x, 'pasted XML'); document.getElementById('paste-area').style.display = 'none'; }
 });
 
-document.getElementById('btn-excel').addEventListener('click', () => { if (GMBR) exportExcel(GMBR); });
-document.getElementById('btn-map').addEventListener('click', () => { if (GMBR) exportLevel(); });
-
+// Tab switching
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1062,6 +1701,17 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.classList.add('active');
     document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
   });
+});
+
+// Download buttons
+document.getElementById('btn-png-download').addEventListener('click', () => {
+  if (GMBR) exportMapHTML();
+});
+document.getElementById('btn-rbe-download').addEventListener('click', () => {
+  if (GMBR) exportRBE(GMBR);
+});
+document.getElementById('btn-urs-download').addEventListener('click', () => {
+  if (GMBR) exportURSWord(GMBR);
 });
 </script>
 </body>

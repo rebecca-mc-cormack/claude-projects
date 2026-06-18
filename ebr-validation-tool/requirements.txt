@@ -1,0 +1,7 @@
+graphviz>=0.20
+openpyxl>=3.1
+python-docx>=1.1
+
+# NOTE: the graphviz Python package also requires the Graphviz system binaries.
+# Install from https://graphviz.org/download/ and ensure `dot` is on your PATH.
+# Windows: winget install Graphviz.Graphviz

@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rebecca Mc Cormack — FY26 Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family:'Graphik'; src:local('Graphik-Light'),local('Graphik Light'); font-weight:300; }
+@font-face { font-family:'Graphik'; src:local('Graphik-Regular'),local('Graphik Regular'),local('Graphik'); font-weight:400; }
+@font-face { font-family:'Graphik'; src:local('Graphik-Medium'),local('Graphik Medium'); font-weight:500; }
+@font-face { font-family:'Graphik'; src:local('Graphik-Semibold'),local('Graphik Semibold'); font-weight:600; }
+@font-face { font-family:'Graphik'; src:local('Graphik-Bold'),local('Graphik Bold'); font-weight:700; }
+
+:root {
+  --purple:    #A100FF;
+  --purple-dk: #7500C0;
+  --purple-dkst:#460073;
+  --purple-lt: #C2A3FF;
+  --purple-lts:#E6DCFF;
+  --black:     #000000;
+  --text:      #1a1a1a;
+  --text-sec:  #555555;
+  --border:    #D9D9D9;
+  --bg-alt:    #F5F5F5;
+  --white:     #FFFFFF;
+  --font:      'Graphik','DM Sans','Helvetica Neue',Arial,sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; scroll-behavior: smooth; }
+body { font-family: var(--font); background: var(--white); color: var(--text); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+strong { font-weight: 600; }
+button { font: inherit; cursor: pointer; }
+
+/* ── PAGE HEADER (matches PPT) ── */
+.page-header {
+  background: var(--white);
+  padding: 28px 56px 24px;
+  border-bottom: 3px solid var(--purple);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.header-name {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  color: var(--purple);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.header-role {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 4px;
+}
+
+.header-sub {
+  font-size: 12px;
+  color: var(--text-sec);
+  font-weight: 400;
+}
+
+.acc-logo {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.acc-chevron {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--purple);
+  line-height: 1;
+}
+
+.acc-wordmark {
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--black);
+  letter-spacing: -.01em;
+}
+
+/* ── STATS STRIP ── */
+.stats-strip {
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.stat-cell {
+  padding: 16px 20px;
+  border-right: 1px solid var(--border);
+}
+.stat-cell:last-child { border-right: none; }
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-sec);
+  margin-bottom: 4px;
+}
+
+.stat-val {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.2;
+}
+.stat-val.hi { color: var(--purple); }
+
+/* ── SECTION BARS (matches PPT "PROFESSIONAL BACKGROUND" style) ── */
+.section-bar {
+  background: var(--purple);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 9px 56px;
+}
+
+/* ── SECTIONS ── */
+.section {
+  padding: 32px 56px;
+  background: var(--white);
+}
+.section.alt { background: var(--bg-alt); }
+.section.dark { background: var(--purple-dkst); color: var(--white); }
+
+/* ── CONTEXT ── */
+.context-text {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text);
+  max-width: 100%;
+}
+.context-text strong { color: var(--purple-dkst); }
+
+/* ── DELIVERY GRID ── */
+.delivery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  margin-top: 0;
+}
+
+.delivery-card {
+  padding: 28px 24px;
+  border-right: 1px solid var(--border);
+  border-top: 3px solid var(--purple);
+  background: var(--white);
+}
+.delivery-card:last-child { border-right: none; }
+
+.delivery-number {
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 800;
+  color: var(--purple);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.delivery-label {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-sec);
+  line-height: 1.45;
+  max-width: 160px;
+}
+
+/* ── PRIORITY CARDS ── */
+.priorities-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.pcard {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--purple);
+  padding: 20px 22px;
+  cursor: pointer;
+  transition: border-left-color .2s, box-shadow .2s;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pcard:hover {
+  border-left-color: var(--purple-dk);
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+}
+.pcard:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+.pcard-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.pcard-icon {
+  width: 36px; height: 36px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 17px;
+  background: var(--purple-lts);
+}
+
+.pcard-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+
+.pcard-cat {
+  font-size: 11px;
+  color: var(--purple-dk);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.pcard-desc {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text);
+  flex: 1;
+}
+.pcard-desc strong { color: var(--black); }
+
+.pcard-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.priority-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+
+.tag {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-sec);
+  background: var(--bg-alt);
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+}
+
+.pcard-drill {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--purple);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── CATEGORY BADGES ── */
+.priority-cat {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  margin-bottom: 6px;
+}
+.cat-client    { background: #ede0f9; color: var(--purple-dkst); }
+.cat-ai        { background: #f0e3ff; color: var(--purple-dk); }
+.cat-people    { background: #fde8f4; color: #9a0060; }
+.cat-community { background: #dce8ff; color: #1435bb; }
+
+/* ── SKILLS CARDS ── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.skill-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--purple);
+  padding: 22px 22px;
+}
+.skill-card:nth-child(2) { border-top-color: var(--purple-dk); }
+.skill-card:nth-child(3) { border-top-color: var(--purple-dkst); }
+
+.skill-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 8px;
+}
+
+.skill-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.skill-text {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text);
+}
+
+/* ── PORTFOLIO SLOTS ── */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.portfolio-slot {
+  border: 1px dashed var(--border);
+  padding: 28px 22px;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color .2s, background .2s;
+  cursor: pointer;
+}
+.portfolio-slot:hover {
+  border-color: var(--purple);
+  background: var(--purple-lts);
+}
+
+.slot-num {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--border);
+  line-height: 1;
+}
+
+.slot-type {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 3px;
+}
+
+.slot-desc {
+  font-size: 12px;
+  color: var(--text-sec);
+}
+
+/* ── ASSESSMENT ── */
+.assessment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.assessment-heading {
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 800;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.assessment-sub {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255,255,255,.72);
+  line-height: 1.75;
+}
+
+.assessment-rows { display: flex; flex-direction: column; gap: 2px; }
+
+.assessment-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 18px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.arow-key {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,.65);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.arow-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--purple-lt);
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  backdrop-filter: blur(3px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal-box {
+  background: var(--white);
+  max-width: 680px;
+  width: 100%;
+  max-height: 82vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  transform: translateY(20px);
+  transition: transform .25s ease, opacity .22s ease;
+  opacity: 0;
+}
+.modal-overlay.open .modal-box { transform: translateY(0); opacity: 1; }
+
+.modal-hd {
+  padding: 20px 24px 16px;
+  border-bottom: 3px solid var(--purple);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 1;
+}
+
+.modal-hd-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.25;
+}
+
+.modal-close {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--text-sec);
+  flex-shrink: 0;
+  transition: background .15s;
+}
+.modal-close:hover { background: var(--border); color: var(--black); }
+
+.modal-bd { padding: 22px 24px 28px; }
+
+.modal-desc {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text);
+  margin-bottom: 22px;
+}
+.modal-desc strong { color: var(--black); }
+
+.modal-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 10px;
+}
+
+.modal-impact {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.modal-metric {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+}
+
+.modal-metric-val {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--purple);
+  line-height: 1;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.modal-metric-lbl {
+  font-size: 11px;
+  color: var(--text-sec);
+  line-height: 1.3;
+}
+
+.modal-feedback {
+  border-left: 4px solid var(--purple);
+  padding: 14px 18px;
+  background: var(--purple-lts);
+  margin-bottom: 14px;
+}
+
+.modal-feedback-text {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.modal-feedback-src {
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--purple-dk);
+}
+
+.modal-samples {
+  border: 1px dashed var(--border);
+  padding: 14px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-sec);
+}
+
+/* ── FOOTER ── */
+.page-footer {
+  background: var(--black);
+  padding: 20px 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,.8);
+}
+
+.footer-meta {
+  font-size: 11px;
+  color: rgba(255,255,255,.4);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .page-header, .section, .page-footer { padding-left: 24px; padding-right: 24px; }
+  .section-bar { padding-left: 24px; padding-right: 24px; }
+  .stats-strip { grid-template-columns: repeat(3, 1fr); }
+  .stat-cell:nth-child(3) { border-right: none; }
+  .delivery-grid { grid-template-columns: repeat(2, 1fr); }
+  .priorities-grid, .skills-grid, .portfolio-grid { grid-template-columns: 1fr; }
+  .assessment-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── PAGE HEADER ── -->
+<header class="page-header">
+  <div>
+    <div class="header-name">Rebecca Mc Cormack</div>
+    <div class="header-role">MES / MOM Associate Manager</div>
+    <div class="header-sub">Industry X · SC&amp;E · San Francisco</div>
+  </div>
+  <div class="acc-logo">
+    <span class="acc-chevron">&gt;</span>
+    <span class="acc-wordmark">accenture</span>
+  </div>
+</header>
+
+<!-- ── STATS STRIP ── -->
+<div class="stats-strip">
+  <div class="stat-cell">
+    <div class="stat-label">Promoted to AM</div>
+    <div class="stat-val">May 2025</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Months at AM</div>
+    <div class="stat-val hi">12</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Chargeability</div>
+    <div class="stat-val hi">111%</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Years at Accenture</div>
+    <div class="stat-val">6+</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Talent Indicator</div>
+    <div class="stat-val hi">L7 Ready</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-label">Overall Rating</div>
+    <div class="stat-val">Ahead of Expectations</div>
+  </div>
+</div>
+
+<!-- ── OVERVIEW ── -->
+<div class="section-bar">Overview</div>
+<div class="section">
+  <p class="context-text">
+    Rebecca joined Accenture <strong>6+ years ago</strong> and was promoted to Associate Manager in <strong>May 2025</strong>. This portfolio covers her first full year at AM level across client delivery, AI enablement, people leadership, and community. All six FY26 priorities were rated <strong>Ahead of Expectations</strong> with a talent indicator of <strong>L7 Ready</strong>. Rebecca is also accepted to <strong>Columbia's MS in Technology Management</strong> and is independently pursuing DeepAI training and professional AI certifications.
+  </p>
+</div>
+
+<!-- ── DELIVERY HIGHLIGHTS ── -->
+<div class="section-bar">Delivery Highlights</div>
+<div class="section alt" style="padding-top:24px;padding-bottom:24px">
+  <div class="delivery-grid">
+    <div class="delivery-card">
+      <div class="delivery-number">433</div>
+      <div class="delivery-label">Observations tracked &amp; closed ahead of design freeze</div>
+    </div>
+    <div class="delivery-card">
+      <div class="delivery-number">3</div>
+      <div class="delivery-label">GMBRs designed across wet gran., dry gran. and tableting</div>
+    </div>
+    <div class="delivery-card">
+      <div class="delivery-number">5</div>
+      <div class="delivery-label">AstraZeneca manufacturing sites across 3 continents</div>
+    </div>
+    <div class="delivery-card">
+      <div class="delivery-number">&gt;80%</div>
+      <div class="delivery-label">Global standards fit across all GMBRs</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FY26 PRIORITIES ── -->
+<div class="section-bar">FY26 Priorities — All Rated Ahead of Expectations</div>
+<div class="section alt">
+  <div class="priorities-grid">
+
+    <div class="pcard" onclick="openModal(0)">
+      <div class="pcard-top">
+        <div class="pcard-icon">🏭</div>
+        <div>
+          <div class="pcard-title">AstraZeneca MES Design Lead</div>
+          <div class="pcard-cat">Client Value Creation</div>
+        </div>
+      </div>
+      <p class="pcard-desc">Led global OSD GMBR standardisation in PAS-X across <strong>5 sites (China, US, Sweden)</strong>. Designed 3 GMBRs achieving <strong>&gt;80% fit</strong> with global standards. All 433 observations closed ahead of design freeze.</p>
+      <div class="pcard-footer">
+        <div class="priority-tags"><span class="tag">PAS-X</span><span class="tag">GMP/GxP</span><span class="tag">Cross-site governance</span></div>
+        <span class="pcard-drill">View feedback →</span>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="openModal(1)">
+      <div class="pcard-top">
+        <div class="pcard-icon">🤖</div>
+        <div>
+          <div class="pcard-title">AI-powered EBR Validation Tool</div>
+          <div class="pcard-cat">Innovation / AI Enablement</div>
+        </div>
+      </div>
+      <p class="pcard-desc">Self-initiated Python tool using <strong>Claude AI</strong> to auto-generate <strong>5 validation outputs</strong> from PAS-X XML. Built outside billable hours. Potential saving of <strong>~19 working days per programme</strong>.</p>
+      <div class="pcard-footer">
+        <div class="priority-tags"><span class="tag">Self-initiated</span><span class="tag">Claude AI</span><span class="tag">Repeatable accelerator</span></div>
+        <span class="pcard-drill">View feedback →</span>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="openModal(2)">
+      <div class="pcard-top">
+        <div class="pcard-icon">✨</div>
+        <div>
+          <div class="pcard-title">AI Fluency &amp; Agentic AI Enablement</div>
+          <div class="pcard-cat">AI Enablement</div>
+        </div>
+      </div>
+      <p class="pcard-desc">Completed <strong>Reinvention with Agentic AI</strong> programme <strong>ahead of deadline</strong>. Accepted to <strong>Columbia's MS in Technology Management</strong>. Coaches both direct reports on AI adoption.</p>
+      <div class="pcard-footer">
+        <div class="priority-tags"><span class="tag">CoPilot</span><span class="tag">Columbia MS</span><span class="tag">Team coaching</span></div>
+        <span class="pcard-drill">View feedback →</span>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="openModal(3)">
+      <div class="pcard-top">
+        <div class="pcard-icon">👥</div>
+        <div>
+          <div class="pcard-title">Personal Development as a People Leader</div>
+          <div class="pcard-cat">Great Place to Work</div>
+        </div>
+      </div>
+      <p class="pcard-desc">Mentoring <strong>2 consultants</strong> with consistently positive feedback. Attended Leadership Foundations in-person, SF. Exceeded event target (<strong>5+ events</strong>). Working toward <strong>L7 progression</strong>.</p>
+      <div class="pcard-footer">
+        <div class="priority-tags"><span class="tag">Mentoring ×2</span><span class="tag">L7 Ready</span><span class="tag">Leadership Foundations</span></div>
+        <span class="pcard-drill">View feedback →</span>
+      </div>
+    </div>
+
+    <div class="pcard" onclick="openModal(4)">
+      <div class="pcard-top">
+        <div class="pcard-icon">❤️</div>
+        <div>
+          <div class="pcard-title">Accenture Giving Week</div>
+          <div class="pcard-cat">Community</div>
+        </div>
+      </div>
+      <p class="pcard-desc">Gave blood with the <strong>American Red Cross</strong> blood drive, contributing to community impact goals and living the <strong>Stewardship core value</strong> in practice.</p>
+      <div class="pcard-footer">
+        <div class="priority-tags"><span class="tag">Stewardship</span><span class="tag">American Red Cross</span></div>
+        <span class="pcard-drill">View feedback →</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal-box" id="modal-box">
+    <div class="modal-hd">
+      <div>
+        <span class="priority-cat" id="modal-cat"></span>
+        <div class="modal-hd-title" id="modal-title"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-bd" id="modal-bd"></div>
+  </div>
+</div>
+
+<!-- ── SKILLS TO GROW ── -->
+<div class="section-bar">Development Focus — Skills to Grow</div>
+<div class="section">
+  <div class="skills-grid">
+    <div class="skill-card">
+      <p class="skill-num">01 — Commercial</p>
+      <h3 class="skill-name">Sales &amp; client-facing commercial work</h3>
+      <p class="skill-text">Commercial and client-facing work is where I'm focused next. I bring cross-site delivery credibility across 5 AZ sites, a strong track record on a flagship account, and the technical depth to shape what a next phase of work should look like — not just execute it. I'm actively pursuing visibility into bid activity and account extension conversations on AZ and adjacent life sciences accounts, and I'm opening direct conversations with senior leaders about where I can contribute to origination — whether that's shaping a statement of work, contributing to a capability pitch, or stepping into early-stage client discussions as a delivery voice.</p>
+    </div>
+    <div class="skill-card">
+      <p class="skill-num">02 — AI &amp; Technology</p>
+      <h3 class="skill-name">Building agentic AI workflows</h3>
+      <p class="skill-text">The EBR Validation Tool is my proof of concept — my next step is formalising it as a repeatable Accenture accelerator through internal AI channels and Amethyst Studio. Beyond the tool itself, I'm identifying live workflow opportunities on current and future engagements where I can design and implement agentic solutions end-to-end, not just individual scripts. Alongside the Columbia MS, I'm building toward being the person who designs AI-enabled delivery approaches for an account — not just adopts them.</p>
+    </div>
+    <div class="skill-card">
+      <p class="skill-num">03 — Strategy</p>
+      <h3 class="skill-name">Strategy-focused work</h3>
+      <p class="skill-text">The decisions I'm making on AZ — global standardisation, cross-site design governance, site trade-offs — are strategic in nature, and my focus is on making that visible. I'm writing up my global standardisation approach as an internal point of view and looking for thought leadership opportunities within Industry X. Longer-term, I want to be working upstream: in the "should we do this and how" conversation, not just the execution. I'm building relationships with leaders who operate at that level and positioning myself for work that starts with strategy, not scope.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── WORK PORTFOLIO ── -->
+<div class="section-bar">Work Portfolio</div>
+<div class="section alt">
+  <div class="portfolio-grid">
+    <div class="portfolio-slot"><div class="slot-num">1</div><div><div class="slot-type">Work Sample</div><div class="slot-desc">Screenshots, diagrams, slides</div></div></div>
+    <div class="portfolio-slot"><div class="slot-num">2</div><div><div class="slot-type">Document</div><div class="slot-desc">Process maps, URS, EBRs</div></div></div>
+    <div class="portfolio-slot"><div class="slot-num">3</div><div><div class="slot-type">Presentation</div><div class="slot-desc">Workshops, leadership decks</div></div></div>
+    <div class="portfolio-slot"><div class="slot-num">4</div><div><div class="slot-type">Tool Demo</div><div class="slot-desc">EBR validation tool outputs</div></div></div>
+    <div class="portfolio-slot"><div class="slot-num">5</div><div><div class="slot-type">Certificate</div><div class="slot-desc">AI certifications, completions</div></div></div>
+    <div class="portfolio-slot"><div class="slot-num">6</div><div><div class="slot-type">Other</div><div class="slot-desc">Photos, data, artefacts</div></div></div>
+  </div>
+</div>
+
+<!-- ── OVERALL ASSESSMENT ── -->
+<div class="section-bar">Overall FY26 Assessment</div>
+<div class="section dark">
+  <div class="assessment-grid">
+    <div>
+      <div class="assessment-heading">First year at AM.<br>All priorities ahead.</div>
+      <p class="assessment-sub">First full year at Associate Manager level, rated across client delivery, AI enablement, people leadership, and community. A strong foundation for L7 progression.</p>
+    </div>
+    <div class="assessment-rows">
+      <div class="assessment-row"><span class="arow-key">Overall FY26 Rating</span><span class="arow-val">Ahead of Expectations</span></div>
+      <div class="assessment-row"><span class="arow-key">Talent Indicator</span><span class="arow-val">L7 Ready</span></div>
+      <div class="assessment-row"><span class="arow-key">AM Promotion</span><span class="arow-val">May 2025</span></div>
+      <div class="assessment-row"><span class="arow-key">Chargeability</span><span class="arow-val">111%</span></div>
+      <div class="assessment-row"><span class="arow-key">Columbia MS — Technology Management</span><span class="arow-val">Accepted</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="page-footer">
+  <span class="footer-name">Rebecca Mc Cormack</span>
+  <span class="footer-meta">Accenture SC&amp;E · FY26 · Prepared May 2026</span>
+</footer>
+
+<script>
+const MODALS = [
+  {
+    cat: 'Client Value Creation', cls: 'cat-client',
+    title: 'AstraZeneca MES Design Lead',
+    desc: `Led global OSD GMBR standardisation in PAS-X across <strong>5 sites (China, US, Sweden)</strong>. Designed 3 GMBRs covering wet granulation, dry granulation, and tableting, all achieving <strong>&gt;80% fit</strong> with global standards. Led <strong>6 workshops</strong> across Workshops 1–3 (2 sessions each), including <strong>2 in-person</strong> — Sweden and China. Directed 2 consultants throughout. All 433 observations closed ahead of design freeze.`,
+    metrics: [['433','Observations closed'],['5','Sites across 3 continents'],['3','GMBRs designed'],['>80%','Standards fit'],['6','Workshops led']],
+    feedback: 'Add stakeholder or manager feedback here — e.g. from Workday, client comments, or direct quotes from your people lead conversation.',
+    feedbackSrc: '— Source · Role'
+  },
+  {
+    cat: 'Innovation / AI Enablement', cls: 'cat-ai',
+    title: 'AI-powered EBR Validation Tool',
+    desc: `Self-initiated Python tool using <strong>Claude AI</strong> to auto-generate <strong>5 structured validation outputs</strong> from PAS-X XML: process maps, URS, pathways, review-by-exception, and test scripts. Built entirely <strong>outside billable hours</strong>. Currently a proof-of-concept accelerator with potential saving of <strong>~19 working days per programme</strong> once validated against production data. Repeatable across MES platforms.`,
+    metrics: [['5','Validation outputs'],['~19','Days saved per programme'],['0','Billable hours used']],
+    feedback: 'Add feedback here — e.g. responses from leadership or the team when you shared this tool. What was their reaction to the innovation?',
+    feedbackSrc: '— Source · Role'
+  },
+  {
+    cat: 'AI Enablement', cls: 'cat-ai',
+    title: 'AI Fluency & Agentic AI Enablement',
+    desc: `Completed <strong>Reinvention with Agentic AI</strong> programme and workshop <strong>ahead of deadline</strong>. Embedded CoPilot into daily workflow. Independently completing <strong>DeepAI training courses</strong> and actively researching professional AI certifications. Accepted to <strong>Columbia's MS in Technology Management</strong>. Coaches both direct reports on AI adoption; all have AI Enablement priorities logged in Workday.`,
+    metrics: [['Ahead','Programme completed early'],['2','Direct reports coached on AI']],
+    feedback: 'Add feedback here — e.g. from direct reports on your coaching, or recognition from leadership for completing the programme early.',
+    feedbackSrc: '— Source · Role'
+  },
+  {
+    cat: 'Great Place to Work', cls: 'cat-people',
+    title: 'Personal Development as a People Leader',
+    desc: `Mentoring <strong>2 consultants</strong> on AstraZeneca with consistently positive feedback on confidence and growth. Attended <strong>Leadership Foundations in-person session</strong> in San Francisco. Actively expanding mentoring reach — reached out to Iara as a prospective counselee. Exceeded office and network event target (<strong>5+ events attended</strong>). Working toward <strong>L7 progression</strong>.`,
+    metrics: [['2','Consultants mentored'],['5+','Network events attended']],
+    feedback: 'Add direct report or peer feedback here — comments on your mentoring style, support, or the impact on their confidence and development.',
+    feedbackSrc: '— Direct report · Peer'
+  },
+  {
+    cat: 'Community', cls: 'cat-community',
+    title: 'Accenture Giving Week',
+    desc: `Signed up to Accenture's Giving Week to <strong>give blood with the American Red Cross blood drive</strong>, contributing to Accenture's community impact goals and living the <strong>Stewardship core value</strong> in practice.`,
+    metrics: [],
+    feedback: 'Add any recognition or personal reflection here — acknowledgement from your people lead, or a note on why this matters to you.',
+    feedbackSrc: '— Reflection'
+  }
+];
+
+function openModal(i) {
+  const d = MODALS[i];
+  document.getElementById('modal-cat').className = 'priority-cat ' + d.cls;
+  document.getElementById('modal-cat').textContent = d.cat;
+  document.getElementById('modal-title').textContent = d.title;
+
+  const metrics = d.metrics.length ? `
+    <p class="modal-section-label" style="margin-bottom:10px">Key Impact</p>
+    <div class="modal-impact">
+      ${d.metrics.map(([v,l]) => `<div class="modal-metric"><span class="modal-metric-val">${v}</span><span class="modal-metric-lbl">${l}</span></div>`).join('')}
+    </div>` : '';
+
+  document.getElementById('modal-bd').innerHTML = `
+    <p class="modal-desc">${d.desc}</p>
+    ${metrics}
+    <p class="modal-section-label">Feedback</p>
+    <div class="modal-feedback">
+      <p class="modal-feedback-text">${d.feedback}</p>
+      <p class="modal-feedback-src">${d.feedbackSrc}</p>
+    </div>
+    <div class="modal-samples">Add work samples here — screenshots, slides, or artefacts</div>`;
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* Scroll animations */
+const fadeIn = (els, delay = 90) => {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }, i * delay);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  els.forEach(el => {
+    el.style.cssText += 'opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease';
+    obs.observe(el);
+  });
+};
+
+fadeIn(document.querySelectorAll('.delivery-card'), 80);
+fadeIn(document.querySelectorAll('.pcard'), 70);
+fadeIn(document.querySelectorAll('.skill-card'), 90);
+</script>
+</body>
+</html>

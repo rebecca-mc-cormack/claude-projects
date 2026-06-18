@@ -1,6 +1,6 @@
-# PAS-X Validation Export Tool
+# EBR Validation Tool
 
-A single-file browser app that parses PAS-X GMBR XML exports and instantly generates validation artefacts — process flow maps, pathway Excel sheets, and Visio-compatible diagrams.
+A single-file browser app that parses PAS-X GMBR XML exports and instantly generates validation artefacts — interactive process flow maps, a Review by Exception sheet, and an MBR User Requirements Specification preview.
 
 ---
 
@@ -8,72 +8,93 @@ A single-file browser app that parses PAS-X GMBR XML exports and instantly gener
 
 Upload a PAS-X Generic Master Batch Record (GMBR) XML export and the tool automatically:
 
-1. **Parses the XML** — reads the full GMBR hierarchy (Basic Operations → Basic Functions → Activities) using the ProdStepLinkCollection to determine correct ordering
-2. **Renders an interactive process flow map** — with drill-down levels and show/hide activity detail
-3. **Generates a pathway Excel sheet** — matching the 20-column test options format used for validation
-4. **Exports diagrams** — standalone HTML process map and draw.io diagram (convertible to Visio .vsdx)
+1. **Parses the XML** — reads the full GMBR hierarchy (Basic Operations → Basic Functions → Activities) using ProdStepLinkCollection to determine correct step ordering
+2. **Renders an interactive process flow map** — two-layer drill-down with per-node activity expand and cross-referencing to the RbE table
+3. **Generates a Review by Exception sheet** — auto-populated risk and confirmation defaults per CBF, with dropdown overrides
+4. **Generates an MBR URS preview** — document preview with auto/manual field highlighting and inline flow maps per Basic Operation
+5. **Exports all outputs** — HTML process map, Excel RbE sheet, Word-compatible URS document
 
 ---
 
-## Features
+## Tabs
 
-### XML Parsing
-- Handles PAS-X full Java class names as XML tag names (e.g. `com.werum.pasx.spec.components.pmbr.global.GenericMasterBatchRecordVO`)
-- Orders steps using `ProdStepLinkCollection` source/target references and Y-coordinates as fallback
-- Resolves internal formula references to human-readable paths (e.g. `RMCTEST/BO1/CBF17/ACT10`)
-- Supports: `BasicOperationVO`, `CommonBFVO`, `EqmAllocationBFVO`, `AttributiveSpecPropVO`, `MeasuredValueSpecPropVO`, `FormulaSpecPropVO`, `MaterialOutputVO`
+### Tab 1 — Process Flow Map
 
-### Process Flow Map
+Two layers:
 
-Two levels of drill-down:
-
-| Level | Shows | Interaction |
+| Layer | Shows | Interaction |
 |-------|-------|-------------|
-| **Level 1** | Basic Operations (BO cards) | Click any BO → drills to Level 2 |
-| **Level 2** | Basic Functions (CBF cards) within selected BO | Toggle activities with Show/Hide button |
+| **Layer 1** | Basic Operations (BO cards) | Click any BO → drills to Layer 2 |
+| **Layer 2** | Basic Functions (CBF cards) within selected BO | Per-node expand/collapse + cross-ref to RbE |
 
-- **Show Activities** / **Hide Activities** toggle (gold button) — expands/collapses activity rows within each CBF card
-- Activity type colour coding: Attributive (green), Measured Value (amber), Formula (purple), Equipment Allocation (blue), Material Output (orange dashed)
-- Verification Signature flag shown on CBF header and activity rows
-- Per-level **Export** button in the level navigation bar
+**Interactions on Layer 2:**
+- **Click a node title** — expands/collapses activity rows for that node inline
+- **Click a CBF ID** (dotted purple underline) — jumps to the Review by Exception tab and highlights that CBF's row(s)
+- **Download (.png)** button top right — exports current layer as a standalone HTML file
 
-> **Note on future nested CBFs:** Some PAS-X XMLs contain CBFs nested within other CBFs (all with their own activities). The current Level 2 view is designed to accommodate this — do not add a hardcoded Level 3, instead extend the recursive parser when needed.
+**Step type colour coding (Accenture brand palette):**
 
-### Excel Export (Pathway Table)
-Generates a `.xlsx` file matching the standard test options format with 20 columns:
+| Category | Step types | Colour |
+|---|---|---|
+| Flow control | StartStepVO / EndStepVO | Dark gray `#818180` |
+| Flow control | BasicOperationVO | Darkest purple `#460073` |
+| Flow control | CommonBFVO | Dark purple `#7500C0` |
+| Flow control | SpecDecisionVO | Core purple `#A100FF` |
+| Flow control | MergeVO / SplittingVO | Light purple `#C2A3FF` |
+| Flow control | SynchronisationVO | Lightest purple `#E6DCFF` |
+| Material flow | TakeOutBFVO / IdentityCheckBFVO / YieldDeterminationBFVO / BundleCreationBFVO / StockCreationBFVO | Pink `#FF50A0` |
+| Equipment | EqmAllocationBFVO / EqmDeallocationBFVO / EqmIdentificationBFVO | Medium gray `#CFCFCF` |
+| Label/context | GenericLabelPrintBfVO / SetCxBfVO | Blue `#2248FF` |
 
-| Column | Description |
-|--------|-------------|
-| Relevant Basic Function | e.g. `BO1 > CBF1` |
-| Entry Full Path | e.g. `BO1 > CBF1 > ACT10` |
-| Entry Full Path Description | Full human-readable path |
-| Activity Description | Description of the spec prop |
-| Formula | Resolved formula text (FormulaSpecProp) |
-| Formula Type | `text` / `numeric` |
-| No of References | Count of formula references |
-| CXDefinition | (populated if defined) |
-| MeasuredValue Tolerance | `maxTolerance-X;minTolerance-Y` |
-| Entry Generic Type | `Activity` / `Basic Function` / `Material` |
-| Activity Type | `Attributive` / `MeasuredValue` / `Formula` / `EqmAllocation` / `MaterialOutput` |
-| User Identification | |
-| Verification Signature | `Yes` if required |
-| PCS Element | |
-| ActiveFlag | e.g. `BO1: NA > CBF1: NA > ACT10: NA` |
-| Risk Assessment | `Low` (default) |
-| Verification Type | `Static` (default) |
-| Input Value | (blank — for test execution) |
-| Expect Value | (blank — for test execution) |
-| Pass/Fail | (blank — for test execution) |
+> **Note on future nested CBFs:** Some PAS-X XMLs contain CBFs nested within other CBFs. The current Layer 2 view is designed to accommodate this — do not add a hardcoded Layer 3, instead extend the recursive parser when needed.
 
-Header rows include: GMBR ID, Description, Version, and fill-in fields for Manufacturing Order ID, Test Executors, Start Date.
+---
 
-Export respects the current **Show/Hide Activities** state — if activities are hidden, they are also hidden in the exported file.
+### Tab 2 — Review by Exception
 
-### Visio / draw.io Export
-- Downloads a `.drawio` XML file for the current level view
-- Respects Show/Hide Activities state
-- Open at **[app.diagrams.net](https://app.diagrams.net)** → File → Export As → VSDX to get a Visio file
-- Shape colour coding matches the process map (dark navy for GMBR/Start/End, medium blue for BO/CBF, lighter blue for EqmAllocation, orange dashed for Material Output)
+An 8-column risk assessment table — one row per CBF step in the GMBR.
+
+| # | Column | Source |
+|---|--------|--------|
+| 1 | Process Map Ref. | CBF ID — clickable link back to flow map |
+| 2 | GMBR Path Reference | e.g. `BO1 > CBF17` |
+| 3 | Description | CBF description from XML |
+| 4 | Process Step Type | Auto-suggested + dropdown override |
+| 5 | Confirmation Level Required | Auto-suggested + dropdown override |
+| 6 | Can data be QA'd at time of order? | 8-option dropdown |
+| 7 | Required at Batch Record Review? | Auto-calculated from column 6 (Yes/No) |
+| 8 | Comment | Blank — completed after download |
+
+**Auto-suggestion logic (columns 4 & 5):**
+- Columns 4 and 5 are pre-populated based on the activity types present in each CBF
+- Auto-suggested values are shown with a **purple border** on the dropdown — border clears when manually overridden
+- Column 7 auto-calculates: col6 starts "Yes" or "N/A" → No; starts "No" → Yes; colour-coded green/red
+
+**Cross-reference:** Click a process map ref (column 1) → switches to Process Flow Map tab and highlights that node with a purple border.
+
+**Download Excel (.xlsx)** — exports the full table including any dropdown selections made.
+
+---
+
+### Tab 3 — MBR Requirement Spec
+
+A document preview matching the standard MBR URS format. Fields are colour-coded:
+- **White background** — auto-populated from XML (GMBR ID, description, material name, inline flow maps)
+- **Amber highlight** ✎ — needs manual input after Word export (document ID, version, dates, site tables, roles, reference documents)
+
+Section 3.1 renders inline Layer 2 flow maps — one per Basic Operation — auto-generated from the XML.
+
+**Download Word (.docx)** — exports a Word-compatible `.doc` file preserving the preview structure.
+
+---
+
+## XML Parsing
+
+- Handles PAS-X full Java class names as XML tag names (e.g. `com.werum.pasx.spec.components.pmbr.global.GenericMasterBatchRecordVO`) — uses `findEl(root, suffix)` with `getElementsByTagName('*')` and suffix-matching to bypass the CSS selector dot-as-class limitation
+- Orders steps using `ProdStepLinkCollection` source/target references; falls back to Y-coordinate sort if no links present
+- Resolves internal formula references to human-readable paths (e.g. `RMCTEST/BO1/CBF17/ACT10`)
+- Recognises all PAS-X step types: flow control, material flow, equipment, label/context
+- Recognises all specPropCollection activity types: `AttributiveSpecPropVO`, `MeasuredValueSpecPropVO`, `FormulaSpecPropVO`, `TextSpecPropVO`, `DateSpecPropVO`, `ListSpecPropVO`
 
 ---
 
@@ -82,7 +103,10 @@ Export respects the current **Show/Hide Activities** state — if activities are
 ```
 claude-projects/
 ├── PASX_ValidationTool.html   # The entire app — single self-contained file
-└── README.md                  # This file
+├── README.md                  # This file
+└── portfolio/
+    ├── rebecca_mccormack_portfolio.md
+    └── portfolio_design_feedback.md
 ```
 
 ---
@@ -92,7 +116,7 @@ claude-projects/
 ### Option A — Open directly in browser
 Open `PASX_ValidationTool.html` in Chrome (or any modern browser).
 
-### Option B — Run via local server
+### Option B — Run via local server (Claude Code launch.json)
 ```bash
 py -m http.server 3000
 # then open http://localhost:3000/PASX_ValidationTool.html
@@ -100,39 +124,61 @@ py -m http.server 3000
 
 ### Uploading XML
 1. Export your GMBR from PAS-X as XML
-2. Drop the `.xml` file onto the upload zone, or click **Browse file**, or click **Paste XML** to paste content directly
-3. The tool parses instantly and shows the process map
+2. Drop the `.xml` file onto the upload zone, click **Browse file**, or click **Paste XML**
+3. The tool parses instantly and populates all three tabs
 
 ---
 
 ## Design System
 
-Based on the **MBRfactory** design language (AstraZeneca MES CoE):
+Accenture brand palette:
 
 | Token | Value |
 |-------|-------|
-| Mulberry (primary) | `#830051` |
-| Gold (accent) | `#F0AB00` |
-| Navy | `#003865` |
+| Core purple | `#A100FF` |
+| Dark purple | `#7500C0` |
+| Darkest purple | `#460073` |
+| Light purple | `#C2A3FF` |
+| Lightest purple | `#E6DCFF` |
+| Pink | `#FF50A0` |
+| Blue | `#2248FF` |
+| Dark gray | `#818180` |
 | Background | `#F7F5F2` |
-| Font | Helvetica Neue / Helvetica / Inter / Arial |
+| Font | Graphik / DM Sans / Helvetica Neue / Arial |
 
 ---
 
 ## Technical Notes
 
 - **No build step** — pure HTML/CSS/JS, single file
-- **SheetJS** loaded from CDN (`xlsx.full.min.js`) for Excel generation
+- **SheetJS** (`xlsx.full.min.js`) loaded from CDN for Excel generation
 - **DOMParser** used for XML parsing with `text/xml` mode
-- PAS-X dotted Java class names (e.g. `com.werum...GenericMasterBatchRecordVO`) are matched using a `findEl(root, suffix)` helper that uses `getElementsByTagName('*')` and suffix-matches `tagName` — bypasses the CSS selector dot-as-class-selector limitation
-- All map styles are injected inline with each render so the map is fully portable for export
+- Cross-referencing uses `data-bfid` attributes on map nodes and RbE rows — no server needed
+- All map styles injected inline so the map is fully portable for export
+- Word export generates an HTML blob with `application/msword` MIME type — opens in Word as `.doc`
+
+---
+
+## Spec Documents
+
+Located in `C:\Users\rebecca.mc.cormack\OneDrive - Accenture\Documents\AZ\Claude\Tool\`:
+
+| File | Description |
+|------|-------------|
+| `EBR_Validation_Tool_Figma_Spec.md` | UI structure, interactions, visual design spec |
+| `EBR_Validation_Tool_Requirements_Spec.docx` | Formal requirements specification (outputs 1–3 defined) |
 
 ---
 
 ## Roadmap / Known Considerations
 
-- [ ] Support for nested CBFs (CBFs within CBFs) — parser foundation is in place, UI levels will need extending
-- [ ] Support for multiple Basic Operations in Level 2 view (BO selector dropdown already present)
-- [ ] Material Input display
-- [ ] Direct VSDX generation (currently via draw.io as intermediary)
+- [ ] Support for nested CBFs (CBFs within CBFs) — parser foundation is in place, Layer 2 UI will need extending
+- [ ] True `.drawio` / Visio export — currently exports standalone HTML
+- [ ] Outputs 4 (Pathways Excel) and 5 (Test Scripts) — business rules TBD per spec
 - [ ] PMBR (Parametrised MBR) support in addition to GMBR
+- [ ] Material Input display
+- [ ] PNG export via html2canvas (currently exports HTML)
+
+---
+
+*Last updated: June 2026*

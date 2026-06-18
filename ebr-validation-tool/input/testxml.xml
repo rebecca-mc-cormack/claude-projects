@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExportImportObjectWrapperVO>
+  <GenericMasterBatchRecordVO>
+    <customId>GMBR-TEST-001</customId>
+    <description>Test Tablet Manufacturing Process</description>
+    <materialName>Aspirin 100mg Tablet</materialName>
+    <versionId>1.0</versionId>
+    <currentStatus>3</currentStatus>
+
+    <prodStepLinkCollection>
+      <ProdStepLinkVO>
+        <sourceProdStep>START</sourceProdStep>
+        <targetProdStep>BO1</targetProdStep>
+      </ProdStepLinkVO>
+      <ProdStepLinkVO>
+        <sourceProdStep>BO1</sourceProdStep>
+        <targetProdStep>END</targetProdStep>
+      </ProdStepLinkVO>
+    </prodStepLinkCollection>
+
+    <StartStepVO>
+      <customId>START</customId>
+      <description>Start</description>
+    </StartStepVO>
+
+    <BasicOperationVO>
+      <customId>BO1</customId>
+      <description>Wet Granulation</description>
+
+      <prodStepLinkCollection>
+        <ProdStepLinkVO>
+          <sourceProdStep>BO1_START</sourceProdStep>
+          <targetProdStep>EQM1</targetProdStep>
+        </ProdStepLinkVO>
+        <ProdStepLinkVO>
+          <sourceProdStep>EQM1</sourceProdStep>
+          <targetProdStep>CBF1</targetProdStep>
+        </ProdStepLinkVO>
+        <ProdStepLinkVO>
+          <sourceProdStep>CBF1</sourceProdStep>
+          <targetProdStep>CBF2</targetProdStep>
+        </ProdStepLinkVO>
+        <ProdStepLinkVO>
+          <sourceProdStep>CBF2</sourceProdStep>
+          <targetProdStep>BO1_END</targetProdStep>
+        </ProdStepLinkVO>
+      </prodStepLinkCollection>
+
+      <StartStepVO>
+        <customId>BO1_START</customId>
+        <description>Start</description>
+      </StartStepVO>
+
+      <EqmAllocationBFVO>
+        <customId>EQM1</customId>
+        <description>Allocate Granulator</description>
+      </EqmAllocationBFVO>
+
+      <CommonBFVO>
+        <customId>CBF1</customId>
+        <description>Add Purified Water</description>
+        <specPropCollection>
+          <MeasuredValueSpecPropVO>
+            <customId>ACT10</customId>
+            <description>Record Water Volume</description>
+            <setValue>50.0</setValue>
+            <minTolerance>47.5</minTolerance>
+            <maxTolerance>52.5</maxTolerance>
+            <unit><customId>L</customId></unit>
+            <criticality>2</criticality>
+          </MeasuredValueSpecPropVO>
+          <TextSpecPropVO>
+            <customId>ACT11</customId>
+            <description>Confirm water clarity</description>
+            <criticality>1</criticality>
+          </TextSpecPropVO>
+        </specPropCollection>
+      </CommonBFVO>
+
+      <CommonBFVO>
+        <customId>CBF2</customId>
+        <description>Wet Granulation Mix</description>
+        <specPropCollection>
+          <MeasuredValueSpecPropVO>
+            <customId>ACT20</customId>
+            <description>Record Mix Time</description>
+            <setValue>15.0</setValue>
+            <minTolerance>13.0</minTolerance>
+            <maxTolerance>17.0</maxTolerance>
+            <unit><customId>min</customId></unit>
+            <criticality>2</criticality>
+          </MeasuredValueSpecPropVO>
+          <MeasuredValueSpecPropVO>
+            <customId>ACT21</customId>
+            <description>Record Impeller Speed</description>
+            <setValue>300.0</setValue>
+            <minTolerance>280.0</minTolerance>
+            <maxTolerance>320.0</maxTolerance>
+            <unit><customId>rpm</customId></unit>
+            <criticality>2</criticality>
+          </MeasuredValueSpecPropVO>
+        </specPropCollection>
+      </CommonBFVO>
+
+      <EndStepVO>
+        <customId>BO1_END</customId>
+        <description>End</description>
+      </EndStepVO>
+    </BasicOperationVO>
+
+    <EndStepVO>
+      <customId>END</customId>
+      <description>End</description>
+    </EndStepVO>
+  </GenericMasterBatchRecordVO>
+</ExportImportObjectWrapperVO>
