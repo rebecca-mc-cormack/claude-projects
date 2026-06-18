@@ -164,3 +164,18 @@
 **Rationale:** The tool is deployed per-client by an Accenture team member who sets it up once and hands it over. A Python file is simpler and more readable than JSON/YAML for a two-variable config, requires no additional parsing library, and is visible and editable without any tooling. Command-line arguments were considered but would require the end user (a validation engineer, not a developer) to pass flags every time they run the tool — an unnecessary friction point. Environment variables and `.env` files add complexity without benefit for a config that changes only at project handover. A branch-per-client approach would fragment version history. `config.py` is imported directly into generators, making values available everywhere without a global state pattern.
 
 **Impact:** `config.py` currently contains `CLIENT_NAME = "PharmaCo"` and `PRODUCTION_UNIT = "Tableting"`. These values propagate into the URS document title, scope section, filename convention (`MBR_URS_<CLIENT>_<PRODUCTION_UNIT>.docx`), and boilerplate text throughout the Word output. When deploying to a new client, only `config.py` needs to change.
+
+---
+
+### DDL-011 | Master reference kept as a separate file from the Figma spec | 2026-06-18
+
+**Decision:** `EBR_Tool_Master_Reference.md` is created as a new, standalone file rather than appending the Design Decision Log to the existing `EBR_Validation_Tool_Figma_Spec_1.md`.
+
+**Alternatives considered:**
+- Appending the DDL directly to the bottom of the existing Figma spec file
+- Renaming the Figma spec to `EBR_Tool_Master_Reference.md` and adding the DDL there
+- Keeping the DDL in a separate dedicated `DECISION_LOG.md` file with no master reference wrapper
+
+**Rationale:** The Figma spec is a developer brief scoped specifically to UI/UX design and output format definitions — its name and framing reflect that purpose and it may continue to evolve independently. A master reference document has a broader remit: it will eventually consolidate the full technical, business, and design context of the tool. Separating them keeps each file's scope clean. Numbering the DDL as `## 19.` reserves space for sections 1–18 in the master reference, signalling that the document is intentionally incomplete and structured for future consolidation rather than being a finished artefact.
+
+**Impact:** Two co-existing documentation files in the repo root: `EBR_Validation_Tool_Figma_Spec_1.md` (UI/output spec, unchanged) and `EBR_Tool_Master_Reference.md` (growing master reference, DDL section active from this session). Future work will populate sections 1–18 of the master reference, likely drawing from the Figma spec and additional technical documentation.
