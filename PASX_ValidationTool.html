@@ -909,7 +909,7 @@ function buildLevel1Standalone(g) {
 function buildLevel2HTML(g, bo, forExport=false) {
   const pu = bo.productionUnits.join(', ');
   let bfs = '';
-  for (const bf of bo.basicFunctions) bfs += buildBFHTML(bf, forExport ? true : pmShowDetails);
+  for (const bf of bo.basicFunctions) bfs += buildBFHTML(bf, forExport ? true : pmShowDetails, g.materialName);
 
   let mos = '';
   for (const mo of bo.materialOutputs) {
@@ -997,7 +997,7 @@ function getBFHeaderClass(bf) {
   return '';
 }
 
-function buildBFHTML(bf, showDetails=false) {
+function buildBFHTML(bf, showDetails=false, materialName='') {
   const hdrCls = getBFHeaderClass(bf);
   const typeLabel = STEP_LABEL[bf.stepType] || bf.stepType;
   let acts = '';
@@ -1030,8 +1030,8 @@ function buildBFHTML(bf, showDetails=false) {
     </div>`;
   }
 
-  const materialNameLine = bf.stepType === 'TakeOutBFVO' && bf.boId
-    ? `<div style="font-size:11px;font-style:italic;color:#185FA5;margin-top:2px">${esc(bf.boId)}</div>`
+  const materialNameLine = bf.stepType === 'TakeOutBFVO' && materialName
+    ? `<div style="font-size:11px;font-style:italic;color:#185FA5;margin-top:2px">${esc(materialName)}</div>`
     : '';
 
   return `
