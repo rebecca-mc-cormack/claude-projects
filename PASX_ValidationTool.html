@@ -835,6 +835,8 @@ const MAP_CSS = `
 }
 .pm-legend span{display:flex;align-items:center;gap:5px}
 .pm-legend i{width:12px;height:12px;border-radius:2px;display:inline-block;flex-shrink:0}
+.split-bar{color:#622A8F;font-weight:700;font-size:11px;letter-spacing:2px;margin:4px 0}
+.sync-shape{color:#622A8F;font-weight:700;font-size:12px;margin:4px 0}
 `;
 
 /* ── Layer state ── */
@@ -1080,13 +1082,102 @@ function buildLevel2HTML(g, bo, forExport=false) {
 }
 
 function renderGraphicalFlow(basicFunctions, graph, reverse, nodeMap, materialName, showDetails) {
-  // TODO: Implement full graphical rendering with parallel branches
-  // For now, fall back to linear rendering while we refactor
+  const visited = new Set();
   let html = '';
+
+  // Find start node (no incoming edges, or first if ambiguous)
+  let startId = null;
   for (const bf of basicFunctions) {
-    html += buildBFHTML(bf, showDetails, materialName);
+    if (!reverse[bf.id] || reverse[bf.id].length === 0) {
+      startId = bf.id;
+      break;
+    }
   }
+  if (!startId) startId = basicFunctions[0].id;
+
+  // Render using DFS, handling parallel branches
+  function renderNode(nodeId, depth = 0) {
+    if (visited.has(nodeId)) return '';
+    visited.add(nodeId);
+
+    const bf = nodeMap[nodeId];
+    if (!bf) return '';
+
+    let output = '';
+    const targets = graph[nodeId] || [];
+
+    // Render this node
+    output += buildBFHTML(bf, showDetails, materialName);
+
+    // Handle different target scenarios
+    if (targets.length === 0) {
+      // End node - no further traversal
+      return output;
+    } else if (targets.length === 1) {
+      // Linear: continue to next node
+      output += renderNode(targets[0], depth);
+    } else if (targets.length > 1) {
+      // Parallel: render split bar and parallel branches
+      output += renderSplitBar();
+      output += renderParallelBranches(targets, depth, nodeMap, graph, reverse, visited, showDetails, materialName);
+
+      // Find and render sync point
+      const syncId = findSyncPoint(targets, graph, reverse);
+      if (syncId && !visited.has(syncId)) {
+        output += renderSyncBar();
+        output += renderNode(syncId, depth);
+      }
+    }
+
+    return output;
+  }
+
+  return renderNode(startId);
+}
+
+function renderSplitBar() {
+  return `
+  <div class="inner-arrow"></div>
+  <div class="split-bar">━━━━━━━━━━━━━━━━━━━━</div>
+  <div style="display:flex;gap:24px;justify-content:center">`;
+}
+
+function renderSyncBar() {
+  return `
+  </div>
+  <div class="inner-arrow"></div>
+  <div class="sync-shape">◁━━━━━━━━━━━━━━▷</div>`;
+}
+
+function renderParallelBranches(branchIds, depth, nodeMap, graph, reverse, visited, showDetails, materialName) {
+  let html = '';
+  for (const branchId of branchIds) {
+    html += `<div style="flex:1;display:flex;flex-direction:column;align-items:center">`;
+    // Recursively render each branch
+    const branchVisited = new Set(visited);
+    html += renderBranchChain(branchId, nodeMap, graph, branchVisited, showDetails, materialName);
+    html += `</div>`;
+  }
+  html += `<div style="width:0"></div>`;
   return html;
+}
+
+function renderBranchChain(nodeId, nodeMap, graph, visited, showDetails, materialName) {
+  if (visited.has(nodeId)) return '';
+  visited.add(nodeId);
+
+  const bf = nodeMap[nodeId];
+  if (!bf) return '';
+
+  let output = '';
+  output += buildBFHTML(bf, showDetails, materialName);
+
+  const targets = graph[nodeId] || [];
+  if (targets.length === 1) {
+    output += renderBranchChain(targets[0], nodeMap, graph, visited, showDetails, materialName);
+  }
+
+  return output;
 }
 
 function buildLevel2Standalone(g, bo) {

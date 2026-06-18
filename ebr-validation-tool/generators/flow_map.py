@@ -11,28 +11,30 @@ from parsers.xml_parser import GmbrRecord, Step
 STEP_COLORS: dict[str, str] = {
     'StartStepVO':           '#818180',
     'EndStepVO':             '#818180',
-    'BasicOperationVO':      '#460073',
-    'CommonBFVO':            '#7500C0',
-    'SpecDecisionVO':        '#A100FF',
-    'MergeVO':               '#C2A3FF',
-    'SplittingVO':           '#C2A3FF',
-    'SynchronisationVO':     '#E6DCFF',
-    'TakeOutBFVO':           '#FF50A0',
-    'IdentityCheckBFVO':     '#FF50A0',
-    'YieldDeterminationBFVO':'#FF50A0',
-    'BundleCreationBFVO':    '#FF50A0',
-    'StockCreationBFVO':     '#FF50A0',
-    'EqmAllocationBFVO':     '#CFCFCF',
-    'EqmDeallocationBFVO':   '#CFCFCF',
-    'EqmIdentificationBFVO': '#CFCFCF',
-    'GenericLabelPrintBfVO': '#2248FF',
-    'SetCxBfVO':             '#2248FF',
+    'BasicOperationVO':      '#3D006B',
+    'CommonBFVO':            '#3D006B',
+    'SpecDecisionVO':        '#3D006B',
+    'MergeVO':               '#622A8F',
+    'SplittingVO':           '#622A8F',
+    'SynchronisationVO':     '#622A8F',
+    'TakeOutBFVO':           '#185FA5',
+    'IdentityCheckBFVO':     '#185FA5',
+    'YieldDeterminationBFVO':'#185FA5',
+    'BundleCreationBFVO':    '#185FA5',
+    'StockCreationBFVO':     '#185FA5',
+    'EqmAllocationBFVO':     '#818180',
+    'EqmDeallocationBFVO':   '#818180',
+    'EqmIdentificationBFVO': '#818180',
+    'GenericLabelPrintBfVO': '#888780',
+    'SetCxBfVO':             '#888780',
 }
 
 _START_END = {'StartStepVO', 'EndStepVO'}
-_LIGHT_FILLS = {'#E6DCFF', '#C2A3FF', '#CFCFCF'}
+_SPECIAL_SHAPES = {'MergeVO', 'SplittingVO', 'SynchronisationVO', 'SpecDecisionVO'}
 _EDGE_COLOR = '#A100FF'
 _BG_COLOR = '#F5F5F5'
+_NODE_FILL = '#FFFFFF'
+_NODE_TEXT_COLOR = '#2A1A3E'
 _WRAP_WIDTH = 22
 
 
@@ -63,21 +65,28 @@ def _add_node(dot: Digraph, step: Step) -> None:
             fillcolor=color,
             fontcolor='white',
             fontname='Arial',
-            fontsize='11',
+            fontsize='12',
         )
         return
 
-    border_color = '#555555' if color in _LIGHT_FILLS else color
-    font_color = 'white' if step.step_type == 'BasicOperationVO' else '#000000'
-    fill_color = color if step.step_type == 'BasicOperationVO' else '#FFFFFF'
+    # Special shapes for control flow
+    shape = 'box'
+    if step.step_type == 'SpecDecisionVO':
+        shape = 'diamond'
+    elif step.step_type == 'MergeVO':
+        shape = 'diamond'
+    elif step.step_type == 'SplittingVO':
+        shape = 'box'  # Graphviz doesn't have native horizontal bar; use box with special label
+    elif step.step_type == 'SynchronisationVO':
+        shape = 'box'  # Similar limitation
 
     label = (
         f'<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6">'
         f'<TR><TD ALIGN="CENTER"><B>'
-        f'<FONT POINT-SIZE="11" COLOR="{font_color}">{_esc(step.custom_id)}</FONT>'
+        f'<FONT POINT-SIZE="12" COLOR="#3D006B">{_esc(step.custom_id)}</FONT>'
         f'</B></TD></TR>'
         f'<TR><TD ALIGN="CENTER">'
-        f'<FONT POINT-SIZE="10" COLOR="{"#CCCCCC" if step.step_type == "BasicOperationVO" else "#666666"}">'
+        f'<FONT POINT-SIZE="12" COLOR="{_NODE_TEXT_COLOR}">'
         f'{_wrap_esc(step.description)}'
         f'</FONT></TD></TR>'
         f'</TABLE>>'
@@ -86,11 +95,11 @@ def _add_node(dot: Digraph, step: Step) -> None:
     dot.node(
         nid,
         label=label,
-        shape='box',
+        shape=shape,
         style='rounded,filled',
-        fillcolor=fill_color,
-        color=border_color,
-        penwidth='2',
+        fillcolor=_NODE_FILL,
+        color=color,
+        penwidth='1.5',
         fontname='Arial',
     )
 
