@@ -581,6 +581,12 @@ function parseBO(boEl, idMap, keyMap) {
   if (innerLinks) {
     // Handle PAS-X namespace-qualified tags
     const linkCollection = gc(innerLinks, 'c');
+    console.log('Link extraction debug:', {
+      hasInnerLinks: !!innerLinks,
+      hasLinkCollection: !!linkCollection,
+      linkCollectionChildren: linkCollection ? linkCollection.children.length : 0
+    });
+
     if (linkCollection) {
       for (const linkEl of linkCollection.children) {
         // Find source and target using tagname suffix matching (PAS-X uses full class names)
@@ -599,6 +605,7 @@ function parseBO(boEl, idMap, keyMap) {
       }
     }
   }
+  console.log('ProdStepLinks extracted:', prodStepLinks);
 
   const basicFunctions = innerOrder
     .filter(s => !tagIs(s,'StartStepVO') && !tagIs(s,'EndStepVO'))
@@ -944,18 +951,31 @@ function buildGraphFromLinks(basicFunctions, prodStepLinks) {
     reverse[bf.id] = [];
   }
 
+  console.log('buildGraphFromLinks debug:', {
+    basicFunctionsIds: basicFunctions.map(b => b.id),
+    prodStepLinksCount: (prodStepLinks || []).length,
+    prodStepLinks: prodStepLinks
+  });
+
   // Build graph from links
-  for (const link of prodStepLinks) {
-    if (nodeMap[link.source] && nodeMap[link.target]) {
-      if (!graph[link.source].includes(link.target)) {
-        graph[link.source].push(link.target);
-      }
-      if (!reverse[link.target].includes(link.source)) {
-        reverse[link.target].push(link.source);
+  if (prodStepLinks) {
+    for (const link of prodStepLinks) {
+      console.log(`Processing link: ${link.source} -> ${link.target}`);
+      if (nodeMap[link.source] && nodeMap[link.target]) {
+        if (!graph[link.source].includes(link.target)) {
+          graph[link.source].push(link.target);
+          console.log(`Added edge: ${link.source} -> ${link.target}`);
+        }
+        if (!reverse[link.target].includes(link.source)) {
+          reverse[link.target].push(link.source);
+        }
+      } else {
+        console.log(`Missing node: source=${link.source} in map=${!!nodeMap[link.source]}, target=${link.target} in map=${!!nodeMap[link.target]}`);
       }
     }
   }
 
+  console.log('Final graph:', graph);
   return { graph, reverse, nodeMap };
 }
 
