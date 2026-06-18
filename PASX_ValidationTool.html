@@ -1259,17 +1259,30 @@ function renderParallelBranches(branchIds, depth, nodeMap, graph, reverse, visit
 
 function renderBranchChain(nodeId, nodeMap, graph, visited, showDetails, materialName, syncId) {
   // Stop at sync point without rendering it
-  if (nodeId === syncId) return '';
-  if (visited.has(nodeId)) return '';
+  if (nodeId === syncId) {
+    console.log('Branch stopped at sync point:', syncId);
+    return '';
+  }
+  if (visited.has(nodeId)) {
+    console.log('Branch node already visited:', nodeId);
+    return '';
+  }
   visited.add(nodeId);
 
   const bf = nodeMap[nodeId];
-  if (!bf) return '';
+  console.log('renderBranchChain:', {nodeId, hasNodeMap: !!bf, nodeMapKeys: Object.keys(nodeMap).slice(0, 10)});
+
+  if (!bf) {
+    console.log('ERROR: Node not in map:', nodeId);
+    return '';
+  }
 
   let output = '';
   output += renderFlowMapNode(bf, materialName);
 
   const targets = graph[nodeId] || [];
+  console.log('Branch node targets:', nodeId, '→', targets);
+
   if (targets.length === 1) {
     output += renderBranchChain(targets[0], nodeMap, graph, visited, showDetails, materialName, syncId);
   }
