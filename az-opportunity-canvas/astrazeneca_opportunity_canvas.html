@@ -105,7 +105,7 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
       <div style="font-size:.88rem;color:var(--muted);margin-bottom:26px;line-height:1.6;max-width:600px;text-align:center;">Three opportunities to explore — across the science of drug discovery, the engineering of how medicines are made, and the manufacturing systems that turn that engineering into product.</div>
       <div class="meta-block">
         <div class="meta-item"><label>Session format</label><p>Opportunity exploration<br><span>Joint working session</span></p></div>
-        <div class="meta-item"><label>Focus</label><p>Clinical trial decisioning · engineering digital twin · MES chatbot<br><span>Where AI changes the outcome</span></p></div>
+        <div class="meta-item"><label>Focus</label><p>Clinical trial decisioning · engineering digital twin · Manufacturing Execution System (MES) chatbot<br><span>Where AI changes the outcome</span></p></div>
       </div>
     </div>
     <div class="slide-footer">
@@ -124,7 +124,7 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
     <div class="slide-title">Three places AI can <span class="accent">change the outcome</span></div>
     <div class="slide-subtitle">One reshapes the highest-stakes decisions in drug development; the second brings active governance to the engineering that turns those decisions into medicines; the third puts that same governance to work on the manufacturing floor itself. Each has its own canvas.</div>
     <div class="three-col">
-      <div class="area-card">
+      <div class="area-card" onclick="goTo(3)">
         <div class="area-num">01</div>
         <div class="area-name">Clinical Trial Decisioning Platform</div>
         <div class="area-sub">Anthropic intelligence working alongside ML models to continually analyse, prioritise and contribute to the decisions around which new drug pursuits to advance — turning portfolio choices into a live, evidence-rich process.</div>
@@ -132,7 +132,7 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
           <span class="tag">Drug pursuit decisions</span><span class="tag">ML + reasoning</span><span class="tag">Continuous prioritisation</span>
         </div>
       </div>
-      <div class="area-card">
+      <div class="area-card" onclick="goTo(4)">
         <div class="area-num">02</div>
         <div class="area-name">Engineering Digital Twin Agents</div>
         <div class="area-sub">Agents acting around the engineering digital twin — simulating possible scenarios and controlling quality — to bring additional robustness, governance and control to the physical engineering and manufacturing process.</div>
@@ -140,9 +140,9 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
           <span class="tag">Digital twin</span><span class="tag">Scenario simulation</span><span class="tag">Quality control</span>
         </div>
       </div>
-      <div class="area-card">
+      <div class="area-card" onclick="goTo(5)">
         <div class="area-num">03</div>
-        <div class="area-name">MES Chatbot for GMBR Review</div>
+        <div class="area-name">MES Chatbot for Generic Master Batch Record (GMBR) Review</div>
         <div class="area-sub">A conversational interface onto PAS-X batch record configuration — reading deeply nested XML, citing every answer at step level, and never fabricating a value — turning hours of manual validation review into a plain-English conversation.</div>
         <div class="area-tags">
           <span class="tag">GMBR review</span><span class="tag">GxP validation</span><span class="tag">Citation-first answers</span>
@@ -189,25 +189,25 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
         <div class="canvas-panel">
           <div class="panel-label">Unique Anthropic value</div>
           <div class="value-list">
-            <div class="val-item"><strong>Reasoning over the evidence</strong>Synthesises trial data, literature and real-world data that ML alone can't read</div>
-            <div class="val-item"><strong>Works alongside ML models</strong>An orchestration layer that interprets and contextualises model scores</div>
-            <div class="val-item"><strong>Cited, explainable calls</strong>Every recommendation traceable — defensible to governance and regulators</div>
+            <div class="val-item"><strong>Already trusted at AstraZeneca enterprise scale</strong>AstraZeneca describes Claude as "a defining force reshaping how we operate across R&D end-to-end" — the decisioning platform builds on a foundation already embedded in the business</div>
+            <div class="val-item"><strong>Reasoning across the full evidence base</strong>Synthesises hundreds of trial readouts, papers and real-world signals that ML models can't read — with claims traced to source and the lowest hallucination rates in the industry</div>
+            <div class="val-item"><strong>Audit-trail-ready by design</strong>Every recommendation traceable and reproducible — built for the governance and regulatory standards that portfolio go/no-go decisions require</div>
           </div>
         </div>
         <div class="canvas-panel">
           <div class="panel-label acc">Unique Accenture value</div>
           <div class="value-list">
-            <div class="val-item acc"><strong>Life sciences R&amp;D depth</strong>Clinical development and pipeline domain expertise at scale</div>
-            <div class="val-item acc"><strong>Data integration</strong>Wiring fragmented clinical, regulatory and RWD sources into one platform</div>
-            <div class="val-item acc"><strong>GxP-validated delivery</strong>Building it to the standards a regulated R&amp;D function requires</div>
+            <div class="val-item acc"><strong>IDC-recognised leader in life sciences R&amp;D AI for clinical trials</strong>Named a Leader in the IDC MarketScape Life Sciences R&amp;D AI in Clinical Trials 2025 — independent validation of the capability needed to build and scale this platform</div>
+            <div class="val-item acc"><strong>The data integration layer</strong>Wiring fragmented clinical, regulatory and real-world data (RWD) sources into one platform — with IQVIA as a strategic partner and Veeva, AWS and Microsoft already embedded in AstraZeneca's ecosystem</div>
+            <div class="val-item acc"><strong>GxP-compliant delivery at enterprise scale</strong>The delivery standards and compliance discipline to build an AI platform that R&amp;D governance and regulators will accept — not a prototype, a production system</div>
           </div>
         </div>
         <div class="canvas-panel">
           <div class="panel-label fac">Unique Faculty value</div>
           <div class="value-list">
-            <div class="val-item fac"><strong>AI-native decision science</strong>Combining predictive ML with frontier reasoning into one decision engine</div>
-            <div class="val-item fac"><strong>Model evaluation</strong>Proving the platform's outputs are accurate before decisions rely on them</div>
-            <div class="val-item fac"><strong>Upstream Anthropic line</strong>Direct product access to the frontier of capability</div>
+            <div class="val-item fac"><strong>Faculty Frontier™ — decision simulation for clinical portfolios</strong>AI-powered simulation that brings together ML models, trial data and business rules to balance risk and opportunity across assets — their core platform, applied here</div>
+            <div class="val-item fac"><strong>KPI-first methodology</strong>Working backwards from portfolio outcomes to identify which decisions most need AI — ensuring the platform connects directly to go/no-go calls, not just data outputs</div>
+            <div class="val-item fac"><strong>The connective tissue across R&amp;D</strong>Expanding the scope of individual models to answer bigger, cross-functional questions — spanning clinical, regulatory and pipeline teams in one decision layer</div>
           </div>
         </div>
       </div>
@@ -239,7 +239,7 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
         <div class="canvas-panel">
           <div class="panel-label">The problem</div>
           <div class="panel-content">
-            The physical engineering behind manufacturing — facility builds, process scale-up, production lines — is capital-intensive, highly regulated (GMP), and unforgiving when it goes wrong. Digital twins of these processes exist, but they are largely <strong>passive: they model, they don't govern</strong>. Scenario testing and quality control are manual and periodic, so problems surface late and corrections are expensive. The opportunity is agents that <strong>act around the twin</strong> — simulating scenarios, enforcing control, and catching quality issues before they reach the physical process.
+            The physical engineering behind manufacturing — facility builds, process scale-up, production lines — is capital-intensive, highly regulated (Good Manufacturing Practice — GMP), and unforgiving when it goes wrong. Digital twins of these processes exist, but they are largely <strong>passive: they model, they don't govern</strong>. Scenario testing and quality control are manual and periodic, so problems surface late and corrections are expensive. The opportunity is agents that <strong>act around the twin</strong> — simulating scenarios, enforcing control, and catching quality issues before they reach the physical process.
           </div>
         </div>
         <div class="canvas-panel">
@@ -247,7 +247,7 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
           <div class="stakeholder-list">
             <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">VP Engineering / Manufacturing</span><span class="sh-role">Owns delivery of facilities, scale-up and production capacity</span></div></div>
             <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Operational Excellence leadership</span><span class="sh-role">Accountable for robustness, throughput and cost of failure</span></div></div>
-            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Quality (QA / QC) leadership</span><span class="sh-role">Owns quality control and the GMP standard the agents must uphold</span></div></div>
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Quality Assurance (QA) / Quality Control (QC) leadership</span><span class="sh-role">Owns quality control and the GMP standard the agents must uphold</span></div></div>
             <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Process &amp; Automation Engineers</span><span class="sh-role">End users — interact with the twin and the agents day to day</span></div></div>
           </div>
         </div>
@@ -256,25 +256,25 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
         <div class="canvas-panel">
           <div class="panel-label">Unique Anthropic value</div>
           <div class="value-list">
-            <div class="val-item"><strong>Agents that act around the twin</strong>Run scenario simulations, interpret results, and flag risk before it goes physical</div>
-            <div class="val-item"><strong>Governance &amp; control by design</strong>Bounded behaviour with humans in the loop — won't take unsafe actions, escalates instead</div>
-            <div class="val-item"><strong>Auditable decisions</strong>Every action explainable and logged — essential in a GMP environment</div>
+            <div class="val-item"><strong>Safe, steerable agents by design</strong>Mechanistic interpretability research means agents are built to be understood, bounded and corrected — not black boxes operating on physical processes</div>
+            <div class="val-item"><strong>Human-in-the-loop at every step</strong>Agents that flag, escalate and await approval rather than act unilaterally — the architecture regulated manufacturing environments require, built into the model's behaviour</div>
+            <div class="val-item"><strong>Enterprise-scale deployment in pharma</strong>The same foundation Sanofi deployed across their entire business for "significant efficiency gains across the value chain" — applied to engineering governance</div>
           </div>
         </div>
         <div class="canvas-panel">
           <div class="panel-label acc">Unique Accenture value</div>
           <div class="value-list">
-            <div class="val-item acc"><strong>Industrial &amp; digital twin delivery</strong>Engineering and manufacturing transformation depth at scale</div>
-            <div class="val-item acc"><strong>OT &amp; automation integration</strong>Connecting agents to the twin, control systems and the shop floor</div>
-            <div class="val-item acc"><strong>GMP-validated deployment</strong>Quality-systems expertise to deploy into regulated manufacturing</div>
+            <div class="val-item acc"><strong>IDC-recognised leader in life sciences intelligent supply chain</strong>Named a Leader in the IDC MarketScape Life Sciences Intelligent Supply Chain Services — independent recognition for the manufacturing transformation capability this canvas builds on</div>
+            <div class="val-item acc"><strong>Operational Technology (OT) integration at production depth</strong>Connecting agents to digital twins, control systems and the shop floor — the integration depth that separates a governed agent from a standalone model sitting outside the process</div>
+            <div class="val-item acc"><strong>Compliance-first AI in regulated manufacturing</strong>Accenture's investment in Iridius embeds regulatory compliance and auditability into enterprise AI deployments — the same discipline applied to every agent action in a GMP environment</div>
           </div>
         </div>
         <div class="canvas-panel">
           <div class="panel-label fac">Unique Faculty value</div>
           <div class="value-list">
-            <div class="val-item fac"><strong>AI-native simulation &amp; control</strong>Agent design for critical, physical-world environments</div>
-            <div class="val-item fac"><strong>Safety evaluation</strong>Rigorous testing of agents that influence real engineering processes</div>
-            <div class="val-item fac"><strong>Assurance for regulated control</strong>The evidence base quality and regulators will accept</div>
+            <div class="val-item fac"><strong>Life sciences simulation expertise</strong>Deep capability building AI-powered simulation for high-stakes, regulated pharma environments — applied from clinical trial optimisation to engineering processes</div>
+            <div class="val-item fac"><strong>Decision-focused AI design</strong>Structuring agents around the decisions that matter — working backwards from manufacturing KPIs, not forwards from data, so every output connects to a real call</div>
+            <div class="val-item fac"><strong>Proven regulated deployment</strong>Track record deploying AI at Novartis, IQVIA and MedDRA — the standards for building responsibly in complex, high-stakes life sciences environments</div>
           </div>
         </div>
       </div>
@@ -306,14 +306,14 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
         <div class="canvas-panel">
           <div class="panel-label">The problem</div>
           <div class="panel-content">
-            PAS-X MBR configurations are stored as large, deeply nested XML files. Across design, validation and review cycles, teams spend significant manual effort locating configuration elements, identifying hardcoded values, verifying compliance against Körber guidance, and cross-checking consistency across GMBRs. This sits inside a GxP-regulated environment, so a wrong answer is worse than no answer — and the work is dependent on scarce specialist knowledge of both the XML schema and the PAS-X application. The opportunity is a chatbot that <strong>reads the XML accurately, cites every answer at step level, and never fabricates a value that isn't in the file</strong> — turning hours of manual inspection into a plain-English conversation.
+            PAS-X Master Batch Record (MBR) configurations are stored as large, deeply nested XML files. Across design, validation and review cycles, teams spend significant manual effort locating configuration elements, identifying hardcoded values, verifying compliance against Körber guidance, and cross-checking consistency across Generic Master Batch Records (GMBRs). This sits inside a Good Practice (GxP)-regulated environment, so a wrong answer is worse than no answer — and the work is dependent on scarce specialist knowledge of both the XML schema and the PAS-X application. The opportunity is a chatbot that <strong>reads the XML accurately, cites every answer at step level, and never fabricates a value that isn't in the file</strong> — turning hours of manual inspection into a plain-English conversation.
           </div>
         </div>
         <div class="canvas-panel">
           <div class="panel-label">Stakeholder landscape</div>
           <div class="stakeholder-list">
             <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Digital Manufacturing Lead</span><span class="sh-role">Owns the AI initiative and sponsors adoption across the Axial program</span></div></div>
-            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Process SMEs</span><span class="sh-role">Verify structural compliance against Körber guidance and internal standards</span></div></div>
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Process Subject Matter Experts (SMEs)</span><span class="sh-role">Verify structural compliance against Körber guidance and internal standards</span></div></div>
             <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Quality Teams</span><span class="sh-role">Cross-check configuration consistency across multiple GMBRs for review</span></div></div>
             <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Validation Engineers</span><span class="sh-role">Interrogate MBR configuration data daily — the chatbot's primary user</span></div></div>
           </div>
@@ -323,25 +323,25 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
         <div class="canvas-panel">
           <div class="panel-label">Unique Anthropic value</div>
           <div class="value-list">
-            <div class="val-item"><strong>Never fabricates, never assumes</strong>Reports blanks as blank and never invents a step ID, value or count not in the file</div>
-            <div class="val-item"><strong>Cites every answer</strong>Every response ties to a step customId and its position in the GMBR hierarchy</div>
-            <div class="val-item"><strong>Formula assistant</strong>Reads, debugs and suggests PAS-X formulas in valid curly-bracket syntax — with clear SME boundaries</div>
+            <div class="val-item"><strong>Lowest hallucination rates in the industry</strong>Built to report uncertainty and cite sources — reports blanks as blank, never invents a step ID or value that isn't in the file, with biosafety-grade guardrails applied to every response</div>
+            <div class="val-item"><strong>Every answer traced to source</strong>The same citation-first architecture deployed across Anthropic's life sciences customers — every response tied to an exact position in the GMBR hierarchy, not summarised from memory</div>
+            <div class="val-item"><strong>The benchmark for document automation in pharma</strong>Novo Nordisk describe Claude as setting a new standard in "document and content automation in pharma development" — applied here to PAS-X XML inspection</div>
           </div>
         </div>
         <div class="canvas-panel">
           <div class="panel-label acc">Unique Accenture value</div>
           <div class="value-list">
-            <div class="val-item acc"><strong>Körber compliance benchmarking</strong>Checks a GMBR against Körber's complexity and loop limits, flagging cross-product risk</div>
-            <div class="val-item acc"><strong>Cross-GMBR comparison</strong>Compares configuration patterns across multiple GMBRs to surface inconsistencies</div>
-            <div class="val-item acc"><strong>Axial program delivery context</strong>Embedded in the live 10+ site MES rollout, not a standalone pilot</div>
+            <div class="val-item acc"><strong>Compliance-first AI by design</strong>Accenture's investment in Iridius embeds regulatory compliance and auditability into enterprise AI — every response the chatbot returns is traceable, bounded and audit-ready from the ground up</div>
+            <div class="val-item acc"><strong>Körber domain expertise and cross-GMBR benchmarking</strong>Checks configurations against Körber's complexity and loop limits, compares patterns across multiple GMBRs — specialist knowledge that goes beyond what any general AI deployment can provide</div>
+            <div class="val-item acc"><strong>Live deployment at scale, not a pilot</strong>Embedded in the Axial programme — a live 10+ site MES rollout — with the delivery track record to take this from one GMBR to every site in AstraZeneca's network</div>
           </div>
         </div>
         <div class="canvas-panel">
           <div class="panel-label fac">Unique Faculty value</div>
           <div class="value-list">
-            <div class="val-item fac"><strong>AI-native simulation &amp; control</strong>Agent design grounded in real GxP-regulated, physical-world manufacturing data</div>
-            <div class="val-item fac"><strong>Safety evaluation</strong>Rigorous testing of agents that influence validation decisions on real GMBRs</div>
-            <div class="val-item fac"><strong>Assurance for regulated control</strong>The evidence base quality and regulators will accept for AI-assisted validation</div>
+            <div class="val-item fac"><strong>Regulated life sciences AI delivery</strong>Track record building and deploying AI at Novartis, IQVIA and MedDRA — the standards for working responsibly in complex, regulated pharma environments</div>
+            <div class="val-item fac"><strong>Evaluation rigour</strong>Methodology for proving AI outputs are accurate before decisions rely on them — essential when a wrong answer in a GxP context is worse than no answer</div>
+            <div class="val-item fac"><strong>Decision-coupled deployment</strong>Ensuring every AI capability maps to a real workflow decision — not just data extraction, but genuine reduction in the manual effort that sits between the XML and the sign-off</div>
           </div>
         </div>
       </div>
