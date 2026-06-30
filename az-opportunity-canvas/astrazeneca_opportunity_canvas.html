@@ -40,7 +40,8 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
 .dot.active{background:var(--coral);transform:scale(1.25);}
 
 /* TITLE */
-.title-slide{align-items:center;justify-content:center;text-align:center;padding:60px 56px;}
+.title-slide{align-items:stretch;text-align:center;padding:44px 52px 36px;}
+.title-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .title-lockup-lg{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:26px;}
 .title-lockup-lg .acc{color:var(--purple-b);}
 .title-lockup-lg .anth{color:var(--coral-b);}
@@ -97,13 +98,15 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
 
   <!-- SLIDE 1: TITLE -->
   <div class="slide title-slide active" id="s1">
-    <div class="title-lockup-lg"><span class="acc">accenture›</span> &nbsp;×&nbsp; <span class="anth">Anthropic</span> &nbsp;·&nbsp; <span class="az">AstraZeneca</span></div>
-    <div class="hero-title">Opportunity canvases for <em>AstraZeneca</em></div>
-    <div class="coral-divider"></div>
-    <div style="font-size:.88rem;color:var(--muted);margin-bottom:26px;line-height:1.6;max-width:600px;text-align:center;">Three opportunities to explore — across the science of drug discovery, the engineering of how medicines are made, and the manufacturing systems that turn that engineering into product.</div>
-    <div class="meta-block">
-      <div class="meta-item"><label>Session format</label><p>Opportunity exploration<br><span>Joint working session</span></p></div>
-      <div class="meta-item"><label>Focus</label><p>Clinical trial decisioning · engineering digital twin · MES chatbot<br><span>Where AI changes the outcome</span></p></div>
+    <div class="title-body">
+      <div class="title-lockup-lg"><span class="acc">accenture›</span> &nbsp;×&nbsp; <span class="anth">Anthropic</span> &nbsp;·&nbsp; <span class="az">AstraZeneca</span></div>
+      <div class="hero-title">Opportunity canvases for <em>AstraZeneca</em></div>
+      <div class="coral-divider"></div>
+      <div style="font-size:.88rem;color:var(--muted);margin-bottom:26px;line-height:1.6;max-width:600px;text-align:center;">Three opportunities to explore — across the science of drug discovery, the engineering of how medicines are made, and the manufacturing systems that turn that engineering into product.</div>
+      <div class="meta-block">
+        <div class="meta-item"><label>Session format</label><p>Opportunity exploration<br><span>Joint working session</span></p></div>
+        <div class="meta-item"><label>Focus</label><p>Clinical trial decisioning · engineering digital twin · MES chatbot<br><span>Where AI changes the outcome</span></p></div>
+      </div>
     </div>
     <div class="slide-footer">
       <button class="nav-btn" id="prev1" disabled onclick="nav(-1)">← Previous</button>
@@ -116,11 +119,11 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
   <div class="slide" id="s2">
     <div class="slide-header">
       <div class="lockup"><span class="acc">accenture›</span><span class="sep">×</span><span class="anth">Anthropic</span></div>
-      <div class="section-tag">01 · Two opportunities</div>
+      <div class="section-tag">01 · Three opportunities</div>
     </div>
-    <div class="slide-title">Two places AI can <span class="accent">change the outcome</span></div>
-    <div class="slide-subtitle">One reshapes the highest-stakes decisions in drug development; the other brings active governance to the engineering that turns those decisions into medicines. Each has its own canvas.</div>
-    <div class="two-col">
+    <div class="slide-title">Three places AI can <span class="accent">change the outcome</span></div>
+    <div class="slide-subtitle">One reshapes the highest-stakes decisions in drug development; the second brings active governance to the engineering that turns those decisions into medicines; the third puts that same governance to work on the manufacturing floor itself. Each has its own canvas.</div>
+    <div class="three-col">
       <div class="area-card">
         <div class="area-num">01</div>
         <div class="area-name">Clinical Trial Decisioning Platform</div>
@@ -135,6 +138,14 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
         <div class="area-sub">Agents acting around the engineering digital twin — simulating possible scenarios and controlling quality — to bring additional robustness, governance and control to the physical engineering and manufacturing process.</div>
         <div class="area-tags">
           <span class="tag">Digital twin</span><span class="tag">Scenario simulation</span><span class="tag">Quality control</span>
+        </div>
+      </div>
+      <div class="area-card">
+        <div class="area-num">03</div>
+        <div class="area-name">MES Chatbot for GMBR Review</div>
+        <div class="area-sub">A conversational interface onto PAS-X batch record configuration — reading deeply nested XML, citing every answer at step level, and never fabricating a value — turning hours of manual validation review into a plain-English conversation.</div>
+        <div class="area-tags">
+          <span class="tag">GMBR review</span><span class="tag">GxP validation</span><span class="tag">Citation-first answers</span>
         </div>
       </div>
     </div>
@@ -279,14 +290,81 @@ body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-hei
     <div class="slide-footer">
       <button class="nav-btn" onclick="nav(-1)">← Previous</button>
       <div class="dots" id="dots4"></div>
-      <button class="nav-btn" id="next4" disabled>Next →</button>
+      <button class="nav-btn" onclick="nav(1)">Next →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: CANVAS — MES CHATBOT -->
+  <div class="slide" id="s5">
+    <div class="slide-header">
+      <div class="lockup"><span class="acc">accenture›</span><span class="sep">×</span><span class="anth">Anthropic</span></div>
+      <div class="section-tag">04 · Canvas — MES Chatbot</div>
+    </div>
+    <div class="slide-title">Canvas 03: <span class="accent">MES Chatbot for GMBR Review</span></div>
+    <div class="canvas-grid">
+      <div class="canvas-row-2">
+        <div class="canvas-panel">
+          <div class="panel-label">The problem</div>
+          <div class="panel-content">
+            PAS-X MBR configurations are stored as large, deeply nested XML files. Across design, validation and review cycles, teams spend significant manual effort locating configuration elements, identifying hardcoded values, verifying compliance against Körber guidance, and cross-checking consistency across GMBRs. This sits inside a GxP-regulated environment, so a wrong answer is worse than no answer — and the work is dependent on scarce specialist knowledge of both the XML schema and the PAS-X application. The opportunity is a chatbot that <strong>reads the XML accurately, cites every answer at step level, and never fabricates a value that isn't in the file</strong> — turning hours of manual inspection into a plain-English conversation.
+          </div>
+        </div>
+        <div class="canvas-panel">
+          <div class="panel-label">Stakeholder landscape</div>
+          <div class="stakeholder-list">
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Digital Manufacturing Lead</span><span class="sh-role">Owns the AI initiative and sponsors adoption across the Axial program</span></div></div>
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Process SMEs</span><span class="sh-role">Verify structural compliance against Körber guidance and internal standards</span></div></div>
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Quality Teams</span><span class="sh-role">Cross-check configuration consistency across multiple GMBRs for review</span></div></div>
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Validation Engineers</span><span class="sh-role">Interrogate MBR configuration data daily — the chatbot's primary user</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="canvas-row-3">
+        <div class="canvas-panel">
+          <div class="panel-label">Unique Anthropic value</div>
+          <div class="value-list">
+            <div class="val-item"><strong>Never fabricates, never assumes</strong>Reports blanks as blank and never invents a step ID, value or count not in the file</div>
+            <div class="val-item"><strong>Cites every answer</strong>Every response ties to a step customId and its position in the GMBR hierarchy</div>
+            <div class="val-item"><strong>Formula assistant</strong>Reads, debugs and suggests PAS-X formulas in valid curly-bracket syntax — with clear SME boundaries</div>
+          </div>
+        </div>
+        <div class="canvas-panel">
+          <div class="panel-label acc">Unique Accenture value</div>
+          <div class="value-list">
+            <div class="val-item acc"><strong>Körber compliance benchmarking</strong>Checks a GMBR against Körber's complexity and loop limits, flagging cross-product risk</div>
+            <div class="val-item acc"><strong>Cross-GMBR comparison</strong>Compares configuration patterns across multiple GMBRs to surface inconsistencies</div>
+            <div class="val-item acc"><strong>Axial program delivery context</strong>Embedded in the live 10+ site MES rollout, not a standalone pilot</div>
+          </div>
+        </div>
+        <div class="canvas-panel">
+          <div class="panel-label fac">Unique Faculty value</div>
+          <div class="value-list">
+            <div class="val-item fac"><strong>AI-native simulation &amp; control</strong>Agent design grounded in real GxP-regulated, physical-world manufacturing data</div>
+            <div class="val-item fac"><strong>Safety evaluation</strong>Rigorous testing of agents that influence validation decisions on real GMBRs</div>
+            <div class="val-item fac"><strong>Assurance for regulated control</strong>The evidence base quality and regulators will accept for AI-assisted validation</div>
+          </div>
+        </div>
+      </div>
+      <div class="canvas-panel full highlight">
+        <div class="panel-label">Together — impact for AstraZeneca</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+          <div class="impact-item"><div class="impact-arrow">→</div><div><strong>Hours of XML review collapse to seconds</strong> — plain-English queries replace manual navigation of deeply nested XML</div></div>
+          <div class="impact-item"><div class="impact-arrow">→</div><div><strong>Issues caught before they compound</strong> — hardcoded values, blank fields, orphaned steps and formula errors flagged early</div></div>
+          <div class="impact-item"><div class="impact-arrow">→</div><div><strong>A repeatable, auditable pattern</strong> — citation-first answers built for GxP, replicable across sites and other MES platforms</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <button class="nav-btn" onclick="nav(-1)">← Previous</button>
+      <div class="dots" id="dots5"></div>
+      <button class="nav-btn" id="next5" disabled>Next →</button>
     </div>
   </div>
 
 </div>
 
 <script>
-const TOTAL=4;
+const TOTAL=5;
 let cur=1;
 function buildDots(){
   document.querySelectorAll('.dots').forEach(container=>{
