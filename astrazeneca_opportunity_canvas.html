@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accenture × Anthropic — AstraZeneca</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#0e1116;--page-bg:#07090d;--surface:#171b24;--surface-2:#1e232f;
+--border:rgba(255,255,255,0.08);--border-strong:rgba(255,255,255,0.16);
+--text:#ECEEF2;--muted:#98a1b2;--dim:#6b7382;
+--coral:#CC785C;--coral-b:#DC9070;
+--purple:#A100FF;--purple-b:#BC7CFF;
+--blue:#2BA4E0;--teal:#19C29A;--orange:#EC8B1E;--pink:#EC4D9B;--amber:#E8AB3C;
+--r:12px;--serif:'Newsreader',Georgia,serif;--sans:'Inter',sans-serif;
+}
+body{background:var(--page-bg);font-family:var(--sans);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 16px 48px;}
+.deck{width:100%;max-width:1080px;position:relative;}
+.progress-bar{height:2px;background:var(--border);border-radius:2px;position:relative;overflow:hidden;}
+.progress-fill{height:100%;background:var(--coral);border-radius:2px;transition:width .35s ease;}
+.slide{display:none;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--r);padding:44px 52px 36px;flex-direction:column;min-height:580px;}
+.slide.active{display:flex;}
+.slide-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:30px;}
+.lockup{font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:.02em;display:flex;align-items:center;gap:6px;}
+.lockup .acc{color:var(--purple-b);}
+.lockup .sep{color:var(--dim);font-weight:400;}
+.lockup .anth{color:var(--coral);font-family:var(--serif);font-style:italic;}
+.section-tag{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+.slide-title{font-family:var(--serif);font-size:2.05rem;font-weight:400;line-height:1.2;color:var(--text);margin-bottom:9px;}
+.slide-title .accent{color:var(--coral);}
+.slide-subtitle{font-size:.92rem;color:var(--muted);max-width:820px;line-height:1.6;margin-bottom:26px;}
+.slide-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:24px;border-top:0.5px solid var(--border);}
+.nav-btn{background:none;border:0.5px solid var(--border-strong);color:var(--muted);font-family:var(--sans);font-size:12px;font-weight:500;padding:7px 18px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover:not(:disabled){border-color:var(--coral);color:var(--coral);}
+.nav-btn:disabled{opacity:.25;cursor:not-allowed;}
+.dots{display:flex;gap:7px;align-items:center;}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--border-strong);cursor:pointer;transition:all .2s;border:none;padding:0;}
+.dot.active{background:var(--coral);transform:scale(1.25);}
+
+/* TITLE */
+.title-slide{align-items:center;justify-content:center;text-align:center;padding:60px 56px;}
+.title-lockup-lg{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:26px;}
+.title-lockup-lg .acc{color:var(--purple-b);}
+.title-lockup-lg .anth{color:var(--coral-b);}
+.title-lockup-lg .az{color:var(--text);}
+.hero-title{font-family:var(--serif);font-size:2.9rem;font-weight:400;line-height:1.15;color:var(--text);margin-bottom:12px;}
+.hero-title em{color:var(--coral);font-style:italic;}
+.coral-divider{width:64px;height:2px;background:var(--coral);border-radius:2px;margin:22px auto;}
+.meta-block{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;text-align:left;max-width:620px;margin-top:8px;}
+.meta-item label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:4px;}
+.meta-item p{font-size:.9rem;color:var(--text);line-height:1.4;}
+.meta-item p span{color:var(--muted);font-size:.82rem;}
+
+/* OVERVIEW */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;flex:1;}
+.area-card{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:24px 22px;display:flex;flex-direction:column;gap:11px;cursor:pointer;transition:all .25s;}
+.area-card:hover{border-color:var(--coral);background:var(--surface-2);}
+.area-num{font-family:var(--serif);font-size:2rem;color:var(--coral);opacity:.5;line-height:1;}
+.area-name{font-family:var(--serif);font-size:1.25rem;font-weight:500;color:var(--text);line-height:1.25;}
+.area-sub{font-size:.82rem;color:var(--muted);line-height:1.55;}
+.area-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px;}
+.tag{font-size:.65rem;font-weight:500;padding:3px 9px;border-radius:4px;background:rgba(204,120,92,.1);color:var(--coral-b);border:0.5px solid rgba(204,120,92,.25);}
+
+/* CANVAS */
+.canvas-grid{display:flex;flex-direction:column;gap:13px;flex:1;}
+.canvas-row-2{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.canvas-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;}
+.canvas-panel{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:17px 19px;}
+.canvas-panel.full{grid-column:1/-1;}
+.canvas-panel.highlight{background:rgba(204,120,92,.07);border-color:rgba(204,120,92,.35);}
+.panel-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:10px;}
+.panel-label.acc{color:var(--purple-b);}
+.panel-label.fac{color:var(--teal);}
+.panel-content{font-size:.81rem;color:var(--muted);line-height:1.55;}
+.panel-content strong{color:var(--text);font-weight:500;}
+.stakeholder-list{display:flex;flex-direction:column;gap:7px;margin-top:6px;}
+.sh-item{display:flex;align-items:flex-start;gap:10px;font-size:.78rem;}
+.sh-dot{width:6px;height:6px;border-radius:50%;background:var(--coral);margin-top:5px;flex-shrink:0;}
+.sh-name{color:var(--text);font-weight:500;display:block;margin-bottom:1px;}
+.sh-role{color:var(--muted);}
+.value-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.val-item{border-left:2px solid var(--coral);padding-left:12px;font-size:.75rem;color:var(--muted);line-height:1.4;}
+.val-item strong{color:var(--text);display:block;margin-bottom:1px;}
+.val-item.acc{border-left-color:var(--purple);}
+.val-item.fac{border-left-color:var(--teal);}
+.impact-item{display:flex;gap:10px;align-items:flex-start;font-size:.79rem;color:var(--muted);line-height:1.4;}
+.impact-arrow{color:var(--coral);font-size:1rem;margin-top:1px;flex-shrink:0;}
+.impact-item strong{color:var(--text);}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide title-slide active" id="s1">
+    <div class="title-lockup-lg"><span class="acc">accenture›</span> &nbsp;×&nbsp; <span class="anth">Anthropic</span> &nbsp;·&nbsp; <span class="az">AstraZeneca</span></div>
+    <div class="hero-title">Opportunity canvases for <em>AstraZeneca</em></div>
+    <div class="coral-divider"></div>
+    <div style="font-size:.88rem;color:var(--muted);margin-bottom:26px;line-height:1.6;max-width:600px;text-align:center;">Three opportunities to explore — across the science of drug discovery, the engineering of how medicines are made, and the manufacturing systems that turn that engineering into product.</div>
+    <div class="meta-block">
+      <div class="meta-item"><label>Session format</label><p>Opportunity exploration<br><span>Joint working session</span></p></div>
+      <div class="meta-item"><label>Focus</label><p>Clinical trial decisioning · engineering digital twin · MES chatbot<br><span>Where AI changes the outcome</span></p></div>
+    </div>
+    <div class="slide-footer">
+      <button class="nav-btn" id="prev1" disabled onclick="nav(-1)">← Previous</button>
+      <div class="dots" id="dots1"></div>
+      <button class="nav-btn" onclick="nav(1)">Next →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: OVERVIEW -->
+  <div class="slide" id="s2">
+    <div class="slide-header">
+      <div class="lockup"><span class="acc">accenture›</span><span class="sep">×</span><span class="anth">Anthropic</span></div>
+      <div class="section-tag">01 · Two opportunities</div>
+    </div>
+    <div class="slide-title">Two places AI can <span class="accent">change the outcome</span></div>
+    <div class="slide-subtitle">One reshapes the highest-stakes decisions in drug development; the other brings active governance to the engineering that turns those decisions into medicines. Each has its own canvas.</div>
+    <div class="two-col">
+      <div class="area-card">
+        <div class="area-num">01</div>
+        <div class="area-name">Clinical Trial Decisioning Platform</div>
+        <div class="area-sub">Anthropic intelligence working alongside ML models to continually analyse, prioritise and contribute to the decisions around which new drug pursuits to advance — turning portfolio choices into a live, evidence-rich process.</div>
+        <div class="area-tags">
+          <span class="tag">Drug pursuit decisions</span><span class="tag">ML + reasoning</span><span class="tag">Continuous prioritisation</span>
+        </div>
+      </div>
+      <div class="area-card">
+        <div class="area-num">02</div>
+        <div class="area-name">Engineering Digital Twin Agents</div>
+        <div class="area-sub">Agents acting around the engineering digital twin — simulating possible scenarios and controlling quality — to bring additional robustness, governance and control to the physical engineering and manufacturing process.</div>
+        <div class="area-tags">
+          <span class="tag">Digital twin</span><span class="tag">Scenario simulation</span><span class="tag">Quality control</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;gap:12px;align-items:center;margin-top:16px;">
+      <svg width="18" height="18" fill="none" stroke="var(--coral)" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><path d="M9 6v4l2.5 1.5"/></svg>
+      <div style="font-size:.8rem;color:var(--muted);">Each canvas covers: <strong style="color:var(--text);">Problem → Stakeholders → Anthropic value → Accenture value → Faculty value → Combined impact for AstraZeneca.</strong></div>
+    </div>
+    <div class="slide-footer">
+      <button class="nav-btn" onclick="nav(-1)">← Previous</button>
+      <div class="dots" id="dots2"></div>
+      <button class="nav-btn" onclick="nav(1)">Next →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: CANVAS — CLINICAL TRIAL DECISIONING -->
+  <div class="slide" id="s3">
+    <div class="slide-header">
+      <div class="lockup"><span class="acc">accenture›</span><span class="sep">×</span><span class="anth">Anthropic</span></div>
+      <div class="section-tag">02 · Canvas — Clinical Trial Decisioning</div>
+    </div>
+    <div class="slide-title">Canvas 01: <span class="accent">Clinical Trial Decisioning Platform</span></div>
+    <div class="canvas-grid">
+      <div class="canvas-row-2">
+        <div class="canvas-panel">
+          <div class="panel-label">The problem</div>
+          <div class="panel-content">
+            Deciding which drug pursuits to advance, hold, or stop is the highest-stakes call in pharma — and it rests on more evidence than any team can hold in view: trial readouts, scientific literature, real-world data, competitive and regulatory signals. <strong>ML models score molecules and endpoints but can't reason over unstructured evidence or explain themselves</strong>, and portfolio prioritisation happens periodically rather than continuously. The result is slower decisions, late-stage failures, and capital committed to the wrong programmes.
+          </div>
+        </div>
+        <div class="canvas-panel">
+          <div class="panel-label">Stakeholder landscape</div>
+          <div class="stakeholder-list">
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Chief Medical Officer / R&amp;D leadership</span><span class="sh-role">Own pipeline decisions and the cost of getting them wrong</span></div></div>
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Heads of Clinical Development</span><span class="sh-role">Run the trials that generate the evidence to act on</span></div></div>
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Portfolio &amp; Pipeline Strategy</span><span class="sh-role">Prioritise across programmes under finite capital</span></div></div>
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Biostatistics &amp; Data Science</span><span class="sh-role">Own the ML models the platform works alongside</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="canvas-row-3">
+        <div class="canvas-panel">
+          <div class="panel-label">Unique Anthropic value</div>
+          <div class="value-list">
+            <div class="val-item"><strong>Reasoning over the evidence</strong>Synthesises trial data, literature and real-world data that ML alone can't read</div>
+            <div class="val-item"><strong>Works alongside ML models</strong>An orchestration layer that interprets and contextualises model scores</div>
+            <div class="val-item"><strong>Cited, explainable calls</strong>Every recommendation traceable — defensible to governance and regulators</div>
+          </div>
+        </div>
+        <div class="canvas-panel">
+          <div class="panel-label acc">Unique Accenture value</div>
+          <div class="value-list">
+            <div class="val-item acc"><strong>Life sciences R&amp;D depth</strong>Clinical development and pipeline domain expertise at scale</div>
+            <div class="val-item acc"><strong>Data integration</strong>Wiring fragmented clinical, regulatory and RWD sources into one platform</div>
+            <div class="val-item acc"><strong>GxP-validated delivery</strong>Building it to the standards a regulated R&amp;D function requires</div>
+          </div>
+        </div>
+        <div class="canvas-panel">
+          <div class="panel-label fac">Unique Faculty value</div>
+          <div class="value-list">
+            <div class="val-item fac"><strong>AI-native decision science</strong>Combining predictive ML with frontier reasoning into one decision engine</div>
+            <div class="val-item fac"><strong>Model evaluation</strong>Proving the platform's outputs are accurate before decisions rely on them</div>
+            <div class="val-item fac"><strong>Upstream Anthropic line</strong>Direct product access to the frontier of capability</div>
+          </div>
+        </div>
+      </div>
+      <div class="canvas-panel full highlight">
+        <div class="panel-label">Together — impact for AstraZeneca</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+          <div class="impact-item"><div class="impact-arrow">→</div><div><strong>Faster, better-evidenced go/no-go</strong> — decisions grounded in the full evidence base, continuously</div></div>
+          <div class="impact-item"><div class="impact-arrow">→</div><div><strong>Capital to the right programmes</strong> — fewer late-stage failures, more spend on high-probability pursuits</div></div>
+          <div class="impact-item"><div class="impact-arrow">→</div><div><strong>More medicines, sooner</strong> — the ultimate measure: better pipeline decisions reach patients faster</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <button class="nav-btn" onclick="nav(-1)">← Previous</button>
+      <div class="dots" id="dots3"></div>
+      <button class="nav-btn" onclick="nav(1)">Next →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: CANVAS — ENGINEERING DIGITAL TWIN -->
+  <div class="slide" id="s4">
+    <div class="slide-header">
+      <div class="lockup"><span class="acc">accenture›</span><span class="sep">×</span><span class="anth">Anthropic</span></div>
+      <div class="section-tag">03 · Canvas — Engineering Digital Twin</div>
+    </div>
+    <div class="slide-title">Canvas 02: <span class="accent">Engineering Digital Twin Agents</span></div>
+    <div class="canvas-grid">
+      <div class="canvas-row-2">
+        <div class="canvas-panel">
+          <div class="panel-label">The problem</div>
+          <div class="panel-content">
+            The physical engineering behind manufacturing — facility builds, process scale-up, production lines — is capital-intensive, highly regulated (GMP), and unforgiving when it goes wrong. Digital twins of these processes exist, but they are largely <strong>passive: they model, they don't govern</strong>. Scenario testing and quality control are manual and periodic, so problems surface late and corrections are expensive. The opportunity is agents that <strong>act around the twin</strong> — simulating scenarios, enforcing control, and catching quality issues before they reach the physical process.
+          </div>
+        </div>
+        <div class="canvas-panel">
+          <div class="panel-label">Stakeholder landscape</div>
+          <div class="stakeholder-list">
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">VP Engineering / Manufacturing</span><span class="sh-role">Owns delivery of facilities, scale-up and production capacity</span></div></div>
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Operational Excellence leadership</span><span class="sh-role">Accountable for robustness, throughput and cost of failure</span></div></div>
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Quality (QA / QC) leadership</span><span class="sh-role">Owns quality control and the GMP standard the agents must uphold</span></div></div>
+            <div class="sh-item"><div class="sh-dot"></div><div><span class="sh-name">Process &amp; Automation Engineers</span><span class="sh-role">End users — interact with the twin and the agents day to day</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="canvas-row-3">
+        <div class="canvas-panel">
+          <div class="panel-label">Unique Anthropic value</div>
+          <div class="value-list">
+            <div class="val-item"><strong>Agents that act around the twin</strong>Run scenario simulations, interpret results, and flag risk before it goes physical</div>
+            <div class="val-item"><strong>Governance &amp; control by design</strong>Bounded behaviour with humans in the loop — won't take unsafe actions, escalates instead</div>
+            <div class="val-item"><strong>Auditable decisions</strong>Every action explainable and logged — essential in a GMP environment</div>
+          </div>
+        </div>
+        <div class="canvas-panel">
+          <div class="panel-label acc">Unique Accenture value</div>
+          <div class="value-list">
+            <div class="val-item acc"><strong>Industrial &amp; digital twin delivery</strong>Engineering and manufacturing transformation depth at scale</div>
+            <div class="val-item acc"><strong>OT &amp; automation integration</strong>Connecting agents to the twin, control systems and the shop floor</div>
+            <div class="val-item acc"><strong>GMP-validated deployment</strong>Quality-systems expertise to deploy into regulated manufacturing</div>
+          </div>
+        </div>
+        <div class="canvas-panel">
+          <div class="panel-label fac">Unique Faculty value</div>
+          <div class="value-list">
+            <div class="val-item fac"><strong>AI-native simulation &amp; control</strong>Agent design for critical, physical-world environments</div>
+            <div class="val-item fac"><strong>Safety evaluation</strong>Rigorous testing of agents that influence real engineering processes</div>
+            <div class="val-item fac"><strong>Assurance for regulated control</strong>The evidence base quality and regulators will accept</div>
+          </div>
+        </div>
+      </div>
+      <div class="canvas-panel full highlight">
+        <div class="panel-label">Together — impact for AstraZeneca</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+          <div class="impact-item"><div class="impact-arrow">→</div><div><strong>Fewer errors and reworks</strong> — problems caught in simulation, not on the physical line</div></div>
+          <div class="impact-item"><div class="impact-arrow">→</div><div><strong>Faster, safer scale-up</strong> — facilities and processes delivered with built-in governance</div></div>
+          <div class="impact-item"><div class="impact-arrow">→</div><div><strong>Continuous, auditable quality</strong> — GMP risk reduced and capital protected on major builds</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <button class="nav-btn" onclick="nav(-1)">← Previous</button>
+      <div class="dots" id="dots4"></div>
+      <button class="nav-btn" id="next4" disabled>Next →</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const TOTAL=4;
+let cur=1;
+function buildDots(){
+  document.querySelectorAll('.dots').forEach(container=>{
+    container.innerHTML='';
+    for(let i=1;i<=TOTAL;i++){
+      const b=document.createElement('button');
+      b.className='dot'+(i===cur?' active':'');
+      b.setAttribute('aria-label','Slide '+i);
+      b.onclick=()=>goTo(i);
+      container.appendChild(b);
+    }
+  });
+}
+function goTo(n){
+  document.getElementById('s'+cur).classList.remove('active');
+  cur=n;
+  document.getElementById('s'+cur).classList.add('active');
+  document.getElementById('prog').style.width=Math.round((cur/TOTAL)*100)+'%';
+  buildDots();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function nav(d){goTo(Math.max(1,Math.min(TOTAL,cur+d)));}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')nav(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')nav(-1);
+});
+function equalizeHeights(){
+  const slides=document.querySelectorAll('.slide');
+  let max=0;
+  slides.forEach(s=>{
+    s.style.minHeight='';
+    s.style.position='absolute';
+    s.style.visibility='hidden';
+    s.style.display='flex';
+    const h=s.offsetHeight;
+    if(h>max)max=h;
+    s.style.position='';
+    s.style.visibility='';
+    s.style.display='';
+  });
+  slides.forEach(s=>{s.style.minHeight=max+'px';});
+}
+document.fonts.ready.then(equalizeHeights);
+window.addEventListener('load',equalizeHeights);
+let rsz;window.addEventListener('resize',()=>{clearTimeout(rsz);rsz=setTimeout(equalizeHeights,120);});
+buildDots();
+document.getElementById('prog').style.width=Math.round((1/TOTAL)*100)+'%';
+</script>
+</body>
+</html>
