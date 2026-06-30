@@ -77,7 +77,7 @@ Each canvas slide covers: Problem → Stakeholders → Anthropic value → Accen
 
 **Design system:** Dark theme (`#0e1116`), coral accent (`#CC785C`), Newsreader serif + Inter sans-serif. Progress bar and dot navigation auto-update with slide count.
 
-**Current state:** All 5 slides complete. All three value pillars (Anthropic, Accenture, Faculty) rewritten with sourced content from each organisation's website. No outstanding items.
+**Current state:** All 5 slides complete. Canvas 03 renamed to MES Intelligence Bot; MES Lead & MES Team added as top-priority stakeholder in Canvas 03. No outstanding items.
 
 ---
 
@@ -97,4 +97,4 @@ Each canvas slide covers: Problem → Stakeholders → Anthropic value → Accen
 
 ---
 
-*Last updated: 2026-06-30 — All 3 value pillars rewritten from source (anthropic.com/life-sciences, faculty.ai, accenture.com/life-sciences); overview cards made clickable; acronyms expanded to full names; title slide footer fixed; PASXBot added to .gitignore*
+*Last updated: 2026-06-30 — Canvas 03 renamed to MES Intelligence Bot; MES Lead & MES Team added as top-priority stakeholder; Anthropic/Accenture/Faculty value pillars revised and restored; acronyms expanded; clickable overview cards; title slide footer fixed*
