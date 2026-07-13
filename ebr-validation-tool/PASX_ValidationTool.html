@@ -826,7 +826,7 @@ const MAP_CSS = `
   display:flex;align-items:center;justify-content:center;
   font-weight:700;font-size:12px;color:#fff;background:#818180;
 }
-.bf-node{width:360px;border-radius:6px;overflow:hidden;border:1.5px solid #7500C0;background:#fff}
+.bf-node{width:400px;border-radius:6px;overflow:hidden;border:1.5px solid #7500C0;background:#fff}
 .bf-header{
   background:transparent;color:#2A1A3E;padding:7px 14px;
   display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
@@ -854,7 +854,7 @@ const MAP_CSS = `
 .act-id{font-weight:700;color:#460073;min-width:50px}
 .act-desc{flex:1;color:#333}
 .act-extra{font-size:12px;color:#888;margin-top:2px}
-.act-type{display:inline-block;border-radius:3px;padding:1px 6px;font-size:12px;font-weight:600;margin-left:auto;text-align:right}
+.act-type{display:inline-block;border-radius:3px;padding:1px 6px;font-size:12px;font-weight:600;margin-left:auto;text-align:right;white-space:nowrap;flex-shrink:0}
 /* Cross-reference links */
 .cbf-id-link{color:#3D006B;text-decoration:underline dotted;cursor:pointer;font-weight:700;font-size:12px}
 .cbf-id-link:hover{color:#A100FF}
@@ -892,7 +892,7 @@ const MAP_CSS = `
 .sync-shape{color:#622A8F;font-weight:700;font-size:12px;margin:4px 0}
 .flow-map-node-wrap{
   background:#FFFFFF;border-radius:8px;border:1.5px solid;overflow:hidden;
-  width:360px;flex-shrink:0;
+  width:400px;flex-shrink:0;
 }
 .flow-map-node{
   padding:9px 14px;display:flex;align-items:center;gap:12px;

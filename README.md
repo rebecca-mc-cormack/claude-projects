@@ -47,7 +47,8 @@ Located at `C:\Users\rebecca.mc.cormack\OneDrive - Accenture\Documents\AZ\Claude
 - MBR URS preview tab with inline flow maps and Word export
 - Excel export via SheetJS
 - 4th tab "Test Scripts" added as a placeholder (spec in progress, per `EBR_Tool_SPEC.md` Output 4)
-- Flow map node boxes fixed at 360px width (`width:360px;flex-shrink:0`, not a relative `%`+`max-width`) so the box can't resize when expanded/collapsed — a relative width let a parallel branch's box width shift when its sibling branch's activity panel opened, since the flex column's shrink-to-fit calculation picked up the now-visible content
+- Flow map node boxes fixed at 400px width (`width:400px;flex-shrink:0`, not a relative `%`+`max-width`) so the box can't resize when expanded/collapsed — a relative width let a parallel branch's box width shift when its sibling branch's activity panel opened, since the flex column's shrink-to-fit calculation picked up the now-visible content
+- Activity type badges (`.act-type`, e.g. "Equipment Allocation") no longer wrap to 2 lines — added `white-space:nowrap` so they stay tight around their text like the shorter type badges
 - "Show/Hide Activities" expand-all button on the Level 2 toolbar (reuses the `pmShowDetails` state that already threaded through `buildBFHTML`/`renderGraphicalFlow`, previously built but never wired to a button)
 - Download (.png) button pinned top-right, inline with the Layer toggle controls, even at narrow widths
 - Node boxes show a light-purple hover state (`#F3EEF8`) on both the graph-rendered and fallback flow map
@@ -106,4 +107,4 @@ Each canvas slide covers: Problem → Stakeholders → Anthropic value → Accen
 
 ---
 
-*Last updated: 2026-07-13 — EBR tool: fixed CBF expand/collapse and CBF ID → RbE cross-referencing on the real (graph-rendered) flow map; sync/split nodes now icon-only; download button pinned top-right; added Test Scripts placeholder tab; added light-purple node hover state; expanded CBF boxes now a single continuous bordered box matching collapsed width; node boxes reverted back to 360px; added Show/Hide Activities expand-all button; node box width now a hard fixed 360px so parallel-branch boxes no longer jump in width when a sibling branch is expanded/collapsed*
+*Last updated: 2026-07-13 — EBR tool: fixed CBF expand/collapse and CBF ID → RbE cross-referencing on the real (graph-rendered) flow map; sync/split nodes now icon-only; download button pinned top-right; added Test Scripts placeholder tab; added light-purple node hover state; expanded CBF boxes now a single continuous bordered box matching collapsed width; node box width now a hard fixed size (400px) so parallel-branch boxes no longer jump in width when a sibling branch is expanded/collapsed; added Show/Hide Activities expand-all button; activity type badges no longer wrap to 2 lines*
