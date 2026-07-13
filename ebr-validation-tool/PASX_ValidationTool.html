@@ -143,12 +143,12 @@ button{font:inherit;cursor:pointer}
   display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;
   margin-bottom:1rem;
 }
-.tab-toolbar-left{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.tab-toolbar-left{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;flex:1 1 auto;min-width:0}
 .btn-download{
   display:inline-flex;align-items:center;gap:.45rem;padding:.45rem 1rem;
   border-radius:var(--r-pill);border:1.5px solid var(--purple);
   background:transparent;color:var(--purple);font:inherit;font-size:.875rem;font-weight:600;
-  cursor:pointer;transition:background .15s,color .15s;
+  cursor:pointer;transition:background .15s,color .15s;flex-shrink:0;margin-left:auto;
 }
 .btn-download:hover{background:var(--purple);color:#fff}
 .btn-download.muted{background:var(--purple-lightest);color:var(--purple-darkest);border-color:var(--purple-lightest)}
@@ -203,6 +203,12 @@ button{font:inherit;cursor:pointer}
 .risk-high{background:#FFC7CE;color:#9C0006;border-radius:3px;padding:1px 7px;font-size:.75rem;font-weight:600;display:inline-block}
 .rbr-yes{background:#FFC7CE;color:#9C0006;border-radius:3px;padding:1px 7px;font-size:.75rem;font-weight:600;display:inline-block}
 .rbr-no{background:#C6EFCE;color:#276221;border-radius:3px;padding:1px 7px;font-size:.75rem;font-weight:600;display:inline-block}
+
+/* ── TEST SCRIPTS (placeholder) ── */
+.tests-placeholder{
+  background:var(--surface);border:1px solid var(--n200);border-radius:var(--r-lg);
+  padding:4rem 2rem;text-align:center;color:var(--n500);font-size:.9375rem;
+}
 
 /* ── MBR SPEC PREVIEW ── */
 .urs-legend{
@@ -306,6 +312,7 @@ button{font:inherit;cursor:pointer}
       <button class="tab-btn active" data-tab="map">Process Flow Map</button>
       <button class="tab-btn" data-tab="rbe">Review by Exception</button>
       <button class="tab-btn" data-tab="urs">MBR Requirement Spec</button>
+      <button class="tab-btn" data-tab="tests">Test Scripts</button>
     </div>
 
     <!-- TAB 1: PROCESS FLOW MAP -->
@@ -368,6 +375,13 @@ button{font:inherit;cursor:pointer}
         </div>
       </div>
       <div id="urs-preview"></div>
+    </div>
+
+    <!-- TAB 4: TEST SCRIPTS -->
+    <div class="tab-pane" id="tab-tests">
+      <div class="tests-placeholder">
+        <p>Test Scripts — spec in progress. This output will be available in a future release.</p>
+      </div>
     </div>
 
   </div>
@@ -812,7 +826,7 @@ const MAP_CSS = `
   display:flex;align-items:center;justify-content:center;
   font-weight:700;font-size:12px;color:#fff;background:#818180;
 }
-.bf-node{width:580px;border-radius:6px;overflow:hidden;border:1.5px solid #7500C0;background:#fff}
+.bf-node{width:360px;border-radius:6px;overflow:hidden;border:1.5px solid #7500C0;background:#fff}
 .bf-header{
   background:transparent;color:#2A1A3E;padding:7px 14px;
   display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
@@ -847,6 +861,7 @@ const MAP_CSS = `
 .bf-title-expand:hover{text-decoration:underline dotted}
 /* Highlighted node (from RbE cross-ref) */
 .bf-node.bf-highlight{border-color:#3D006B !important;border-width:2.5px !important;background:#F3EEF8 !important}
+.flow-map-node.bf-highlight{border-color:#3D006B !important;border-width:2.5px !important;background:#F3EEF8 !important}
 .t-attr{background:#e3f1e3;color:#2a6b2a}
 .t-mv{background:#fff3cd;color:#856404}
 .t-form{background:#f3e3ff;color:#6a1fa3}
@@ -877,7 +892,7 @@ const MAP_CSS = `
 .flow-map-node{
   background:#FFFFFF;border-radius:8px;border:1.5px solid;
   padding:9px 14px;display:flex;align-items:center;gap:12px;
-  font-size:12px;width:100%;max-width:480px;
+  font-size:12px;width:100%;max-width:360px;
 }
 .flow-map-node-id{
   font-weight:700;color:#3D006B;flex-shrink:0;
@@ -1181,8 +1196,10 @@ function renderGraphicalFlow(basicFunctions, graph, reverse, nodeMap, materialNa
     let output = '';
     const targets = graph[nodeId] || [];
 
-    // Render this node (flow map version, not detailed)
-    output += renderFlowMapNode(bf, materialName);
+    // Sync/Split nodes are represented by their bar icon only (see renderSplitBar/renderSyncBar) — no text box
+    if (!['SplittingVO','SynchronisationVO'].includes(bf.stepType)) {
+      output += renderFlowMapNode(bf, materialName, showDetails);
+    }
 
     // Handle different target scenarios
     if (targets.length === 0) {
@@ -1215,22 +1232,24 @@ function renderGraphicalFlow(basicFunctions, graph, reverse, nodeMap, materialNa
   return renderNode(startId);
 }
 
-function renderFlowMapNode(bf, materialName='') {
+function renderFlowMapNode(bf, materialName='', showDetails=false) {
   const typeLabel = STEP_LABEL[bf.stepType] || bf.stepType;
   const color = STEP_COLOUR[bf.stepType] || '#7500C0';
   return `
   <div class="inner-arrow"></div>
-  <div class="flow-map-node" style="border-color:${color}">
-    <div class="flow-map-node-id">${esc(bf.id)}</div>
-    <div class="flow-map-node-desc">${esc(bf.desc)}</div>
+  <div class="flow-map-node" data-bfid="${esc(bf.id)}" style="border-color:${color}">
+    <div class="flow-map-node-id" onclick="navToRBE('${esc(bf.id)}')" title="View in Review by Exception">${esc(bf.id)}</div>
+    <div class="flow-map-node-desc" onclick="toggleBFNode(this)" title="Click to expand/collapse activities">${esc(bf.desc)}</div>
     <div class="flow-map-node-type">${esc(typeLabel)}</div>
+  </div>
+  <div class="act-details${showDetails?' open':''}">
+    <div class="bf-body">${buildActivitiesHTML(bf)}</div>
   </div>`;
 }
 
 function renderSplitBar(bf) {
   return `
   <div class="inner-arrow"></div>
-  <div style="text-align:center;font-size:11px;color:#622A8F;font-weight:600;margin-bottom:4px">${esc(bf.id)} — Split</div>
   <svg width="400" height="12" style="display:block;margin:8px 0" viewBox="0 0 400 12">
     <line x1="50" y1="6" x2="350" y2="6" stroke="#622A8F" stroke-width="3"/>
   </svg>
@@ -1243,7 +1262,6 @@ function renderSyncBar(bf) {
   <svg width="200" height="32" style="display:block;margin:8px auto">
     <polyline points="10,4 100,28 190,4" fill="none" stroke="#622A8F" stroke-width="2.5" stroke-linejoin="round"/>
   </svg>
-  <div style="text-align:center;font-size:11px;color:#622A8F;font-weight:600;margin-top:4px">${esc(bf.id)} — Synchronisation</div>
   <div class="inner-arrow"></div>`;
 }
 
@@ -1281,7 +1299,9 @@ function renderBranchChain(nodeId, nodeMap, graph, visited, showDetails, materia
   }
 
   let output = '';
-  output += renderFlowMapNode(bf, materialName);
+  if (!['SplittingVO','SynchronisationVO'].includes(bf.stepType)) {
+    output += renderFlowMapNode(bf, materialName, showDetails);
+  }
 
   const targets = graph[nodeId] || [];
   console.log('Branch node targets:', nodeId, '→', targets);
@@ -1341,8 +1361,7 @@ function getBFHeaderClass(bf) {
   return '';
 }
 
-function buildBFHTML(bf, showDetails=false, materialName='') {
-  const hdrCls = getBFHeaderClass(bf);
+function buildActivitiesHTML(bf) {
   const typeLabel = STEP_LABEL[bf.stepType] || bf.stepType;
   let acts = '';
 
@@ -1374,6 +1393,13 @@ function buildBFHTML(bf, showDetails=false, materialName='') {
     </div>`;
   }
 
+  return acts || '<div style="font-size:12px;color:#aaa;padding:4px 0">No activities</div>';
+}
+
+function buildBFHTML(bf, showDetails=false, materialName='') {
+  const hdrCls = getBFHeaderClass(bf);
+  const typeLabel = STEP_LABEL[bf.stepType] || bf.stepType;
+
   const materialNameLine = bf.stepType === 'TakeOutBFVO' && materialName
     ? `<div style="font-size:11px;font-style:italic;color:#185FA5;margin-top:2px">${esc(materialName)}</div>`
     : '';
@@ -1392,7 +1418,7 @@ function buildBFHTML(bf, showDetails=false, materialName='') {
     </div>
     <div class="act-details${showDetails?' open':''}">
       <div class="bf-body">
-        ${acts||'<div style="font-size:12px;color:#aaa;padding:4px 0">No activities</div>'}
+        ${buildActivitiesHTML(bf)}
       </div>
     </div>
   </div>`;
@@ -1626,10 +1652,10 @@ function navToFlowMap(bfId) {
   if (GMBR && pmLevel !== 2) { pmLevel = 2; renderMap(GMBR); }
 
   // Clear previous highlights
-  document.querySelectorAll('.bf-node').forEach(n => n.classList.remove('bf-highlight'));
+  document.querySelectorAll('.bf-node, .flow-map-node').forEach(n => n.classList.remove('bf-highlight'));
 
   // Highlight the target node and scroll
-  const node = document.querySelector(`.bf-node[data-bfid="${bfId}"]`);
+  const node = document.querySelector(`.bf-node[data-bfid="${bfId}"], .flow-map-node[data-bfid="${bfId}"]`);
   if (node) {
     node.classList.add('bf-highlight');
     node.scrollIntoView({behavior:'smooth', block:'center'});
@@ -1637,9 +1663,10 @@ function navToFlowMap(bfId) {
 }
 
 function toggleBFNode(el) {
-  const node = el.closest('.bf-node');
-  const acts = node?.querySelector('.act-details');
-  if (acts) acts.classList.toggle('open');
+  const node = el.closest('.bf-node, .flow-map-node');
+  if (!node) return;
+  const acts = node.classList.contains('bf-node') ? node.querySelector('.act-details') : node.nextElementSibling;
+  if (acts && acts.classList.contains('act-details')) acts.classList.toggle('open');
 }
 
 /* ================================================================

@@ -37,21 +37,27 @@ Located at `C:\Users\rebecca.mc.cormack\OneDrive - Accenture\Documents\AZ\Claude
 - `EBR_Validation_Tool_Figma_Spec.md` — UI/visual design spec
 - `EBR_Validation_Tool_Requirements_Spec.docx` — formal requirements spec
 
-**Current state (June 2026):**
+**Current state (July 2026):**
 - Graph-based flow map rendering with directed graph traversal via `ProdStepLinkCollection`
 - Parallel branch detection, split/sync node shapes, correct post-convergence rendering
+- Sync/Split nodes render as icon-only bars (no redundant text box/label)
+- CBF expand/collapse (click title) and CBF ID → Review by Exception cross-reference now work on the real graph-rendered flow map, not just the fallback linear renderer — both share one activity-list builder (`buildActivitiesHTML`) so the expanded look is identical everywhere
+- Review by Exception ↔ flow map highlighting works both directions (RbE row → node, node ID → RbE row)
 - Review by Exception tab with auto-suggestion logic and cross-referencing
 - MBR URS preview tab with inline flow maps and Word export
 - Excel export via SheetJS
+- 4th tab "Test Scripts" added as a placeholder (spec in progress, per `EBR_Tool_SPEC.md` Output 4)
+- Flow map node boxes narrowed (580px/480px → 360px) for a more compact map
+- Download (.png) button pinned top-right, inline with the Layer toggle controls, even at narrow widths
 
 **Remaining work:**
 - [ ] Arrow styling refinement (colours, sizes, positioning)
 - [ ] Nested CBFs (CBFs within CBFs) — parser foundation in place, Layer 2 UI needs extending
 - [ ] True `.drawio` / Visio export (currently exports standalone HTML)
-- [ ] Outputs 4 (Pathways Excel) and 5 (Test Scripts) — business rules TBD
+- [ ] Outputs 4 (Test Scripts) and 5 (Pathways Excel) — business rules still `[SPEC IN PROGRESS]`; Test Scripts now has a placeholder tab only
 - [ ] PMBR support (Parametrised MBR)
 - [ ] Material Input display
-- [ ] PNG export via html2canvas
+- [ ] PNG export via html2canvas (Download (.png) button still exports standalone HTML, not a real PNG)
 
 **Design system:** Accenture brand palette — core purple `#A100FF`, dark purple `#7500C0`, background `#F7F5F2`. Font: Graphik / DM Sans / Helvetica Neue.
 
@@ -97,4 +103,4 @@ Each canvas slide covers: Problem → Stakeholders → Anthropic value → Accen
 
 ---
 
-*Last updated: 2026-06-30 — Canvas 03 renamed to MES Intelligence Bot; MES Lead & MES Team added as top-priority stakeholder; Anthropic/Accenture/Faculty value pillars revised and restored; acronyms expanded; clickable overview cards; title slide footer fixed*
+*Last updated: 2026-07-13 — EBR tool: fixed CBF expand/collapse and CBF ID → RbE cross-referencing on the real (graph-rendered) flow map; sync/split nodes now icon-only; node boxes narrowed; download button pinned top-right; added Test Scripts placeholder tab*
