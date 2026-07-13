@@ -52,6 +52,10 @@ Located at `C:\Users\rebecca.mc.cormack\OneDrive - Accenture\Documents\AZ\Claude
 - "Show/Hide Activities" expand-all button on the Level 2 toolbar (reuses the `pmShowDetails` state that already threaded through `buildBFHTML`/`renderGraphicalFlow`, previously built but never wired to a button)
 - Download (.png) button pinned top-right, inline with the Layer toggle controls, even at narrow widths
 - Node boxes show a light-purple hover state (`#F3EEF8`) on both the graph-rendered and fallback flow map
+- Audited against `~/Downloads/EBR_Tool_SPEC.md` (the requirements spec — note this is written for the retired Python/graphviz prototype, but its business rules and design tokens still apply to the live HTML tool) and fixed 3 concrete deviations:
+  - `STEP_COLOUR` had drifted from spec §8.4 (e.g. Equipment nodes were dark gray `#818180` instead of medium gray `#CFCFCF`, Material-flow nodes were blue `#185FA5` instead of pink `#FF50A0`) — the `.bf-header.*` CSS classes already had the correct colours, `STEP_COLOUR` (which drives the actual node border on the real flow map) didn't; now both agree and match spec
+  - RbE Column 5 default logic (§10.3): a Formula step that's the last step before an `EndStepVO`/`SpecDecisionVO` now correctly defaults to "OK with block signature" (was never implemented — Formula steps always defaulted to "OK with 2nd person verification" or "OK")
+  - URS "Definitions and Acronyms" table (§9.2) now uses the exact 18 spec-mandated terms (Core, CPP, CQA, ERP, GI/GR, gMBR, HU, MBR, MES, pMBR, PVL, RS, SAP, SME, TM, URS, Ver. sig., Ver. type) — it previously had a different, informal 18-term glossary (EBR, GMBR, GAMP, IQ/OQ/PQ, etc.)
 - Expanded CBF boxes now render as a single continuous bordered box (header + activities share one `.flow-map-node-wrap`/`.bf-node` container, same width) instead of the activities panel floating below at a different width
 
 **Remaining work:**
@@ -107,4 +111,4 @@ Each canvas slide covers: Problem → Stakeholders → Anthropic value → Accen
 
 ---
 
-*Last updated: 2026-07-13 — EBR tool: fixed CBF expand/collapse and CBF ID → RbE cross-referencing on the real (graph-rendered) flow map; sync/split nodes now icon-only; download button pinned top-right; added Test Scripts placeholder tab; added light-purple node hover state; expanded CBF boxes now a single continuous bordered box matching collapsed width; node box width now a hard fixed size (400px) so parallel-branch boxes no longer jump in width when a sibling branch is expanded/collapsed; added Show/Hide Activities expand-all button; activity type badges no longer wrap to 2 lines*
+*Last updated: 2026-07-13 — EBR tool: fixed CBF expand/collapse and CBF ID → RbE cross-referencing on the real (graph-rendered) flow map; sync/split nodes now icon-only; download button pinned top-right; added Test Scripts placeholder tab; added light-purple node hover state; expanded CBF boxes now a single continuous bordered box matching collapsed width; node box width now a hard fixed size (400px) so parallel-branch boxes no longer jump in width when a sibling branch is expanded/collapsed; added Show/Hide Activities expand-all button; activity type badges no longer wrap to 2 lines; audited against EBR_Tool_SPEC.md and fixed node colour palette, RbE Column 5 block-signature logic, and URS glossary to match spec exactly*
