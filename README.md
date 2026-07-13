@@ -47,7 +47,8 @@ Located at `C:\Users\rebecca.mc.cormack\OneDrive - Accenture\Documents\AZ\Claude
 - MBR URS preview tab with inline flow maps and Word export
 - Excel export via SheetJS
 - 4th tab "Test Scripts" added as a placeholder (spec in progress, per `EBR_Tool_SPEC.md` Output 4)
-- Flow map node boxes narrowed (580px/480px → 360px) for a more compact map
+- Flow map node boxes sized at 460px (tuned back up from an initial 360px, which wrapped content awkwardly) for a compact but readable map
+- Parallel-branch columns get a 380px min-width so split-branch nodes aren't squeezed narrower than the rest of the map
 - Download (.png) button pinned top-right, inline with the Layer toggle controls, even at narrow widths
 - Node boxes show a light-purple hover state (`#F3EEF8`) on both the graph-rendered and fallback flow map
 - Expanded CBF boxes now render as a single continuous bordered box (header + activities share one `.flow-map-node-wrap`/`.bf-node` container, same width) instead of the activities panel floating below at a different width
@@ -105,4 +106,4 @@ Each canvas slide covers: Problem → Stakeholders → Anthropic value → Accen
 
 ---
 
-*Last updated: 2026-07-13 — EBR tool: fixed CBF expand/collapse and CBF ID → RbE cross-referencing on the real (graph-rendered) flow map; sync/split nodes now icon-only; node boxes narrowed; download button pinned top-right; added Test Scripts placeholder tab; added light-purple node hover state; expanded CBF boxes now a single continuous bordered box matching collapsed width*
+*Last updated: 2026-07-13 — EBR tool: fixed CBF expand/collapse and CBF ID → RbE cross-referencing on the real (graph-rendered) flow map; sync/split nodes now icon-only; download button pinned top-right; added Test Scripts placeholder tab; added light-purple node hover state; expanded CBF boxes now a single continuous bordered box matching collapsed width; node boxes re-widened to 460px (with 380px min-width branch columns) so content fits on one line*
