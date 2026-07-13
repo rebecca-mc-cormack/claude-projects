@@ -46,7 +46,14 @@ Located at `C:\Users\rebecca.mc.cormack\OneDrive - Accenture\Documents\AZ\Claude
 - Review by Exception tab with auto-suggestion logic and cross-referencing
 - MBR URS preview tab with inline flow maps and Word export
 - Excel export via SheetJS
-- 4th tab "Test Scripts" added as a placeholder (spec in progress, per `EBR_Tool_SPEC.md` Output 4)
+- **Test Scripts tab (Output 4) fully built**, per SPEC.md v1.1 §11/§17 — replaces the earlier placeholder:
+  - XML parsing extended for `SpecDecisionVO.decisionType`/`.formula`/`.specConditionCollection` and `SetCxBfVO.cxDefinitionCollection`; `FormulaSpecPropVO` activities now also retain their raw (unresolved) formula text
+  - PVL paste parser (7-column tab-separated format) with live validation (green/amber/red) and Boolean/Double/Integer/String type coercion
+  - Hand-written recursive-descent expression evaluator (`tsTokenize`/`tsParse`/`tsEvalAst`) for resolving `{ValueParameter X}`-substituted decision formulas — deliberately no `eval()`/`Function()`, since formula text comes from the uploaded XML
+  - Active-path graph walker (`walkBOActivePath`, reuses `buildGraphFromLinks`) that resolves `SpecDecisionVO` branches from the PVL where possible, traverses all branches of an unresolved/manual decision or a structural `SplittingVO`, and tracks which steps are conditional
+  - Cross-scenario coverage register, recomputed fresh from the current scenario list on every add/remove (not persisted), so Section 4 only shows a formula-decision branch in the first scenario that covers it, and removing a scenario immediately reopens any branch only it covered
+  - Per-scenario Word doc (`.doc`, same HTML-as-Word technique as the URS export) and a `Download all (.zip)` via JSZip
+  - Full 3-state Tab 4 UI: empty state, Add Scenario side panel, scenario cards with inline remove-confirmation, coverage bar + expandable gap table, 10-scenario cap, duplicate-name rejection, and an amber "GMBR has changed" banner that clears all scenarios when a new XML is uploaded
 - Flow map node boxes fixed at 400px width (`width:400px;flex-shrink:0`, not a relative `%`+`max-width`) so the box can't resize when expanded/collapsed — a relative width let a parallel branch's box width shift when its sibling branch's activity panel opened, since the flex column's shrink-to-fit calculation picked up the now-visible content
 - Activity type badges (`.act-type`, e.g. "Equipment Allocation") no longer wrap to 2 lines — added `white-space:nowrap` so they stay tight around their text like the shorter type badges
 - "Show/Hide Activities" expand-all button on the Level 2 toolbar (reuses the `pmShowDetails` state that already threaded through `buildBFHTML`/`renderGraphicalFlow`, previously built but never wired to a button)
@@ -62,7 +69,9 @@ Located at `C:\Users\rebecca.mc.cormack\OneDrive - Accenture\Documents\AZ\Claude
 - [ ] Arrow styling refinement (colours, sizes, positioning)
 - [ ] Nested CBFs (CBFs within CBFs) — parser foundation in place, Layer 2 UI needs extending
 - [ ] True `.drawio` / Visio export (currently exports standalone HTML)
-- [ ] Outputs 4 (Test Scripts) and 5 (Pathways Excel) — business rules still `[SPEC IN PROGRESS]`; Test Scripts now has a placeholder tab only
+- [ ] Output 5 (Pathways Excel) — business rules still `[SPEC IN PROGRESS]` per SPEC.md
+- [ ] Test Scripts: PVL XML import (spec 11.1 marks this `[SPEC IN PROGRESS]` — paste-based PVL entry is the supported path for now)
+- [ ] Test Scripts: decision→branch correlation assumes `bo.prodStepLinks` targets are positionally ordered to match `specConditionCollection` — the XML doesn't otherwise state how a condition maps to a specific outgoing link; revisit if a real GMBR export with decisions surfaces a different pattern
 - [ ] PMBR support (Parametrised MBR)
 - [ ] Material Input display
 - [ ] PNG export via html2canvas (Download (.png) button still exports standalone HTML, not a real PNG)
@@ -111,4 +120,4 @@ Each canvas slide covers: Problem → Stakeholders → Anthropic value → Accen
 
 ---
 
-*Last updated: 2026-07-13 — EBR tool: fixed CBF expand/collapse and CBF ID → RbE cross-referencing on the real (graph-rendered) flow map; sync/split nodes now icon-only; download button pinned top-right; added Test Scripts placeholder tab; added light-purple node hover state; expanded CBF boxes now a single continuous bordered box matching collapsed width; node box width now a hard fixed size (400px) so parallel-branch boxes no longer jump in width when a sibling branch is expanded/collapsed; added Show/Hide Activities expand-all button; activity type badges no longer wrap to 2 lines; audited against EBR_Tool_SPEC.md and fixed node colour palette, RbE Column 5 block-signature logic, and URS glossary to match spec exactly*
+*Last updated: 2026-07-13 — EBR tool: fixed CBF expand/collapse and CBF ID → RbE cross-referencing on the real (graph-rendered) flow map; sync/split nodes now icon-only; download button pinned top-right; added light-purple node hover state; expanded CBF boxes now a single continuous bordered box matching collapsed width; node box width now a hard fixed size (400px) so parallel-branch boxes no longer jump in width when a sibling branch is expanded/collapsed; added Show/Hide Activities expand-all button; activity type badges no longer wrap to 2 lines; audited against EBR_Tool_SPEC.md v1.0 and fixed node colour palette, RbE Column 5 block-signature logic, and URS glossary to match spec exactly; built the full Output 4 Test Scripts feature per SPEC.md v1.1 (PVL parsing, safe formula evaluator, active-path walker, cross-scenario coverage tracking, per-scenario Word export + zip-all, complete Tab 4 UI) replacing the earlier placeholder tab*

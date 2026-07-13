@@ -204,11 +204,93 @@ button{font:inherit;cursor:pointer}
 .rbr-yes{background:#FFC7CE;color:#9C0006;border-radius:3px;padding:1px 7px;font-size:.75rem;font-weight:600;display:inline-block}
 .rbr-no{background:#C6EFCE;color:#276221;border-radius:3px;padding:1px 7px;font-size:.75rem;font-weight:600;display:inline-block}
 
-/* ── TEST SCRIPTS (placeholder) ── */
-.tests-placeholder{
-  background:var(--surface);border:1px solid var(--n200);border-radius:var(--r-lg);
-  padding:4rem 2rem;text-align:center;color:var(--n500);font-size:.9375rem;
+/* ── TEST SCRIPTS ── */
+.ts-banner{
+  display:flex;align-items:center;gap:.5rem;background:var(--amber);border:1px solid var(--amber-border);
+  border-radius:var(--r-md);padding:.75rem 1.1rem;color:#7D5800;font-size:.8125rem;margin-bottom:1rem;
 }
+.ts-empty-state{
+  background:var(--surface);border:1px solid var(--n200);border-radius:var(--r-lg);
+  padding:4.5rem 2rem;text-align:center;
+}
+.ts-empty-icon{
+  width:56px;height:56px;margin:0 auto 1.25rem;border-radius:50%;
+  background:var(--gray-mid);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:1.75rem;font-weight:700;
+}
+.ts-empty-state h3{font-size:1.125rem;color:var(--n900);margin-bottom:.5rem}
+.ts-empty-state p{font-size:.875rem;color:var(--n500);max-width:380px;margin:0 auto 1.5rem}
+
+.ts-scenario-list{display:flex;flex-direction:column;gap:.875rem;margin-bottom:1.5rem}
+.ts-card{
+  display:flex;align-items:center;gap:1rem;background:var(--surface);
+  border:1px solid var(--n200);border-radius:var(--r-lg);padding:1.1rem 1.25rem;
+}
+.ts-card-main{flex:1;min-width:0}
+.ts-card-name{font-weight:700;color:var(--n900);font-size:.9375rem}
+.ts-card-sub{font-size:.8125rem;color:var(--n500);margin-top:.15rem}
+.ts-card-pill{
+  background:var(--purple-lightest);color:var(--purple-darkest);font-weight:600;
+  font-size:.75rem;border-radius:var(--r-pill);padding:.3rem .75rem;white-space:nowrap;
+}
+.ts-card-remove{
+  background:transparent;border:none;color:var(--gray-mid);cursor:pointer;
+  width:32px;height:32px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;
+  transition:background .15s,color .15s;
+}
+.ts-card-remove:hover{background:#fff0f0;color:#c0392b}
+.ts-card-confirm{
+  display:flex;align-items:center;gap:.6rem;font-size:.8125rem;color:var(--n700);flex-shrink:0;
+}
+
+.ts-coverage{background:var(--surface);border:1px solid var(--n200);border-radius:var(--r-lg);padding:1.25rem 1.5rem}
+.ts-coverage-head{display:flex;justify-content:space-between;align-items:center;font-size:.8125rem;font-weight:700;color:var(--n700);margin-bottom:.5rem}
+.ts-coverage-bar{height:10px;border-radius:var(--r-pill);background:var(--gray-light);overflow:hidden}
+.ts-coverage-fill{height:100%;background:var(--purple);border-radius:var(--r-pill);transition:width .2s}
+.ts-coverage-note{font-size:.8125rem;margin-top:.6rem}
+.ts-coverage-note.gap{color:#856404}
+.ts-coverage-note.complete{color:#276221}
+.ts-gap-toggle{background:none;border:none;color:var(--purple);font-weight:600;font-size:.8125rem;cursor:pointer;padding:0;margin-top:.5rem}
+.ts-gap-table{width:100%;border-collapse:collapse;font-size:.8125rem;margin-top:.75rem}
+.ts-gap-table th{text-align:left;padding:.4rem .6rem;color:var(--n500);font-weight:600;font-size:.75rem;text-transform:uppercase}
+.ts-gap-table td{padding:.4rem .6rem}
+.ts-gap-table tbody tr:nth-child(even){background:#F5F5F5}
+
+.ts-panel-overlay{
+  position:fixed;inset:0;background:rgba(26,26,26,.35);z-index:100;
+  display:flex;justify-content:flex-end;
+}
+.ts-panel{
+  width:min(440px,100%);height:100%;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.15);
+  display:flex;flex-direction:column;animation:ts-slide-in .18s ease-out;
+}
+@keyframes ts-slide-in{from{transform:translateX(24px);opacity:.4}to{transform:translateX(0);opacity:1}}
+.ts-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.25rem 1.5rem;border-bottom:1px solid var(--n200);
+}
+.ts-panel-header h3{font-size:1.0625rem;color:var(--n900)}
+.ts-panel-close{background:none;border:none;font-size:1.5rem;line-height:1;color:var(--n500);cursor:pointer}
+.ts-panel-body{padding:1.5rem;overflow-y:auto;flex:1}
+.ts-field-label{display:block;font-size:.8125rem;font-weight:700;color:var(--n700);margin-bottom:.4rem}
+.ts-input{
+  width:100%;padding:.6rem .75rem;border:1.5px solid var(--n300);border-radius:var(--r-md);
+  font:inherit;font-size:.875rem;color:var(--n900);margin-bottom:.25rem;
+}
+.ts-input:focus,.ts-textarea:focus{outline:none;border-color:var(--purple)}
+.ts-textarea{
+  width:100%;height:220px;padding:.75rem;border:1.5px solid var(--n300);border-radius:var(--r-md);
+  font-family:monospace;font-size:.75rem;resize:vertical;color:var(--n900);margin-top:1.25rem;
+}
+.ts-hint{font-size:.75rem;color:var(--n500);margin-top:.4rem;line-height:1.5}
+.ts-error{font-size:.8125rem;color:#c0392b;margin-top:.3rem}
+.ts-validation{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;font-size:.8125rem;font-weight:600;padding:.6rem .75rem;border-radius:var(--r-md)}
+.ts-validation.ok{background:#e3f1e3;color:#2a6b2a}
+.ts-validation.warn{background:#FFF3CD;color:#7D5800}
+.ts-validation.fail{background:#fde8e8;color:#c0392b}
+.ts-panel-footer{padding:1.25rem 1.5rem;border-top:1px solid var(--n200)}
+.ts-progress{font-size:.8125rem;color:var(--purple-darkest);text-align:center;margin-top:.75rem}
+.ts-cancel-link{display:block;text-align:center;margin-top:.75rem;font-size:.8125rem;color:var(--n500);cursor:pointer;text-decoration:underline}
 
 /* ── MBR SPEC PREVIEW ── */
 .urs-legend{
@@ -379,8 +461,55 @@ button{font:inherit;cursor:pointer}
 
     <!-- TAB 4: TEST SCRIPTS -->
     <div class="tab-pane" id="tab-tests">
-      <div class="tests-placeholder">
-        <p>Test Scripts — spec in progress. This output will be available in a future release.</p>
+      <div class="ts-banner" id="ts-gmbr-changed-banner" style="display:none">
+        The GMBR has changed. All scenarios have been cleared — re-add your PVLs to regenerate test scripts against the updated XML.
+      </div>
+
+      <div class="tab-toolbar" id="ts-header" style="display:none">
+        <div class="tab-toolbar-left">
+          <span class="toolbar-label" id="ts-count"></span>
+          <button class="btn btn-ghost btn-sm" id="ts-add-btn-header">+ Add scenario</button>
+        </div>
+        <button class="btn-download muted" id="ts-download-all-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download all (.zip)
+        </button>
+      </div>
+
+      <div class="ts-empty-state" id="ts-empty-state">
+        <div class="ts-empty-icon">+</div>
+        <h3>No test scenarios yet</h3>
+        <p>Add a PVL for each test scenario. The tool will generate a test script document for each one.</p>
+        <button class="btn btn-primary" id="ts-add-btn-empty">+ Add scenario</button>
+      </div>
+
+      <div class="ts-scenario-list" id="ts-scenario-list"></div>
+
+      <div class="ts-coverage" id="ts-coverage" style="display:none"></div>
+    </div>
+
+    <!-- ADD SCENARIO PANEL -->
+    <div class="ts-panel-overlay" id="ts-panel-overlay" style="display:none">
+      <div class="ts-panel">
+        <div class="ts-panel-header">
+          <h3>Add test scenario</h3>
+          <button class="ts-panel-close" id="ts-panel-close-btn" title="Close">&times;</button>
+        </div>
+        <div class="ts-panel-body">
+          <label class="ts-field-label" for="ts-scenario-name">Scenario name</label>
+          <input type="text" id="ts-scenario-name" class="ts-input" placeholder="e.g. Order 1">
+          <div class="ts-error" id="ts-name-error" style="display:none">A scenario with this name already exists.</div>
+
+          <label class="ts-field-label" for="ts-pvl-input" style="margin-top:1.25rem">Parameter Value List</label>
+          <textarea id="ts-pvl-input" class="ts-textarea" placeholder="Paste PVL here — tab-separated, one parameter per line." style="margin-top:.4rem"></textarea>
+          <div class="ts-hint">Expected format: {PARAMETER}[tab]Description[tab]Group[tab]Qty type[tab]Ext./Int.[tab]Data type[tab]Value</div>
+          <div class="ts-validation" id="ts-validation" style="display:none"></div>
+        </div>
+        <div class="ts-panel-footer">
+          <button class="btn btn-primary" id="ts-generate-btn" disabled style="width:100%;justify-content:center">Generate test script</button>
+          <div class="ts-progress" id="ts-progress" style="display:none"></div>
+          <a class="ts-cancel-link" id="ts-cancel-link">Cancel</a>
+        </div>
       </div>
     </div>
 
@@ -389,6 +518,7 @@ button{font:inherit;cursor:pointer}
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 /* ================================================================
    UTILITY
@@ -683,7 +813,34 @@ function parseBF(bfEl, idMap, keyMap, boId, boDesc) {
         .sort((a, b) => a.pos - b.pos)
     : [];
 
-  return { id, desc, stepType, verSig, eqType, activities, boId, boDesc, refId };
+  // Decision-level fields (SpecDecisionVO) — spec 7.4
+  let decisionType = '', decisionFormula = '', conditions = [];
+  if (stepType === 'SpecDecisionVO') {
+    decisionType = gt(bfEl, 'decisionType');
+    decisionFormula = gt(bfEl, 'formula');
+    const condSet = bfEl.querySelector(':scope > specConditionCollection > c');
+    if (condSet) {
+      conditions = Array.from(condSet.children).map(c => ({
+        id: gt(c, 'customId'),
+        desc: gt(c, 'description'),
+      }));
+    }
+  }
+
+  // CX-level fields (SetCxBfVO) — spec 7.5
+  let cxDefinitions = [];
+  if (stepType === 'SetCxBfVO') {
+    const cxSet = bfEl.querySelector(':scope > cxDefinitionCollection > c');
+    if (cxSet) {
+      cxDefinitions = Array.from(cxSet.children).map(c => ({
+        id: gt(c, 'customId'),
+        desc: gt(c, 'description'),
+      }));
+    }
+  }
+
+  return { id, desc, stepType, verSig, eqType, activities, boId, boDesc, refId,
+    decisionType, decisionFormula, conditions, cxDefinitions };
 }
 
 function parseAct(spEl, keyMap, boId, boDesc, bfId, bfDesc) {
@@ -692,7 +849,7 @@ function parseAct(spEl, keyMap, boId, boDesc, bfId, bfDesc) {
   const pos  = parseInt(gt(spEl,'position')||'0', 10);
 
   let type='Unknown', cls='';
-  let formula='', fType='', refs=0;
+  let formula='', rawFormula='', fType='', refs=0;
   let tol='', setVal='', unit='';
   let trueT='', falseT='';
 
@@ -710,6 +867,7 @@ function parseAct(spEl, keyMap, boId, boDesc, bfId, bfDesc) {
   } else if (tagIs(spEl,'FormulaSpecPropVO')) {
     type='Formula'; cls='form';
     const raw = gt(spEl,'formulaText');
+    rawFormula = raw;
     formula = resolveFormula(raw, keyMap);
     const fd = gt(spEl,'formulaDataType');
     fType = fd==='2'?'text':fd==='1'?'numeric':fd;
@@ -730,7 +888,7 @@ function parseAct(spEl, keyMap, boId, boDesc, bfId, bfDesc) {
 
   return {
     id, desc, type, cls, pos,
-    formula, fType, refs, tol, setVal, unit,
+    formula, rawFormula, fType, refs, tol, setVal, unit,
     trueT, falseT, instruction,
     boId, boDesc, bfId, bfDesc,
   };
@@ -1634,6 +1792,675 @@ function exportRBE(g) {
 }
 
 /* ================================================================
+   TEST SCRIPTS — PVL parsing
+   ================================================================ */
+function coercePVLValue(dataType, rawValue) {
+  const dt = (dataType || '').trim();
+  const v = (rawValue || '').trim();
+  if (/^Boolean$/i.test(dt)) {
+    const lv = v.toLowerCase();
+    return lv === 'yes' || lv === 'true';
+  }
+  if (/^Double$/i.test(dt)) return parseFloat(v.replace(/,/g, ''));
+  if (/^Integer$/i.test(dt)) return parseInt(v.replace(/,/g, ''), 10);
+  return v; // String and Material master data / material number (String)
+}
+
+function parsePVL(text) {
+  const lines = (text || '').split(/\r?\n/).filter(l => l.trim().length > 0);
+  const params = {};
+  let validCount = 0, invalidCount = 0, extCount = 0, intCount = 0;
+  for (const line of lines) {
+    const cols = line.split('\t');
+    if (cols.length < 7) { invalidCount++; continue; }
+    const [rawName, desc, , , extInt, dataType, value] = cols;
+    const nameMatch = rawName.trim().match(/^\{(.+)\}$/);
+    if (!nameMatch) { invalidCount++; continue; }
+    const classification = /^Ext\.?$/i.test((extInt || '').trim()) ? 'Ext'
+      : /^Int\.?$/i.test((extInt || '').trim()) ? 'Int' : '';
+    if (!classification) { invalidCount++; continue; }
+    const name = nameMatch[1].trim();
+    params[name] = {
+      value: coercePVLValue(dataType, value),
+      raw: (value || '').trim(),
+      type: (dataType || '').trim(),
+      classification,
+      desc: (desc || '').trim(),
+    };
+    if (classification === 'Ext') extCount++; else intCount++;
+    validCount++;
+  }
+  return { params, validCount, invalidCount, extCount, intCount, totalRows: lines.length };
+}
+
+/* ================================================================
+   TEST SCRIPTS — safe expression evaluator (no eval/Function)
+   ================================================================ */
+function tsTokenize(s) {
+  const tokens = [];
+  let i = 0;
+  const len = s.length;
+  while (i < len) {
+    const c = s[i];
+    if (/\s/.test(c)) { i++; continue; }
+    if (/[0-9]/.test(c) || (c === '.' && /[0-9]/.test(s[i + 1] || ''))) {
+      let j = i; while (j < len && /[0-9.]/.test(s[j])) j++;
+      tokens.push({ t: 'num', v: parseFloat(s.slice(i, j)) }); i = j; continue;
+    }
+    if (c === '"' || c === "'") {
+      const q = c; let j = i + 1, buf = '';
+      while (j < len && s[j] !== q) { buf += s[j]; j++; }
+      tokens.push({ t: 'str', v: buf }); i = j + 1; continue;
+    }
+    if (/[A-Za-z_]/.test(c)) {
+      let j = i; while (j < len && /[A-Za-z0-9_.]/.test(s[j])) j++;
+      const word = s.slice(i, j), lw = word.toLowerCase();
+      if (lw === 'true') tokens.push({ t: 'bool', v: true });
+      else if (lw === 'false') tokens.push({ t: 'bool', v: false });
+      else if (lw === 'and') tokens.push({ t: 'op', v: '&&' });
+      else if (lw === 'or') tokens.push({ t: 'op', v: '||' });
+      else if (lw === 'not') tokens.push({ t: 'op', v: '!' });
+      else tokens.push({ t: 'ident', v: word });
+      i = j; continue;
+    }
+    if (c === '=' && s[i + 1] === '=') { tokens.push({ t: 'op', v: '==' }); i += 2; continue; }
+    if (c === '!' && s[i + 1] === '=') { tokens.push({ t: 'op', v: '!=' }); i += 2; continue; }
+    if (c === '<' && s[i + 1] === '=') { tokens.push({ t: 'op', v: '<=' }); i += 2; continue; }
+    if (c === '>' && s[i + 1] === '=') { tokens.push({ t: 'op', v: '>=' }); i += 2; continue; }
+    if (c === '&' && s[i + 1] === '&') { tokens.push({ t: 'op', v: '&&' }); i += 2; continue; }
+    if (c === '|' && s[i + 1] === '|') { tokens.push({ t: 'op', v: '||' }); i += 2; continue; }
+    if ('+-*/%<>!(),'.includes(c)) { tokens.push({ t: c === ',' ? 'comma' : 'op', v: c }); i++; continue; }
+    throw new Error('Unexpected character: ' + c);
+  }
+  return tokens;
+}
+
+function tsParse(tokens) {
+  let pos = 0;
+  const peek = () => tokens[pos];
+  const next = () => tokens[pos++];
+  const expectOp = (v) => { const t = next(); if (!t || t.v !== v) throw new Error('Expected ' + v); };
+
+  function parseOr() {
+    let left = parseAnd();
+    while (peek() && peek().t === 'op' && peek().v === '||') { next(); left = { op: '||', l: left, r: parseAnd() }; }
+    return left;
+  }
+  function parseAnd() {
+    let left = parseEquality();
+    while (peek() && peek().t === 'op' && peek().v === '&&') { next(); left = { op: '&&', l: left, r: parseEquality() }; }
+    return left;
+  }
+  function parseEquality() {
+    let left = parseRelational();
+    while (peek() && peek().t === 'op' && (peek().v === '==' || peek().v === '!=')) { const op = next().v; left = { op, l: left, r: parseRelational() }; }
+    return left;
+  }
+  function parseRelational() {
+    let left = parseAdditive();
+    while (peek() && peek().t === 'op' && ['<', '>', '<=', '>='].includes(peek().v)) { const op = next().v; left = { op, l: left, r: parseAdditive() }; }
+    return left;
+  }
+  function parseAdditive() {
+    let left = parseMultiplicative();
+    while (peek() && peek().t === 'op' && (peek().v === '+' || peek().v === '-')) { const op = next().v; left = { op, l: left, r: parseMultiplicative() }; }
+    return left;
+  }
+  function parseMultiplicative() {
+    let left = parseUnary();
+    while (peek() && peek().t === 'op' && (peek().v === '*' || peek().v === '/' || peek().v === '%')) { const op = next().v; left = { op, l: left, r: parseUnary() }; }
+    return left;
+  }
+  function parseUnary() {
+    if (peek() && peek().t === 'op' && (peek().v === '!' || peek().v === '-')) { const op = next().v; return { op: 'unary' + op, operand: parseUnary() }; }
+    return parsePrimary();
+  }
+  function parsePrimary() {
+    const t = peek();
+    if (!t) throw new Error('Unexpected end of expression');
+    if (t.t === 'num' || t.t === 'str' || t.t === 'bool') { next(); return { op: 'lit', v: t.v }; }
+    if (t.t === 'op' && t.v === '(') { next(); const e = parseOr(); expectOp(')'); return e; }
+    if (t.t === 'ident') { next(); return { op: 'ident', v: t.v }; }
+    throw new Error('Unexpected token: ' + JSON.stringify(t));
+  }
+
+  const ast = parseOr();
+  if (pos < tokens.length) throw new Error('Unexpected trailing tokens');
+  return ast;
+}
+
+function tsEvalAst(node) {
+  switch (node.op) {
+    case 'lit': return node.v;
+    case 'ident': throw new Error('Unresolved identifier: ' + node.v);
+    case 'unary!': return !tsEvalAst(node.operand);
+    case 'unary-': return -tsEvalAst(node.operand);
+    case '&&': return tsEvalAst(node.l) && tsEvalAst(node.r);
+    case '||': return tsEvalAst(node.l) || tsEvalAst(node.r);
+    case '==': return tsEvalAst(node.l) == tsEvalAst(node.r);
+    case '!=': return tsEvalAst(node.l) != tsEvalAst(node.r);
+    case '<': return tsEvalAst(node.l) < tsEvalAst(node.r);
+    case '>': return tsEvalAst(node.l) > tsEvalAst(node.r);
+    case '<=': return tsEvalAst(node.l) <= tsEvalAst(node.r);
+    case '>=': return tsEvalAst(node.l) >= tsEvalAst(node.r);
+    case '+': return tsEvalAst(node.l) + tsEvalAst(node.r);
+    case '-': return tsEvalAst(node.l) - tsEvalAst(node.r);
+    case '*': return tsEvalAst(node.l) * tsEvalAst(node.r);
+    case '/': return tsEvalAst(node.l) / tsEvalAst(node.r);
+    case '%': return tsEvalAst(node.l) % tsEvalAst(node.r);
+    default: throw new Error('Unknown op: ' + node.op);
+  }
+}
+
+function safeEvalExpression(exprStr) {
+  return tsEvalAst(tsParse(tsTokenize(exprStr)));
+}
+
+/* ================================================================
+   TEST SCRIPTS — formula substitution + active-path walker
+   ================================================================ */
+function substituteFormula(rawFormula, pvlParams) {
+  if (!rawFormula) return { text: '', resolved: false, appliedList: [] };
+  let unresolved = false;
+  const appliedList = [];
+  const substituted = rawFormula.replace(/\{\s*ValueParameter\s+([^}]+?)\s*\}/gi, (_, name) => {
+    const key = name.trim();
+    const p = pvlParams[key];
+    if (!p) { unresolved = true; return `{ValueParameter ${key}}`; }
+    appliedList.push(`{${key}} = ${p.raw}`);
+    return typeof p.value === 'string' ? JSON.stringify(p.value) : String(p.value);
+  });
+  if (/\{[^}]*\}/.test(substituted)) unresolved = true; // any other runtime-reference token left over
+  return { text: substituted, resolved: !unresolved, appliedList };
+}
+
+function evaluateFormula(rawFormula, pvlParams) {
+  const sub = substituteFormula(rawFormula, pvlParams);
+  if (!sub.resolved) return { resolved: false, substituted: sub.text, appliedList: sub.appliedList };
+  try {
+    return { resolved: true, value: safeEvalExpression(sub.text), substituted: sub.text, appliedList: sub.appliedList };
+  } catch (e) {
+    return { resolved: false, substituted: sub.text, appliedList: sub.appliedList };
+  }
+}
+
+// Walk one BO's process graph, resolving SpecDecisionVO branches from the PVL where possible.
+// SplittingVO (and any other non-decision multi-target node) represents parallel execution, not
+// a choice, so every branch is traversed. SpecDecisionVO targets are paired positionally with
+// bf.conditions (the XML does not otherwise correlate a condition to a specific outgoing link).
+function walkBOActivePath(bo, pvlParams) {
+  const { graph, nodeMap } = buildGraphFromLinks(bo.basicFunctions, bo.prodStepLinks || []);
+  const activeSteps = [];
+  const activeBranches = [];
+  const ambiguousDecisions = [];
+  const conditionalSteps = new Set();
+  const visited = new Set();
+
+  const reverse = {};
+  for (const bf of bo.basicFunctions) reverse[bf.id] = [];
+  for (const l of (bo.prodStepLinks || [])) { if (reverse[l.target]) reverse[l.target].push(l.source); }
+  let startId = null;
+  for (const bf of bo.basicFunctions) { if (!reverse[bf.id] || reverse[bf.id].length === 0) { startId = bf.id; break; } }
+  if (!startId && bo.basicFunctions.length) startId = bo.basicFunctions[0].id;
+
+  function walk(nodeId, isConditional) {
+    if (visited.has(nodeId)) return;
+    visited.add(nodeId);
+    const bf = nodeMap[nodeId];
+    if (!bf) return;
+    activeSteps.push(bf);
+    if (isConditional) conditionalSteps.add(bf.id);
+
+    const targets = graph[nodeId] || [];
+    if (targets.length <= 1) { targets.forEach(t => walk(t, isConditional)); return; }
+
+    if (bf.stepType === 'SpecDecisionVO' && bf.decisionType === '20' && bf.decisionFormula) {
+      const evalResult = evaluateFormula(bf.decisionFormula, pvlParams);
+      if (evalResult.resolved) {
+        const resStr = String(evalResult.value).toLowerCase();
+        const matchIdx = bf.conditions.findIndex(c => (c.id || '').toLowerCase() === resStr || (c.desc || '').toLowerCase() === resStr);
+        if (matchIdx !== -1 && targets[matchIdx] !== undefined) {
+          const cond = bf.conditions[matchIdx];
+          activeBranches.push({ decisionId: bf.id, decisionDesc: bf.desc, conditionId: cond.id, conditionDesc: cond.desc, resolved: true });
+          walk(targets[matchIdx], isConditional);
+          return;
+        }
+      }
+      // Unresolved (or result didn't match a known condition) — include every branch
+      ambiguousDecisions.push({ decisionId: bf.id, decisionDesc: bf.desc, formula: bf.decisionFormula, substituted: evalResult.substituted });
+      targets.forEach((t, i) => {
+        const cond = bf.conditions[i];
+        activeBranches.push({ decisionId: bf.id, decisionDesc: bf.desc, conditionId: cond?.id || '', conditionDesc: cond?.desc || '', resolved: false });
+        walk(t, true);
+      });
+    } else if (bf.stepType === 'SpecDecisionVO') {
+      // Manual decision (decisionType 10, or type unknown) — operator selects at runtime
+      targets.forEach(t => walk(t, isConditional));
+    } else {
+      // Structural split — parallel, not conditional
+      targets.forEach(t => walk(t, isConditional));
+    }
+  }
+
+  if (startId) walk(startId, false);
+  return { activeSteps, activeBranches, ambiguousDecisions, conditionalSteps };
+}
+
+function walkActivePath(g, pvlParams) {
+  return g.basicOps.map(bo => ({ bo, walk: walkBOActivePath(bo, pvlParams) }));
+}
+
+/* ================================================================
+   TEST SCRIPTS — coverage + document sections
+   ================================================================ */
+function getAllFormulaDecisionBranches(g) {
+  const out = [];
+  for (const bo of g.basicOps) {
+    for (const bf of bo.basicFunctions) {
+      if (bf.stepType === 'SpecDecisionVO' && bf.decisionType === '20') {
+        for (const c of bf.conditions) {
+          out.push({ decisionId: bf.id, decisionDesc: bf.desc, conditionId: c.id, conditionDesc: c.desc, boId: bo.id });
+        }
+      }
+    }
+  }
+  return out;
+}
+
+// Builds document data for every scenario in order, threading one shared coverage
+// set through all of them — this is always recomputed from the current TS_SCENARIOS
+// array, so removing a scenario immediately changes what later scenarios cover.
+function buildAllScenarioData(g, scenarios) {
+  const coverageSeen = new Set();
+  return scenarios.map(sc => buildTestScriptData(g, sc, coverageSeen));
+}
+
+function buildTestScriptData(g, scenario, coverageSeen) {
+  const pvlParams = scenario.pvl.params;
+  const boWalks = walkActivePath(g, pvlParams);
+
+  const section3 = [], section4 = [], section5 = [], section6 = [];
+  const decisionRowTypes = ['TakeOutBFVO','IdentityCheckBFVO','YieldDeterminationBFVO','EqmAllocationBFVO','EqmIdentificationBFVO','EqmDeallocationBFVO'];
+  const inputActTypes = ['MeasuredValue','Attributive','Text','Date','List'];
+  const newBranchesThisScenario = [];
+
+  for (const { bo, walk } of boWalks) {
+    for (const bf of walk.activeSteps) {
+      if (['MergeVO','SplittingVO','SynchronisationVO'].includes(bf.stepType)) continue;
+
+      if (bf.stepType === 'SetCxBfVO') {
+        for (const cx of bf.cxDefinitions) {
+          const pvlHit = pvlParams[cx.id];
+          section6.push({ path: `${bo.id} / ${bf.id}`, desc: bf.desc, line: `${cx.id} = ${pvlHit ? String(pvlHit.value) : '[set at runtime]'}` });
+        }
+        continue;
+      }
+
+      if (bf.stepType === 'SpecDecisionVO') {
+        if (bf.decisionType !== '20') section3.push({ path: `${bo.id} / ${bf.id}`, desc: bf.desc, value: '' });
+        continue; // formula-driven (20) decisions are handled per-branch below
+      }
+
+      if (decisionRowTypes.includes(bf.stepType)) {
+        const pvlHit = pvlParams[bf.id];
+        section3.push({ path: `${bo.id} / ${bf.id}`, desc: bf.desc + (bf.eqType ? ` (${bf.eqType})` : ''), value: pvlHit ? String(pvlHit.value) : '' });
+      }
+
+      for (const act of bf.activities) {
+        if (act.type === 'Formula') {
+          const evalResult = evaluateFormula(act.rawFormula, pvlParams);
+          let expected = evalResult.resolved ? String(evalResult.value) : '[calculated at runtime]';
+          let note = (!evalResult.resolved && evalResult.appliedList.length) ? `Formula with PVL values applied: ${evalResult.substituted}` : '';
+          section4.push({ path: `${bo.id} / ${bf.id}`, desc: act.desc, expected, note });
+          if (!evalResult.resolved) {
+            section5.push({ path: `${bo.id} / ${bf.id}`, desc: act.desc, formula: act.formula || act.rawFormula || '', applied: evalResult.appliedList.join('; ') });
+          }
+        } else if (inputActTypes.includes(act.type)) {
+          const pvlHit = pvlParams[act.id];
+          section3.push({ path: `${bo.id} / ${bf.id}`, desc: act.desc, value: pvlHit ? String(pvlHit.value) : '' });
+        }
+      }
+    }
+
+    // Formula-driven decision branches, grouped by decision, filtered by coverage
+    const byDecision = {};
+    for (const br of walk.activeBranches) (byDecision[br.decisionId] = byDecision[br.decisionId] || []).push(br);
+    for (const [decisionId, branches] of Object.entries(byDecision)) {
+      const newOnes = branches.filter(b => !coverageSeen.has(decisionId + '::' + b.conditionId));
+      branches.forEach(b => coverageSeen.add(decisionId + '::' + b.conditionId));
+      newOnes.forEach(b => newBranchesThisScenario.push({ ...b, boId: bo.id }));
+      if (newOnes.length === 0) continue;
+      const decisionBf = walk.activeSteps.find(s => s.id === decisionId);
+      const resolved = branches[0].resolved;
+      let expected;
+      if (resolved) {
+        expected = branches[0].conditionDesc || branches[0].conditionId;
+      } else {
+        const amb = walk.ambiguousDecisions.find(a => a.decisionId === decisionId);
+        expected = `[branch active if: ${amb ? (amb.substituted || amb.formula) : ''}]`;
+      }
+      section4.push({ path: `${bo.id} / ${decisionId}`, desc: decisionBf ? decisionBf.desc : decisionId, expected, note: '' });
+    }
+  }
+
+  return { scenario, boWalks, section3, section4, section5, section6, newBranchesThisScenario };
+}
+
+function computeCoverageSummary(g, scenarios) {
+  const all = getAllFormulaDecisionBranches(g);
+  const allData = buildAllScenarioData(g, scenarios);
+  const coveredKeys = new Set();
+  allData.forEach(d => d.newBranchesThisScenario.forEach(b => coveredKeys.add(b.decisionId + '::' + b.conditionId)));
+  const uncovered = all.filter(b => !coveredKeys.has(b.decisionId + '::' + b.conditionId));
+  return { total: all.length, coveredCount: all.length - uncovered.length, uncovered, allData };
+}
+
+/* ── Word document rendering ── */
+function tsDocTable(headers, rows) {
+  if (!rows.length) return '<p><em>None on the active path for this scenario.</em></p>';
+  return `<table><tr>${headers.map(h => `<th>${esc(h)}</th>`).join('')}</tr>${
+    rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')
+  }</table>`;
+}
+
+function buildTestScriptDocHTML(g, data) {
+  const sc = data.scenario;
+  const extRows = Object.entries(sc.pvl.params).filter(([,p]) => p.classification === 'Ext').sort((a,b) => a[0].localeCompare(b[0]));
+  const intRows = Object.entries(sc.pvl.params).filter(([,p]) => p.classification === 'Int').sort((a,b) => a[0].localeCompare(b[0]));
+
+  const s2 = `
+    <p><em>External parameter values are issued by SAP with the process order. The PVL must be activated in PAS-X before test execution to prevent SAP values from overwriting the test values below.</em></p>
+    ${tsDocTable(['Parameter','Value'], extRows.map(([k,p]) => [esc(`{${k}}`), esc(p.raw)]))}
+    <h2>Internal parameters</h2>
+    ${tsDocTable(['Parameter','Value'], intRows.map(([k,p]) => [esc(`{${k}}`), esc(p.raw)]))}`;
+
+  const s3 = tsDocTable(['BO / BF path','Description','Input value'], data.section3.map(r => [esc(r.path), esc(r.desc), esc(r.value)]));
+  const s4 = tsDocTable(['BO / BF path','Description','Expected result'], data.section4.map(r =>
+    [esc(r.path), esc(r.desc), esc(r.expected) + (r.note ? `<br><em style="font-size:9pt">${esc(r.note)}</em>` : '')]));
+  const s5 = `<p><em>The following formulas could not be fully resolved from the PVL. To verify, manually enter the listed values into a PAS-X order and record the system-calculated result.</em></p>
+    ${tsDocTable(['BO / BF path','Description','Formula','PVL values applied','Observed result'], data.section5.map(r =>
+      [esc(r.path), esc(r.desc), esc(r.formula), esc(r.applied), '']))}`;
+  const s6 = tsDocTable(['BO / BF path','Description','CX = Expected value'], data.section6.map(r => [esc(r.path), esc(r.desc), esc(r.line)]));
+
+  return `
+<html xmlns:o='urn:schemas-microsoft-com:office:office'
+      xmlns:w='urn:schemas-microsoft-com:office:word'
+      xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset='utf-8'>
+<title>Test Script — ${esc(sc.name)} — ${esc(g.id)}</title>
+<!--[if gte mso 9]>
+<xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml>
+<![endif]-->
+<style>
+  body { font-family: Calibri, sans-serif; font-size: 11pt; margin: 2cm; color: #1a1a1a; }
+  h1 { font-size: 14pt; font-weight: bold; text-transform: uppercase; border-bottom: 2px solid #1a1a1a; padding-bottom: 3pt; margin-bottom: 8pt; }
+  h2 { font-size: 11pt; font-weight: bold; margin-bottom: 4pt; margin-top: 10pt; }
+  table { border-collapse: collapse; width: 100%; margin-bottom: 12pt; font-size: 10pt; }
+  th { background: #460073; color: #ffffff; padding: 4pt 6pt; text-align: left; border: 1pt solid #460073; }
+  td { padding: 4pt 6pt; border: 1pt solid #cccccc; vertical-align: top; }
+  p { margin-bottom: 6pt; }
+  @page { size: A4; margin: 2cm; }
+</style>
+</head>
+<body>
+<p style="color:#FFF3CD;background:#FFF3CD">[Document ID] &nbsp; [Version] &nbsp; [Date] &nbsp; [Page]</p>
+<h1>Test Script — ${esc(sc.name)}</h1>
+<p>GMBR: ${esc(g.id)} — ${esc(g.description)}</p>
+
+<h1>1. Scope</h1>
+<p>This test script covers scenario "${esc(sc.name)}" for GMBR ${esc(g.id)} (${esc(g.description)}) at ${esc(g.materialName || '[Client Name]')}.</p>
+
+<h1>2. Parameter Value List</h1>
+<h2>External parameters</h2>
+${s2}
+
+<h1>3. Input Values</h1>
+${s3}
+
+<h1>4. Automatic Calculations</h1>
+${s4}
+
+<h1>5. Simulation</h1>
+${s5}
+
+<h1>6. CX Values</h1>
+${s6}
+</body></html>`;
+}
+
+function tsFilename(g, sc) {
+  return `TS_${g.id}_${sc.name.trim().replace(/\s+/g, '_')}`;
+}
+
+function downloadScenarioDoc(g, data) {
+  const html = buildTestScriptDocHTML(g, data);
+  const blob = new Blob([html], { type: 'application/msword' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${tsFilename(g, data.scenario)}.doc`;
+  a.click();
+}
+
+async function downloadAllScenariosZip(g, allData) {
+  const zip = new JSZip();
+  const folder = zip.folder('test_scripts');
+  for (const data of allData) {
+    folder.file(`${tsFilename(g, data.scenario)}.doc`, buildTestScriptDocHTML(g, data));
+  }
+  const blob = await zip.generateAsync({ type: 'blob' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `TS_${g.id}_All_Scenarios.zip`;
+  a.click();
+}
+
+/* ================================================================
+   TEST SCRIPTS — Tab 4 UI
+   ================================================================ */
+let TS_SCENARIOS = [];
+
+let TS_CONFIRM_REMOVE_IDX = -1;
+
+function tsUpdateAddButtons() {
+  const atMax = TS_SCENARIOS.length >= 10;
+  ['ts-add-btn-empty', 'ts-add-btn-header'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.disabled = atMax;
+    btn.title = atMax ? 'Maximum 10 scenarios reached.' : '';
+  });
+}
+
+function renderTestScriptsTab() {
+  const hasScenarios = TS_SCENARIOS.length > 0;
+  document.getElementById('ts-header').style.display = hasScenarios ? 'flex' : 'none';
+  document.getElementById('ts-empty-state').style.display = hasScenarios ? 'none' : '';
+  document.getElementById('ts-coverage').style.display = hasScenarios ? '' : 'none';
+  document.getElementById('ts-download-all-btn').disabled = !hasScenarios;
+  tsUpdateAddButtons();
+
+  if (!hasScenarios) {
+    document.getElementById('ts-scenario-list').innerHTML = '';
+    return;
+  }
+
+  document.getElementById('ts-count').textContent = `${TS_SCENARIOS.length} scenario${TS_SCENARIOS.length===1?'':'s'} — ${GMBR.id}`;
+
+  const summary = computeCoverageSummary(GMBR, TS_SCENARIOS);
+
+  const list = document.getElementById('ts-scenario-list');
+  list.innerHTML = TS_SCENARIOS.map((sc, i) => {
+    const data = summary.allData[i];
+    if (i === TS_CONFIRM_REMOVE_IDX) {
+      return `
+      <div class="ts-card" data-idx="${i}">
+        <div class="ts-card-main">
+          <div class="ts-card-name">${esc(sc.name)}</div>
+        </div>
+        <div class="ts-card-confirm">
+          <span>Remove this scenario? This will also update coverage.</span>
+          <button class="btn btn-primary btn-sm ts-card-confirm-yes" data-idx="${i}">Confirm</button>
+          <button class="btn btn-ghost btn-sm ts-card-confirm-no" data-idx="${i}">Cancel</button>
+        </div>
+      </div>`;
+    }
+    return `
+    <div class="ts-card" data-idx="${i}">
+      <div class="ts-card-main">
+        <div class="ts-card-name">${esc(sc.name)}</div>
+        <div class="ts-card-sub">${sc.pvl.validCount} parameters — ${sc.pvl.extCount} Ext., ${sc.pvl.intCount} Int.</div>
+      </div>
+      <span class="ts-card-pill">${data.newBranchesThisScenario.length} branch${data.newBranchesThisScenario.length===1?'':'es'} covered</span>
+      <button class="btn-download muted btn-sm ts-card-dl" data-idx="${i}">Download (.doc)</button>
+      <button class="ts-card-remove" data-idx="${i}" title="Remove scenario">✕</button>
+    </div>`;
+  }).join('');
+
+  list.querySelectorAll('.ts-card-dl').forEach(btn => btn.addEventListener('click', () => {
+    const i = parseInt(btn.dataset.idx);
+    downloadScenarioDoc(GMBR, summary.allData[i]);
+  }));
+  list.querySelectorAll('.ts-card-remove').forEach(btn => btn.addEventListener('click', () => {
+    TS_CONFIRM_REMOVE_IDX = parseInt(btn.dataset.idx);
+    renderTestScriptsTab();
+  }));
+  list.querySelectorAll('.ts-card-confirm-yes').forEach(btn => btn.addEventListener('click', () => {
+    tsRemoveScenario(parseInt(btn.dataset.idx));
+  }));
+  list.querySelectorAll('.ts-card-confirm-no').forEach(btn => btn.addEventListener('click', () => {
+    TS_CONFIRM_REMOVE_IDX = -1;
+    renderTestScriptsTab();
+  }));
+
+  renderTSCoverage(summary);
+}
+
+function renderTSCoverage(summary) {
+  const el = document.getElementById('ts-coverage');
+  const pct = summary.total === 0 ? 100 : Math.round((summary.coveredCount / summary.total) * 100);
+  const complete = summary.total === 0 || summary.uncovered.length === 0;
+  el.innerHTML = `
+    <div class="ts-coverage-head">
+      <span>Formula decision coverage</span>
+      <span>${summary.coveredCount} / ${summary.total} branches covered</span>
+    </div>
+    <div class="ts-coverage-bar"><div class="ts-coverage-fill" style="width:${pct}%"></div></div>
+    ${complete
+      ? `<div class="ts-coverage-note complete">All branches covered.</div>`
+      : `<div class="ts-coverage-note gap">${summary.uncovered.length} branch${summary.uncovered.length===1?'':'es'} not yet covered by any scenario</div>
+         <button class="ts-gap-toggle" id="ts-gap-toggle">Show uncovered branches ▾</button>
+         <table class="ts-gap-table" id="ts-gap-table" style="display:none">
+           <thead><tr><th>Decision ID</th><th>Description</th><th>Uncovered branch</th></tr></thead>
+           <tbody>${summary.uncovered.map(b => `<tr><td>${esc(b.decisionId)}</td><td>${esc(b.decisionDesc)}</td><td>${esc(b.conditionDesc || b.conditionId)}</td></tr>`).join('')}</tbody>
+         </table>`}
+  `;
+  const toggle = document.getElementById('ts-gap-toggle');
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      const tbl = document.getElementById('ts-gap-table');
+      const open = tbl.style.display !== 'none';
+      tbl.style.display = open ? 'none' : 'table';
+      toggle.textContent = open ? 'Show uncovered branches ▾' : 'Hide ▴';
+    });
+  }
+}
+
+function tsRemoveScenario(i) {
+  TS_SCENARIOS.splice(i, 1);
+  TS_CONFIRM_REMOVE_IDX = -1;
+  renderTestScriptsTab();
+}
+
+function tsResetForNewGMBR() {
+  if (TS_SCENARIOS.length > 0) {
+    TS_SCENARIOS = [];
+    const banner = document.getElementById('ts-gmbr-changed-banner');
+    if (banner) banner.style.display = 'flex';
+  }
+  renderTestScriptsTab();
+}
+
+/* ── Add Scenario panel ── */
+let TS_PARSED_PVL = null;
+
+function tsOpenPanel() {
+  document.getElementById('ts-scenario-name').value = '';
+  document.getElementById('ts-pvl-input').value = '';
+  document.getElementById('ts-name-error').style.display = 'none';
+  document.getElementById('ts-validation').style.display = 'none';
+  document.getElementById('ts-progress').style.display = 'none';
+  document.getElementById('ts-generate-btn').style.display = '';
+  document.getElementById('ts-generate-btn').disabled = true;
+  TS_PARSED_PVL = null;
+  document.getElementById('ts-panel-overlay').style.display = 'flex';
+}
+function tsClosePanel() {
+  document.getElementById('ts-panel-overlay').style.display = 'none';
+}
+
+function tsValidatePVLInput() {
+  const text = document.getElementById('ts-pvl-input').value;
+  const indicator = document.getElementById('ts-validation');
+  if (!text.trim()) { indicator.style.display = 'none'; TS_PARSED_PVL = null; tsUpdateGenerateEnabled(); return; }
+  const parsed = parsePVL(text);
+  TS_PARSED_PVL = parsed;
+  indicator.style.display = 'flex';
+  if (parsed.validCount === 0) {
+    indicator.className = 'ts-validation fail';
+    indicator.textContent = 'No parameters recognised — check format';
+  } else if (parsed.invalidCount > 0) {
+    indicator.className = 'ts-validation warn';
+    indicator.textContent = `${parsed.invalidCount} row${parsed.invalidCount===1?'':'s'} could not be parsed — check formatting`;
+  } else {
+    indicator.className = 'ts-validation ok';
+    indicator.textContent = `${parsed.validCount} parameters recognised`;
+  }
+  tsUpdateGenerateEnabled();
+}
+
+function tsUpdateGenerateEnabled() {
+  const name = document.getElementById('ts-scenario-name').value.trim();
+  const dup = name && TS_SCENARIOS.some(s => s.name.toLowerCase() === name.toLowerCase());
+  document.getElementById('ts-name-error').style.display = dup ? 'block' : 'none';
+  const ok = name && !dup && TS_PARSED_PVL && TS_PARSED_PVL.validCount > 0 && TS_SCENARIOS.length < 10;
+  document.getElementById('ts-generate-btn').disabled = !ok;
+}
+
+async function tsGenerateScenario() {
+  const name = document.getElementById('ts-scenario-name').value.trim();
+  if (!name || !TS_PARSED_PVL || TS_PARSED_PVL.validCount === 0) return;
+
+  const btn = document.getElementById('ts-generate-btn');
+  const progress = document.getElementById('ts-progress');
+  btn.style.display = 'none';
+  progress.style.display = 'block';
+
+  const steps = ['Parsing PVL…', 'Evaluating active path…', 'Building document…'];
+  for (const step of steps) {
+    progress.textContent = step;
+    await new Promise(r => setTimeout(r, 150));
+  }
+
+  TS_SCENARIOS.push({ name, pvl: TS_PARSED_PVL, createdAt: Date.now() });
+  tsClosePanel();
+  renderTestScriptsTab();
+}
+
+document.getElementById('ts-add-btn-empty').addEventListener('click', tsOpenPanel);
+document.getElementById('ts-add-btn-header').addEventListener('click', tsOpenPanel);
+document.getElementById('ts-panel-close-btn').addEventListener('click', tsClosePanel);
+document.getElementById('ts-cancel-link').addEventListener('click', (e) => { e.preventDefault(); tsClosePanel(); });
+document.getElementById('ts-scenario-name').addEventListener('input', tsUpdateGenerateEnabled);
+document.getElementById('ts-pvl-input').addEventListener('input', tsValidatePVLInput);
+document.getElementById('ts-generate-btn').addEventListener('click', tsGenerateScenario);
+document.getElementById('ts-download-all-btn').addEventListener('click', () => {
+  if (!TS_SCENARIOS.length || !GMBR) return;
+  const summary = computeCoverageSummary(GMBR, TS_SCENARIOS);
+  downloadAllScenariosZip(GMBR, summary.allData);
+});
+
+/* ================================================================
    CROSS-REFERENCE NAVIGATION
    ================================================================ */
 function navToRBE(bfId) {
@@ -2016,7 +2843,15 @@ const clearErr = () => document.querySelectorAll('.error-banner').forEach(e => e
 function process(xml, filename) {
   clearErr();
   try {
-    GMBR = parseGMBR(xml);
+    const parsed = parseGMBR(xml);
+    const banner = document.getElementById('ts-gmbr-changed-banner');
+    if (TS_SCENARIOS.length > 0) {
+      TS_SCENARIOS = [];
+      if (banner) banner.style.display = 'flex';
+    } else if (banner) {
+      banner.style.display = 'none';
+    }
+    GMBR = parsed;
     showResults(GMBR, filename);
   } catch(e) { showErr('Parse error: ' + e.message); }
 }
@@ -2047,6 +2882,7 @@ function showResults(g, filename) {
   renderMap(g);
   renderRBE(g);
   buildURSPreview(g);
+  renderTestScriptsTab();
 }
 
 document.getElementById('reset-btn').addEventListener('click', () => {
