@@ -49,6 +49,8 @@ Located at `C:\Users\rebecca.mc.cormack\OneDrive - Accenture\Documents\AZ\Claude
 - 4th tab "Test Scripts" added as a placeholder (spec in progress, per `EBR_Tool_SPEC.md` Output 4)
 - Flow map node boxes narrowed (580px/480px → 360px) for a more compact map
 - Download (.png) button pinned top-right, inline with the Layer toggle controls, even at narrow widths
+- Node boxes show a light-purple hover state (`#F3EEF8`) on both the graph-rendered and fallback flow map
+- Expanded CBF boxes now render as a single continuous bordered box (header + activities share one `.flow-map-node-wrap`/`.bf-node` container, same width) instead of the activities panel floating below at a different width
 
 **Remaining work:**
 - [ ] Arrow styling refinement (colours, sizes, positioning)
@@ -103,4 +105,4 @@ Each canvas slide covers: Problem → Stakeholders → Anthropic value → Accen
 
 ---
 
-*Last updated: 2026-07-13 — EBR tool: fixed CBF expand/collapse and CBF ID → RbE cross-referencing on the real (graph-rendered) flow map; sync/split nodes now icon-only; node boxes narrowed; download button pinned top-right; added Test Scripts placeholder tab*
+*Last updated: 2026-07-13 — EBR tool: fixed CBF expand/collapse and CBF ID → RbE cross-referencing on the real (graph-rendered) flow map; sync/split nodes now icon-only; node boxes narrowed; download button pinned top-right; added Test Scripts placeholder tab; added light-purple node hover state; expanded CBF boxes now a single continuous bordered box matching collapsed width*

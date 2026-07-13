@@ -830,8 +830,9 @@ const MAP_CSS = `
 .bf-header{
   background:transparent;color:#2A1A3E;padding:7px 14px;
   display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
-  border-bottom:1px solid #e0e0e0;
+  border-bottom:1px solid #e0e0e0;transition:background .15s;
 }
+.bf-header:hover{background:#F3EEF8}
 .bf-header.eqm{border-color:#CFCFCF}
 .bf-header.material{border-color:#FF50A0}
 .bf-header.label{border-color:#2248FF}
@@ -861,7 +862,7 @@ const MAP_CSS = `
 .bf-title-expand:hover{text-decoration:underline dotted}
 /* Highlighted node (from RbE cross-ref) */
 .bf-node.bf-highlight{border-color:#3D006B !important;border-width:2.5px !important;background:#F3EEF8 !important}
-.flow-map-node.bf-highlight{border-color:#3D006B !important;border-width:2.5px !important;background:#F3EEF8 !important}
+.flow-map-node-wrap.bf-highlight{border-color:#3D006B !important;border-width:2.5px !important;background:#F3EEF8 !important}
 .t-attr{background:#e3f1e3;color:#2a6b2a}
 .t-mv{background:#fff3cd;color:#856404}
 .t-form{background:#f3e3ff;color:#6a1fa3}
@@ -889,11 +890,15 @@ const MAP_CSS = `
 .pm-legend i{width:12px;height:12px;border-radius:2px;display:inline-block;flex-shrink:0}
 .split-bar{color:#622A8F;font-weight:700;font-size:11px;letter-spacing:2px;margin:4px 0}
 .sync-shape{color:#622A8F;font-weight:700;font-size:12px;margin:4px 0}
-.flow-map-node{
-  background:#FFFFFF;border-radius:8px;border:1.5px solid;
-  padding:9px 14px;display:flex;align-items:center;gap:12px;
-  font-size:12px;width:100%;max-width:360px;
+.flow-map-node-wrap{
+  background:#FFFFFF;border-radius:8px;border:1.5px solid;overflow:hidden;
+  width:100%;max-width:360px;
 }
+.flow-map-node{
+  padding:9px 14px;display:flex;align-items:center;gap:12px;
+  font-size:12px;cursor:default;transition:background .15s;
+}
+.flow-map-node:hover{background:#F3EEF8}
 .flow-map-node-id{
   font-weight:700;color:#3D006B;flex-shrink:0;
   text-decoration:underline dotted;cursor:pointer;
@@ -1237,13 +1242,15 @@ function renderFlowMapNode(bf, materialName='', showDetails=false) {
   const color = STEP_COLOUR[bf.stepType] || '#7500C0';
   return `
   <div class="inner-arrow"></div>
-  <div class="flow-map-node" data-bfid="${esc(bf.id)}" style="border-color:${color}">
-    <div class="flow-map-node-id" onclick="navToRBE('${esc(bf.id)}')" title="View in Review by Exception">${esc(bf.id)}</div>
-    <div class="flow-map-node-desc" onclick="toggleBFNode(this)" title="Click to expand/collapse activities">${esc(bf.desc)}</div>
-    <div class="flow-map-node-type">${esc(typeLabel)}</div>
-  </div>
-  <div class="act-details${showDetails?' open':''}">
-    <div class="bf-body">${buildActivitiesHTML(bf)}</div>
+  <div class="flow-map-node-wrap" data-bfid="${esc(bf.id)}" style="border-color:${color}">
+    <div class="flow-map-node">
+      <div class="flow-map-node-id" onclick="navToRBE('${esc(bf.id)}')" title="View in Review by Exception">${esc(bf.id)}</div>
+      <div class="flow-map-node-desc" onclick="toggleBFNode(this)" title="Click to expand/collapse activities">${esc(bf.desc)}</div>
+      <div class="flow-map-node-type">${esc(typeLabel)}</div>
+    </div>
+    <div class="act-details${showDetails?' open':''}">
+      <div class="bf-body">${buildActivitiesHTML(bf)}</div>
+    </div>
   </div>`;
 }
 
@@ -1652,10 +1659,10 @@ function navToFlowMap(bfId) {
   if (GMBR && pmLevel !== 2) { pmLevel = 2; renderMap(GMBR); }
 
   // Clear previous highlights
-  document.querySelectorAll('.bf-node, .flow-map-node').forEach(n => n.classList.remove('bf-highlight'));
+  document.querySelectorAll('.bf-node, .flow-map-node-wrap').forEach(n => n.classList.remove('bf-highlight'));
 
   // Highlight the target node and scroll
-  const node = document.querySelector(`.bf-node[data-bfid="${bfId}"], .flow-map-node[data-bfid="${bfId}"]`);
+  const node = document.querySelector(`.bf-node[data-bfid="${bfId}"], .flow-map-node-wrap[data-bfid="${bfId}"]`);
   if (node) {
     node.classList.add('bf-highlight');
     node.scrollIntoView({behavior:'smooth', block:'center'});
@@ -1663,10 +1670,9 @@ function navToFlowMap(bfId) {
 }
 
 function toggleBFNode(el) {
-  const node = el.closest('.bf-node, .flow-map-node');
-  if (!node) return;
-  const acts = node.classList.contains('bf-node') ? node.querySelector('.act-details') : node.nextElementSibling;
-  if (acts && acts.classList.contains('act-details')) acts.classList.toggle('open');
+  const node = el.closest('.bf-node, .flow-map-node-wrap');
+  const acts = node?.querySelector('.act-details');
+  if (acts) acts.classList.toggle('open');
 }
 
 /* ================================================================
